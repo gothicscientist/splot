@@ -74,6 +74,31 @@ export class Voxels {
     for (let y = y1; y <= y0; y++) for (let dx = -r; dx <= r; dx++) for (let dz = -r; dz <= r; dz++) this.set(x + dx, y, z + dz, null);
     return this;
   }
+  /** Height of the surface at (x, z): y of the top face of the highest solid block (characters stand here). */
+  top(x: number, z: number, from = 64, to = -64) {
+    for (let y = from; y >= to; y--) if (this.get(Math.floor(x), y, Math.floor(z)) !== undefined) return y + 1;
+    return 0;
+  }
+  /** A layered planet of radius R centred on the origin. `layers` maps a radius fraction to a block (outermost
+   *  first); `cut` removes the +x +y +z octant so the inside shows. `surface(x, y, z)` may override the crust. */
+  planet(R: number, layers: [number, BlockType][], cut = true, surface?: (x: number, y: number, z: number) => BlockType | undefined) {
+    for (let x = -R; x <= R; x++)
+      for (let y = -R; y <= R; y++)
+        for (let z = -R; z <= R; z++) {
+          const r = Math.sqrt((x + 0.5) ** 2 + (y + 0.5) ** 2 + (z + 0.5) ** 2);
+          if (r > R) continue;
+          if (cut && x >= 0 && y >= 0 && z >= 0) continue;
+          let t: BlockType = layers[layers.length - 1][1];
+          for (const [frac, b] of layers)
+            if (r > R * frac) {
+              t = b;
+              break;
+            }
+          if (r > R - 1 && surface) t = surface(x, y, z) ?? t;
+          this.set(x, y, z, t);
+        }
+    return this;
+  }
   sphere(cx: number, cy: number, cz: number, R: number, t: BlockType | null) {
     for (let x = -R; x <= R; x++) for (let y = -R; y <= R; y++) for (let z = -R; z <= R; z++) if (x * x + y * y + z * z <= R * R + 0.5) this.set(cx + x, cy + y, cz + z, t);
     return this;
@@ -179,7 +204,7 @@ export const VoxelWorld: React.FC<{ build: (v: Voxels) => void; deps?: unknown[]
 };
 
 /** One animated block: pops in at `pop`, cracks and bursts into debris at `breakAt`, or falls from `fallFrom`. */
-export const Block: React.FC<{ type: BlockType; at: Vec3; pop?: number; breakAt?: number; fallFrom?: number; size?: number }> = ({ type, at, pop, breakAt, fallFrom, size = 1 }) => {
+export const Block: React.FC<{ type: BlockType; at: Vec3; pop?: number; breakAt?: number; fallFrom?: number; size?: number; wobble?: number }> = ({ type, at, pop, breakAt, fallFrom, size = 1, wobble = 0 }) => {
   const f = useLocalFrame();
   const geo = useMemo(() => {
     const v = new Voxels();
@@ -209,5 +234,10 @@ export const Block: React.FC<{ type: BlockType; at: Vec3; pop?: number; breakAt?
     );
   }
   const crack = breakAt !== undefined ? clamp(invLerp(breakAt - 18, breakAt, f)) : 0;
-  return <mesh geometry={geo} material={mat} position={[at[0] + 0.5, y, at[2] + 0.5]} scale={size * s * (1 - crack * 0.06)} rotation={[0, 0, crack * 0.05 * Math.sin(f * 2)]} />;
+  // wobble: the block sags and bulges like soft plastic (volume-preserving squash, bottom stays put)
+  const w = wobble * Math.sin(f * 0.33 + at[0] * 1.9 + at[1] * 1.3);
+  const k = size * s * (1 - crack * 0.06);
+  const sy = 1 - Math.abs(wobble) * 0.35 - w * 0.5;
+  const sx = 1 + Math.abs(wobble) * 0.18 + w * 0.5;
+  return <mesh geometry={geo} material={mat} position={[at[0] + 0.5 + w * 0.12, y - (1 - sy) * 0.5 * size, at[2] + 0.5]} scale={[k * sx, k * sy, k]} rotation={[0, 0, crack * 0.05 * Math.sin(f * 2) + w * 0.12]} />;
 };

@@ -3,6 +3,38 @@
 Live state of the studio. `CLAUDE.md` has the stable rules; this file has what is done, what is not, and what's next.
 Update it at the end of every session.
 
+## In progress (session of 2026-11-14 late, stopped by a usage limit; branch `studio/full-implementation`)
+Read this block first: it is newer than everything below it.
+- **Voice is now ElevenLabs (connector), all four videos.** New `take` provider in `scripts/voice.py`: one full
+  narration take per video (`videos/<slug>/voice/take.mp3`, eleven_v4, voice "Liam - Viral Short-Form Storyteller",
+  id `VCgLBmBjldJmfphyB8sZ`) is force-aligned, cut per beat and re-spaced by the usual pipeline.
+  `voice.py <slug> --take-text` prints the text to send. ASR check WER 0.0 % on all four takes.
+- **Eiffel:** re-voiced, timeline + mix rebuilt (-14.03 LUFS, -1.50 dBTP), stills re-rendered and look fine to the
+  builder. NOT yet re-rendered to MP4, NOT yet critic-reviewed, `check.mjs` not re-run. The old MP4s in `renders/`
+  still carry the old Edge voice.
+- **Three new videos scripted, researched (`research.md`), voiced and timed:** `chile-shape` (Atlas x map, 41.9 s),
+  `noise-cancelling` (Glowvector x how-it-works, 39.6 s), `deepest-hole` (Blockcraft x what-if, 41.9 s).
+  - `chile-shape` and `noise-cancelling`: scenes written, two stills rounds done (`out/stills/v-<slug>/sheet.jpg`).
+    Known leftovers from the builder's own review: Chile s02 label timing at "glaciers" and the final "24x longer"
+    label (partly hidden behind Chile) need a look; noise s01 "MORE NOISE?!" text overlaps the listener's head
+    (move it up), s03 callouts are cut by the frame edge while the camera pans, s05 check badge and s06 chip sit
+    close to the caption band.
+  - `deepest-hole`: scenes written and type-clean, first stills were rendering when the session stopped
+    (`out/stills-hole.log`); nothing has been looked at yet.
+  - None of the three has sound (`sound.py`), a render, `check.mjs` or a critic review yet. `brief.md` is still the
+    scaffold and `post.md` does not exist for any of them.
+- **Kits extended:** Atlas (`local` projection, `clip`, `anchor`, `under`, `background`, `sharedBorder`, smooth globe
+  zoom + shading), Blockcraft (`Voxels.top`, `Voxels.planet`, `Block wobble`, plate item, `PixelThermo`, gauge
+  options, hero recoloured so it no longer resembles the genre's default skin).
+- **Written:** `skills/reel-critic/SKILL.md`, `skills/reel/references/critic.md`. Note for the critic: Glowvector's
+  dark field, haze and glows are that style's signature and are exempt from the generic ban list.
+- **Still open from the list below:** sub-skills `reel-research`, `reel-hooks`, `reel-script`; kit API docs for
+  blockcraft / glowvector / atlas; `scripts/doctor.mjs`; skill install; cleanup; `SKILL.md` step 5 still describes the
+  old voice default and must be updated to the ElevenLabs take flow.
+- **Next, in order:** look at the deep-hole stills and fix; finish the leftovers above; `sound.py` for the three new
+  videos; `render.mjs <slug> --variants` + `check.mjs` for all four; fresh-critic review of each (fix until every
+  area >= 8); then the open items; update this file; commit and push.
+
 ## Done and verified
 - **Engine** (`src/core/`): timeline word clock, `<Reel>` with 13 seam types (incl. hard cut), captions (8 presets: bold-pop,
   boxed, karaoke, pixel, clean, comic, marker, serif), screen FX (`fx2d`), 3D `Stage` (camera rig, looks: day golden

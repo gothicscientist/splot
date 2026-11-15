@@ -1,0 +1,1220 @@
+{
+ "version": 2,
+ "sampleRate": 48000,
+ "duration": 41.9306,
+ "lead": 0.06,
+ "provider": "take",
+ "voice": "ElevenLabs Liam (viral short-form storyteller)",
+ "tempo": 1.1636,
+ "wpm": 180.0,
+ "beats": [
+  {
+   "id": "b01",
+   "shot": "s01",
+   "start": 0.06,
+   "speechEnd": 2.6488,
+   "end": 2.8688,
+   "say": "What if you dug straight down and never stopped?",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b02",
+   "shot": "s02",
+   "start": 2.8688,
+   "speechEnd": 5.6559,
+   "end": 5.7159,
+   "say": "In nineteen seventy, Soviet scientists tried it for real.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b03",
+   "shot": "s02",
+   "start": 5.7159,
+   "speechEnd": 9.5384,
+   "end": 9.6984,
+   "say": "Their hole was just twenty-three centimeters wide, about the size of a dinner plate.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b04",
+   "shot": "s03",
+   "start": 9.6984,
+   "speechEnd": 14.0343,
+   "end": 14.1543,
+   "say": "For nineteen years, the drill went down. One kilometer. Five. Ten.",
+   "tightenedSec": 0.339
+  },
+  {
+   "id": "b05",
+   "shot": "s03",
+   "start": 14.1543,
+   "speechEnd": 19.3338,
+   "end": 19.4938,
+   "say": "At twelve thousand, two hundred and sixty-two meters, it became the deepest hole humans have ever made.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b06",
+   "shot": "s04",
+   "start": 19.4938,
+   "speechEnd": 21.4113,
+   "end": 21.4713,
+   "say": "But down there, something was wrong.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b07",
+   "shot": "s04",
+   "start": 21.4713,
+   "speechEnd": 25.5594,
+   "end": 25.7194,
+   "say": "The rock was one hundred and eighty degrees Celsius, far hotter than anyone expected.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b08",
+   "shot": "s05",
+   "start": 25.7194,
+   "speechEnd": 30.3129,
+   "end": 30.3729,
+   "say": "You see, at that heat, rock stops acting like rock. It starts to behave like plastic.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b09",
+   "shot": "s05",
+   "start": 30.3729,
+   "speechEnd": 32.65,
+   "end": 32.81,
+   "say": "The drill simply could not go any deeper.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b10",
+   "shot": "s06",
+   "start": 32.81,
+   "speechEnd": 37.4796,
+   "end": 37.5396,
+   "say": "So how far did they get? The center of the Earth is six thousand, three hundred and seventy-one kilometers down.",
+   "tightenedSec": 0.323
+  },
+  {
+   "id": "b11",
+   "shot": "s06",
+   "start": 37.5396,
+   "speechEnd": 41.2306,
+   "end": 41.2306,
+   "say": "After nineteen years of digging, they made it zero point two percent of the way.",
+   "tightenedSec": 0.0
+  }
+ ],
+ "words": [
+  {
+   "i": 0,
+   "beat": "b01",
+   "text": "What",
+   "spoken": "what",
+   "start": 0.14,
+   "end": 0.261,
+   "emph": false
+  },
+  {
+   "i": 1,
+   "beat": "b01",
+   "text": "if",
+   "spoken": "if",
+   "start": 0.301,
+   "end": 0.361,
+   "emph": false
+  },
+  {
+   "i": 2,
+   "beat": "b01",
+   "text": "you",
+   "spoken": "you",
+   "start": 0.381,
+   "end": 0.522,
+   "emph": false
+  },
+  {
+   "i": 3,
+   "beat": "b01",
+   "text": "dug",
+   "spoken": "dug",
+   "start": 0.542,
+   "end": 0.762,
+   "emph": false
+  },
+  {
+   "i": 4,
+   "beat": "b01",
+   "text": "straight",
+   "spoken": "straight",
+   "start": 0.883,
+   "end": 1.204,
+   "emph": false
+  },
+  {
+   "i": 5,
+   "beat": "b01",
+   "text": "down",
+   "spoken": "down",
+   "start": 1.244,
+   "end": 1.485,
+   "emph": false
+  },
+  {
+   "i": 6,
+   "beat": "b01",
+   "text": "and",
+   "spoken": "and",
+   "start": 1.665,
+   "end": 1.766,
+   "emph": false
+  },
+  {
+   "i": 7,
+   "beat": "b01",
+   "text": "never",
+   "spoken": "never",
+   "start": 1.866,
+   "end": 2.087,
+   "emph": false
+  },
+  {
+   "i": 8,
+   "beat": "b01",
+   "text": "stopped?",
+   "spoken": "stopped",
+   "start": 2.147,
+   "end": 2.488,
+   "emph": true
+  },
+  {
+   "i": 9,
+   "beat": "b02",
+   "text": "In",
+   "spoken": "in",
+   "start": 2.9288,
+   "end": 2.9888,
+   "emph": false
+  },
+  {
+   "i": 10,
+   "beat": "b02",
+   "text": "1970,",
+   "spoken": "nineteen seventy",
+   "start": 3.0288,
+   "end": 3.7308,
+   "emph": false
+  },
+  {
+   "i": 11,
+   "beat": "b02",
+   "text": "Soviet",
+   "spoken": "soviet",
+   "start": 3.9318,
+   "end": 4.2728,
+   "emph": false
+  },
+  {
+   "i": 12,
+   "beat": "b02",
+   "text": "scientists",
+   "spoken": "scientists",
+   "start": 4.2927,
+   "end": 4.7538,
+   "emph": false
+  },
+  {
+   "i": 13,
+   "beat": "b02",
+   "text": "tried",
+   "spoken": "tried",
+   "start": 4.8538,
+   "end": 5.0548,
+   "emph": false
+  },
+  {
+   "i": 14,
+   "beat": "b02",
+   "text": "it",
+   "spoken": "it",
+   "start": 5.0747,
+   "end": 5.1348,
+   "emph": false
+  },
+  {
+   "i": 15,
+   "beat": "b02",
+   "text": "for",
+   "spoken": "for",
+   "start": 5.1547,
+   "end": 5.2748,
+   "emph": false
+  },
+  {
+   "i": 16,
+   "beat": "b02",
+   "text": "real.",
+   "spoken": "real",
+   "start": 5.3148,
+   "end": 5.5158,
+   "emph": true
+  },
+  {
+   "i": 17,
+   "beat": "b03",
+   "text": "Their",
+   "spoken": "their",
+   "start": 5.8769,
+   "end": 6.0379,
+   "emph": false
+  },
+  {
+   "i": 18,
+   "beat": "b03",
+   "text": "hole",
+   "spoken": "hole",
+   "start": 6.0779,
+   "end": 6.2189,
+   "emph": false
+  },
+  {
+   "i": 19,
+   "beat": "b03",
+   "text": "was",
+   "spoken": "was",
+   "start": 6.2789,
+   "end": 6.3799,
+   "emph": false
+  },
+  {
+   "i": 20,
+   "beat": "b03",
+   "text": "just",
+   "spoken": "just",
+   "start": 6.4199,
+   "end": 6.5609,
+   "emph": false
+  },
+  {
+   "i": 21,
+   "beat": "b03",
+   "text": "23",
+   "spoken": "twenty three",
+   "start": 6.6619,
+   "end": 7.1039,
+   "emph": false
+  },
+  {
+   "i": 22,
+   "beat": "b03",
+   "text": "centimeters",
+   "spoken": "centimeters",
+   "start": 7.1439,
+   "end": 7.5669,
+   "emph": false
+  },
+  {
+   "i": 23,
+   "beat": "b03",
+   "text": "wide,",
+   "spoken": "wide",
+   "start": 7.6269,
+   "end": 7.8689,
+   "emph": false
+  },
+  {
+   "i": 24,
+   "beat": "b03",
+   "text": "about",
+   "spoken": "about",
+   "start": 8.0899,
+   "end": 8.2509,
+   "emph": false
+  },
+  {
+   "i": 25,
+   "beat": "b03",
+   "text": "the",
+   "spoken": "the",
+   "start": 8.2709,
+   "end": 8.3519,
+   "emph": false
+  },
+  {
+   "i": 26,
+   "beat": "b03",
+   "text": "size",
+   "spoken": "size",
+   "start": 8.3919,
+   "end": 8.5729,
+   "emph": false
+  },
+  {
+   "i": 27,
+   "beat": "b03",
+   "text": "of",
+   "spoken": "of",
+   "start": 8.5929,
+   "end": 8.6529,
+   "emph": false
+  },
+  {
+   "i": 28,
+   "beat": "b03",
+   "text": "a",
+   "spoken": "a",
+   "start": 8.6729,
+   "end": 8.7329,
+   "emph": false
+  },
+  {
+   "i": 29,
+   "beat": "b03",
+   "text": "dinner",
+   "spoken": "dinner",
+   "start": 8.7539,
+   "end": 8.9149,
+   "emph": true
+  },
+  {
+   "i": 30,
+   "beat": "b03",
+   "text": "plate.",
+   "spoken": "plate",
+   "start": 8.9549,
+   "end": 9.1359,
+   "emph": true
+  },
+  {
+   "i": 31,
+   "beat": "b04",
+   "text": "For",
+   "spoken": "for",
+   "start": 9.7584,
+   "end": 9.8794,
+   "emph": false
+  },
+  {
+   "i": 32,
+   "beat": "b04",
+   "text": "nineteen",
+   "spoken": "nineteen",
+   "start": 9.9994,
+   "end": 10.5414,
+   "emph": false
+  },
+  {
+   "i": 33,
+   "beat": "b04",
+   "text": "years,",
+   "spoken": "years",
+   "start": 10.6214,
+   "end": 10.9834,
+   "emph": false
+  },
+  {
+   "i": 34,
+   "beat": "b04",
+   "text": "the",
+   "spoken": "the",
+   "start": 11.0634,
+   "end": 11.1434,
+   "emph": false
+  },
+  {
+   "i": 35,
+   "beat": "b04",
+   "text": "drill",
+   "spoken": "drill",
+   "start": 11.1634,
+   "end": 11.3644,
+   "emph": false
+  },
+  {
+   "i": 36,
+   "beat": "b04",
+   "text": "went",
+   "spoken": "went",
+   "start": 11.3844,
+   "end": 11.5254,
+   "emph": false
+  },
+  {
+   "i": 37,
+   "beat": "b04",
+   "text": "down.",
+   "spoken": "down",
+   "start": 11.5654,
+   "end": 11.7664,
+   "emph": false
+  },
+  {
+   "i": 38,
+   "beat": "b04",
+   "text": "One",
+   "spoken": "one",
+   "start": 11.9864,
+   "end": 12.0874,
+   "emph": false
+  },
+  {
+   "i": 39,
+   "beat": "b04",
+   "text": "kilometer.",
+   "spoken": "kilometer",
+   "start": 12.1274,
+   "end": 12.5484,
+   "emph": false
+  },
+  {
+   "i": 40,
+   "beat": "b04",
+   "text": "Five.",
+   "spoken": "five",
+   "start": 12.9104,
+   "end": 13.2314,
+   "emph": true
+  },
+  {
+   "i": 41,
+   "beat": "b04",
+   "text": "Ten.",
+   "spoken": "ten",
+   "start": 13.6524,
+   "end": 13.8334,
+   "emph": false
+  },
+  {
+   "i": 42,
+   "beat": "b05",
+   "text": "At",
+   "spoken": "at",
+   "start": 14.5353,
+   "end": 14.5963,
+   "emph": false
+  },
+  {
+   "i": 43,
+   "beat": "b05",
+   "text": "12,262",
+   "spoken": "twelve thousand two hundred and sixty two",
+   "start": 14.6763,
+   "end": 16.4433,
+   "emph": false
+  },
+  {
+   "i": 44,
+   "beat": "b05",
+   "text": "meters,",
+   "spoken": "meters",
+   "start": 16.4833,
+   "end": 16.7643,
+   "emph": false
+  },
+  {
+   "i": 45,
+   "beat": "b05",
+   "text": "it",
+   "spoken": "it",
+   "start": 17.0653,
+   "end": 17.1253,
+   "emph": false
+  },
+  {
+   "i": 46,
+   "beat": "b05",
+   "text": "became",
+   "spoken": "became",
+   "start": 17.1653,
+   "end": 17.4063,
+   "emph": false
+  },
+  {
+   "i": 47,
+   "beat": "b05",
+   "text": "the",
+   "spoken": "the",
+   "start": 17.4463,
+   "end": 17.5273,
+   "emph": false
+  },
+  {
+   "i": 48,
+   "beat": "b05",
+   "text": "deepest",
+   "spoken": "deepest",
+   "start": 17.6073,
+   "end": 17.9483,
+   "emph": true
+  },
+  {
+   "i": 49,
+   "beat": "b05",
+   "text": "hole",
+   "spoken": "hole",
+   "start": 18.0293,
+   "end": 18.2093,
+   "emph": false
+  },
+  {
+   "i": 50,
+   "beat": "b05",
+   "text": "humans",
+   "spoken": "humans",
+   "start": 18.2493,
+   "end": 18.5103,
+   "emph": false
+  },
+  {
+   "i": 51,
+   "beat": "b05",
+   "text": "have",
+   "spoken": "have",
+   "start": 18.5513,
+   "end": 18.6513,
+   "emph": false
+  },
+  {
+   "i": 52,
+   "beat": "b05",
+   "text": "ever",
+   "spoken": "ever",
+   "start": 18.8723,
+   "end": 19.0123,
+   "emph": false
+  },
+  {
+   "i": 53,
+   "beat": "b05",
+   "text": "made.",
+   "spoken": "made",
+   "start": 19.0733,
+   "end": 19.2333,
+   "emph": false
+  },
+  {
+   "i": 54,
+   "beat": "b06",
+   "text": "But",
+   "spoken": "but",
+   "start": 19.8368,
+   "end": 19.9378,
+   "emph": false
+  },
+  {
+   "i": 55,
+   "beat": "b06",
+   "text": "down",
+   "spoken": "down",
+   "start": 19.9778,
+   "end": 20.1398,
+   "emph": false
+  },
+  {
+   "i": 56,
+   "beat": "b06",
+   "text": "there,",
+   "spoken": "there",
+   "start": 20.1798,
+   "end": 20.3618,
+   "emph": false
+  },
+  {
+   "i": 57,
+   "beat": "b06",
+   "text": "something",
+   "spoken": "something",
+   "start": 20.6648,
+   "end": 20.9268,
+   "emph": false
+  },
+  {
+   "i": 58,
+   "beat": "b06",
+   "text": "was",
+   "spoken": "was",
+   "start": 20.9668,
+   "end": 21.0678,
+   "emph": false
+  },
+  {
+   "i": 59,
+   "beat": "b06",
+   "text": "wrong.",
+   "spoken": "wrong",
+   "start": 21.1088,
+   "end": 21.3508,
+   "emph": true
+  },
+  {
+   "i": 60,
+   "beat": "b07",
+   "text": "The",
+   "spoken": "the",
+   "start": 21.7323,
+   "end": 21.8123,
+   "emph": false
+  },
+  {
+   "i": 61,
+   "beat": "b07",
+   "text": "rock",
+   "spoken": "rock",
+   "start": 21.8723,
+   "end": 22.0523,
+   "emph": false
+  },
+  {
+   "i": 62,
+   "beat": "b07",
+   "text": "was",
+   "spoken": "was",
+   "start": 22.0923,
+   "end": 22.2123,
+   "emph": false
+  },
+  {
+   "i": 63,
+   "beat": "b07",
+   "text": "180",
+   "spoken": "one hundred and eighty",
+   "start": 22.3733,
+   "end": 23.0543,
+   "emph": false
+  },
+  {
+   "i": 64,
+   "beat": "b07",
+   "text": "degrees",
+   "spoken": "degrees",
+   "start": 23.0943,
+   "end": 23.3553,
+   "emph": false
+  },
+  {
+   "i": 65,
+   "beat": "b07",
+   "text": "Celsius,",
+   "spoken": "celsius",
+   "start": 23.3953,
+   "end": 23.8163,
+   "emph": false
+  },
+  {
+   "i": 66,
+   "beat": "b07",
+   "text": "far",
+   "spoken": "far",
+   "start": 24.0363,
+   "end": 24.2573,
+   "emph": false
+  },
+  {
+   "i": 67,
+   "beat": "b07",
+   "text": "hotter",
+   "spoken": "hotter",
+   "start": 24.3173,
+   "end": 24.5573,
+   "emph": false
+  },
+  {
+   "i": 68,
+   "beat": "b07",
+   "text": "than",
+   "spoken": "than",
+   "start": 24.5773,
+   "end": 24.6973,
+   "emph": false
+  },
+  {
+   "i": 69,
+   "beat": "b07",
+   "text": "anyone",
+   "spoken": "anyone",
+   "start": 24.8383,
+   "end": 25.0783,
+   "emph": false
+  },
+  {
+   "i": 70,
+   "beat": "b07",
+   "text": "expected.",
+   "spoken": "expected",
+   "start": 25.0983,
+   "end": 25.4793,
+   "emph": true
+  },
+  {
+   "i": 71,
+   "beat": "b08",
+   "text": "You",
+   "spoken": "you",
+   "start": 26.0804,
+   "end": 26.1804,
+   "emph": false
+  },
+  {
+   "i": 72,
+   "beat": "b08",
+   "text": "see,",
+   "spoken": "see",
+   "start": 26.2004,
+   "end": 26.3414,
+   "emph": false
+  },
+  {
+   "i": 73,
+   "beat": "b08",
+   "text": "at",
+   "spoken": "at",
+   "start": 26.5014,
+   "end": 26.5614,
+   "emph": false
+  },
+  {
+   "i": 74,
+   "beat": "b08",
+   "text": "that",
+   "spoken": "that",
+   "start": 26.6024,
+   "end": 26.7824,
+   "emph": false
+  },
+  {
+   "i": 75,
+   "beat": "b08",
+   "text": "heat,",
+   "spoken": "heat",
+   "start": 26.8424,
+   "end": 27.0434,
+   "emph": false
+  },
+  {
+   "i": 76,
+   "beat": "b08",
+   "text": "rock",
+   "spoken": "rock",
+   "start": 27.2844,
+   "end": 27.4844,
+   "emph": false
+  },
+  {
+   "i": 77,
+   "beat": "b08",
+   "text": "stops",
+   "spoken": "stops",
+   "start": 27.5044,
+   "end": 27.7454,
+   "emph": false
+  },
+  {
+   "i": 78,
+   "beat": "b08",
+   "text": "acting",
+   "spoken": "acting",
+   "start": 27.8454,
+   "end": 28.0464,
+   "emph": false
+  },
+  {
+   "i": 79,
+   "beat": "b08",
+   "text": "like",
+   "spoken": "like",
+   "start": 28.0664,
+   "end": 28.2064,
+   "emph": false
+  },
+  {
+   "i": 80,
+   "beat": "b08",
+   "text": "rock.",
+   "spoken": "rock",
+   "start": 28.2874,
+   "end": 28.5274,
+   "emph": false
+  },
+  {
+   "i": 81,
+   "beat": "b08",
+   "text": "It",
+   "spoken": "it",
+   "start": 28.9084,
+   "end": 28.9684,
+   "emph": false
+  },
+  {
+   "i": 82,
+   "beat": "b08",
+   "text": "starts",
+   "spoken": "starts",
+   "start": 28.9894,
+   "end": 29.1894,
+   "emph": false
+  },
+  {
+   "i": 83,
+   "beat": "b08",
+   "text": "to",
+   "spoken": "to",
+   "start": 29.2294,
+   "end": 29.2894,
+   "emph": false
+  },
+  {
+   "i": 84,
+   "beat": "b08",
+   "text": "behave",
+   "spoken": "behave",
+   "start": 29.3304,
+   "end": 29.5704,
+   "emph": false
+  },
+  {
+   "i": 85,
+   "beat": "b08",
+   "text": "like",
+   "spoken": "like",
+   "start": 29.5904,
+   "end": 29.7114,
+   "emph": false
+  },
+  {
+   "i": 86,
+   "beat": "b08",
+   "text": "plastic.",
+   "spoken": "plastic",
+   "start": 29.7714,
+   "end": 30.2124,
+   "emph": true
+  },
+  {
+   "i": 87,
+   "beat": "b09",
+   "text": "The",
+   "spoken": "the",
+   "start": 30.6749,
+   "end": 30.7759,
+   "emph": false
+  },
+  {
+   "i": 88,
+   "beat": "b09",
+   "text": "drill",
+   "spoken": "drill",
+   "start": 30.7959,
+   "end": 31.0579,
+   "emph": false
+  },
+  {
+   "i": 89,
+   "beat": "b09",
+   "text": "simply",
+   "spoken": "simply",
+   "start": 31.0979,
+   "end": 31.3809,
+   "emph": false
+  },
+  {
+   "i": 90,
+   "beat": "b09",
+   "text": "could",
+   "spoken": "could",
+   "start": 31.4409,
+   "end": 31.6019,
+   "emph": false
+  },
+  {
+   "i": 91,
+   "beat": "b09",
+   "text": "not",
+   "spoken": "not",
+   "start": 31.6829,
+   "end": 31.8639,
+   "emph": false
+  },
+  {
+   "i": 92,
+   "beat": "b09",
+   "text": "go",
+   "spoken": "go",
+   "start": 31.9049,
+   "end": 32.0459,
+   "emph": false
+  },
+  {
+   "i": 93,
+   "beat": "b09",
+   "text": "any",
+   "spoken": "any",
+   "start": 32.1059,
+   "end": 32.2469,
+   "emph": false
+  },
+  {
+   "i": 94,
+   "beat": "b09",
+   "text": "deeper.",
+   "spoken": "deeper",
+   "start": 32.2669,
+   "end": 32.5289,
+   "emph": true
+  },
+  {
+   "i": 95,
+   "beat": "b10",
+   "text": "So",
+   "spoken": "so",
+   "start": 32.87,
+   "end": 33.05,
+   "emph": false
+  },
+  {
+   "i": 96,
+   "beat": "b10",
+   "text": "how",
+   "spoken": "how",
+   "start": 33.211,
+   "end": 33.331,
+   "emph": false
+  },
+  {
+   "i": 97,
+   "beat": "b10",
+   "text": "far",
+   "spoken": "far",
+   "start": 33.371,
+   "end": 33.491,
+   "emph": false
+  },
+  {
+   "i": 98,
+   "beat": "b10",
+   "text": "did",
+   "spoken": "did",
+   "start": 33.531,
+   "end": 33.612,
+   "emph": false
+  },
+  {
+   "i": 99,
+   "beat": "b10",
+   "text": "they",
+   "spoken": "they",
+   "start": 33.652,
+   "end": 33.732,
+   "emph": false
+  },
+  {
+   "i": 100,
+   "beat": "b10",
+   "text": "get?",
+   "spoken": "get",
+   "start": 33.752,
+   "end": 33.952,
+   "emph": false
+  },
+  {
+   "i": 101,
+   "beat": "b10",
+   "text": "The",
+   "spoken": "the",
+   "start": 34.093,
+   "end": 34.173,
+   "emph": false
+  },
+  {
+   "i": 102,
+   "beat": "b10",
+   "text": "center",
+   "spoken": "center",
+   "start": 34.213,
+   "end": 34.433,
+   "emph": false
+  },
+  {
+   "i": 103,
+   "beat": "b10",
+   "text": "of",
+   "spoken": "of",
+   "start": 34.453,
+   "end": 34.513,
+   "emph": false
+  },
+  {
+   "i": 104,
+   "beat": "b10",
+   "text": "the",
+   "spoken": "the",
+   "start": 34.534,
+   "end": 34.614,
+   "emph": false
+  },
+  {
+   "i": 105,
+   "beat": "b10",
+   "text": "Earth",
+   "spoken": "earth",
+   "start": 34.654,
+   "end": 34.834,
+   "emph": false
+  },
+  {
+   "i": 106,
+   "beat": "b10",
+   "text": "is",
+   "spoken": "is",
+   "start": 34.914,
+   "end": 34.994,
+   "emph": false
+  },
+  {
+   "i": 107,
+   "beat": "b10",
+   "text": "6,371",
+   "spoken": "six thousand three hundred and seventy one",
+   "start": 35.055,
+   "end": 36.718,
+   "emph": false
+  },
+  {
+   "i": 108,
+   "beat": "b10",
+   "text": "kilometers",
+   "spoken": "kilometers",
+   "start": 36.758,
+   "end": 37.179,
+   "emph": false
+  },
+  {
+   "i": 109,
+   "beat": "b10",
+   "text": "down.",
+   "spoken": "down",
+   "start": 37.219,
+   "end": 37.399,
+   "emph": true
+  },
+  {
+   "i": 110,
+   "beat": "b11",
+   "text": "After",
+   "spoken": "after",
+   "start": 37.6796,
+   "end": 37.8606,
+   "emph": false
+  },
+  {
+   "i": 111,
+   "beat": "b11",
+   "text": "nineteen",
+   "spoken": "nineteen",
+   "start": 37.9806,
+   "end": 38.3826,
+   "emph": false
+  },
+  {
+   "i": 112,
+   "beat": "b11",
+   "text": "years",
+   "spoken": "years",
+   "start": 38.4026,
+   "end": 38.6026,
+   "emph": false
+  },
+  {
+   "i": 113,
+   "beat": "b11",
+   "text": "of",
+   "spoken": "of",
+   "start": 38.6426,
+   "end": 38.7026,
+   "emph": false
+  },
+  {
+   "i": 114,
+   "beat": "b11",
+   "text": "digging,",
+   "spoken": "digging",
+   "start": 38.7236,
+   "end": 39.0036,
+   "emph": false
+  },
+  {
+   "i": 115,
+   "beat": "b11",
+   "text": "they",
+   "spoken": "they",
+   "start": 39.1846,
+   "end": 39.3046,
+   "emph": false
+  },
+  {
+   "i": 116,
+   "beat": "b11",
+   "text": "made",
+   "spoken": "made",
+   "start": 39.3246,
+   "end": 39.4856,
+   "emph": false
+  },
+  {
+   "i": 117,
+   "beat": "b11",
+   "text": "it",
+   "spoken": "it",
+   "start": 39.5056,
+   "end": 39.5656,
+   "emph": false
+  },
+  {
+   "i": 118,
+   "beat": "b11",
+   "text": "0.2",
+   "spoken": "zero point two",
+   "start": 39.6456,
+   "end": 40.4686,
+   "emph": true
+  },
+  {
+   "i": 119,
+   "beat": "b11",
+   "text": "percent",
+   "spoken": "percent",
+   "start": 40.5286,
+   "end": 40.7896,
+   "emph": true
+  },
+  {
+   "i": 120,
+   "beat": "b11",
+   "text": "of",
+   "spoken": "of",
+   "start": 40.8096,
+   "end": 40.8696,
+   "emph": false
+  },
+  {
+   "i": 121,
+   "beat": "b11",
+   "text": "the",
+   "spoken": "the",
+   "start": 40.8896,
+   "end": 40.9696,
+   "emph": false
+  },
+  {
+   "i": 122,
+   "beat": "b11",
+   "text": "way.",
+   "spoken": "way",
+   "start": 40.9896,
+   "end": 41.1306,
+   "emph": false
+  }
+ ]
+}

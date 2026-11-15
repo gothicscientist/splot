@@ -1,8 +1,8 @@
 {
- "lufs": -14.02,
+ "lufs": -14.03,
  "truePeak": -1.5,
  "mood": "heist",
- "sfxPerMinute": 12.2,
- "musicVsVoiceDb": -23.2,
+ "sfxPerMinute": 12.9,
+ "musicVsVoiceDb": -22.2,
  "masked": []
 }

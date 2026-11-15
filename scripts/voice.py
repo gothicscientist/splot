@@ -246,10 +246,108 @@ def token_times(tokens: list[Token], word_times: list, dur: float):
     return res
 
 
+# ------------------------------------------------------------------------------------- full-narration take
+TAKE_NAMES = ("take.wav", "take.mp3", "take.m4a", "take.flac")
+
+
+def find_take(vdir: Path) -> Path | None:
+    for n in TAKE_NAMES:
+        p = vdir / "voice" / n
+        if p.exists():
+            return p
+    return None
+
+
+def take_prompt(script: dict) -> str:
+    """The text to hand to a narration voice (ElevenLabs connector) for one full take: one beat per line.
+
+    Display text as written (v3/v4 voices read digits and currency correctly), stars removed, optional
+    `voice.direction` / per-beat `direction` audio tags in [brackets], `voice.ipa` replacements for hard names.
+    """
+    vcfg = script.get("voice", {}) or {}
+    ipa = vcfg.get("ipa", {}) or {}
+    lines = []
+    for i, b in enumerate(script["beats"]):
+        t = b.get("takeText") or b["text"].replace("*", "")
+        for word, rep in ipa.items():
+            t = re.sub(rf"\b{re.escape(word)}\b", rep, t)
+        tag = b.get("direction") or (vcfg.get("direction") if i == 0 else None)
+        lines.append((f"[{tag}] " if tag else "") + t.strip())
+    return "\n".join(lines)
+
+
+def split_take(take: Path, specs: list[dict], cache: Path, lang: str, align_py: str | None):
+    """Cut one full-narration recording into one raw clip per beat (written to each spec's raw_wav).
+
+    The whole take is force-aligned against the exact script words; each cut lands on the quietest point
+    of the pause between two beats, so no word is clipped and the usual per-beat pipeline can re-space them.
+    """
+    if not align_py:
+        die("a full-narration take needs the WhisperX aligner (install the watch plugin or set NOMEN_ALIGN_PYTHON)")
+    thash = sha(take.read_bytes().hex()[:200000], take.stat().st_size)
+    full, full16 = cache / f"take.{thash}.wav", cache / f"take.{thash}.16k.wav"
+    if not full.exists():
+        to_wav(take, full, SR)
+        to_wav(take, full16, 16000)
+    sr, x = read_wav_mono(full)
+    words, owner = [], []
+    for k, s in enumerate(specs):
+        for t in s["tokens"]:
+            for w in t.align:
+                words.append(w)
+                owner.append(k)
+    jp, op = cache / "take_job.json", cache / "take_out.json"
+    write_json(jp, {"language": lang, "items": [{"id": "take", "wav": str(full16), "words": words}]})
+    log(f"  aligning the full take ({len(x) / sr:.1f}s, {len(words)} words) ...")
+    r = run([align_py, str(STUDIO / "scripts" / "align_words.py"), str(jp), str(op)], check=False)
+    if r.returncode != 0:
+        log(r.stdout[-1500:])
+        log(r.stderr[-1500:])
+        die("take alignment failed")
+    wt = read_json(op)["items"].get("take", [])
+    found = sum(1 for w in wt if w)
+    if found < 0.9 * len(words):
+        die(f"only {found}/{len(words)} script words were found in the take: it does not say the script. Re-record it.")
+    spans = []
+    for k, s in enumerate(specs):
+        ts = [wt[i] for i in range(len(words)) if owner[i] == k and wt[i]]
+        if not ts:
+            die(f"beat {s['beat']['id']} was not found in the take (\"{s['beat']['text'][:50]}\"). Re-record it.")
+        spans.append([ts[0][0], ts[-1][1]])
+    for k in range(1, len(spans)):
+        if spans[k][0] < spans[k - 1][1] - 0.05:
+            die(f"take alignment is out of order around beat {specs[k]['beat']['id']}. Re-record the take.")
+    env = envelope(x, sr, 0.020)
+    cuts = [max(0, int((spans[0][0] - 0.20) * sr))]
+    for k in range(len(spans) - 1):
+        a, b = int(spans[k][1] * sr), int(spans[k + 1][0] * sr)
+        if b - a < int(0.03 * sr):
+            log(f"  ! no pause between {specs[k]['beat']['id']} and {specs[k + 1]['beat']['id']} in the take (run-on): check that seam by ear")
+            cuts.append((a + b) // 2)
+        else:
+            cuts.append(a + int(np.argmin(env[a:b])))
+    cuts.append(min(len(x), int((spans[-1][1] + 0.45) * sr)))
+    for k, s in enumerate(specs):
+        seg = x[cuts[k]:cuts[k + 1]].copy()
+        f = min(len(seg) // 4, int(0.003 * sr))
+        if f > 0:
+            seg[:f] *= np.linspace(0, 1, f)
+            seg[-f:] *= np.linspace(1, 0, f)
+        write_wav_mono(s["raw_wav"], seg, SR)
+        write_json(s["meta_p"], {"say": s["say"], "native": {"kind": "take", "span": [round(cuts[k] / sr, 4), round(cuts[k + 1] / sr, 4)]}})
+    low = [words[i] for i, w in enumerate(wt) if w and w[2] < 0.25]
+    if low:
+        log(f"  ! {len(low)} low-confidence words in the take: {', '.join(low[:12])}")
+    log(f"  take split into {len(specs)} beats")
+    return thash
+
+
 # --------------------------------------------------------------------------------------------------------- main
-def resolve_provider(want: str, env: dict) -> str:
+def resolve_provider(want: str, env: dict, vdir: Path | None = None) -> str:
     if want != "auto":
         return want
+    if vdir is not None and find_take(vdir):
+        return "take"
     if env.get("ELEVENLABS_API_KEY"):
         return "elevenlabs"
     if env.get("OPENAI_API_KEY") and env.get("NOMEN_USE_OPENAI_TTS"):
@@ -283,17 +381,24 @@ def main():
     ap.add_argument("--force", action="store_true", help="ignore the TTS cache")
     ap.add_argument("--lead", type=float, default=0.06, help="silence before the first word (s)")
     ap.add_argument("--tail", type=float, default=0.7, help="silence after the last word (s)")
+    ap.add_argument("--take-text", action="store_true", help="print the full-narration text for a voice take and exit")
     a = ap.parse_args()
 
     vdir = video_dir(a.slug)
     script = read_json(vdir / "script.json")
+    if a.take_text:
+        sys.stdout.buffer.write((take_prompt(script) + "\n").encode("utf-8"))
+        return
     env = load_env()
     vcfg = script.get("voice", {}) or {}
-    provider = resolve_provider(a.provider or vcfg.get("provider", "auto"), env)
+    provider = resolve_provider(a.provider or vcfg.get("provider", "auto"), env, vdir)
     align_py = find_align_python(env)
+    take = find_take(vdir) if provider == "take" else None
+    if provider == "take" and not take:
+        die(f"voice.provider is 'take' but there is no {vdir / 'voice' / 'take.mp3'} (record one from: voice.py {a.slug} --take-text)")
     if provider == "edge" and not align_py:
         log("! no whisperx aligner found: using a word-boundary voice for timings (install the watch plugin's WhisperX or set NOMEN_ALIGN_PYTHON)")
-    voice = a.voice or vcfg.get("voice") or (DEFAULT_VOICES["edge-wb"] if provider == "edge" and not align_py else DEFAULT_VOICES[provider])
+    voice = a.voice or vcfg.get("voice") or (DEFAULT_VOICES["edge-wb"] if provider == "edge" and not align_py else DEFAULT_VOICES.get(provider, provider))
     if provider == "elevenlabs" and not env.get("ELEVENLABS_API_KEY"):
         die("ELEVENLABS_API_KEY missing")
     if provider == "openai" and not env.get("OPENAI_API_KEY"):
@@ -306,15 +411,30 @@ def main():
     log(f"voice: provider={provider} voice={voice} beats={len(beats)} aligner={'whisperx' if align_py else 'none'}")
 
     # 1. synthesise + clean every beat
+    take_id = ""
+    if take:
+        # a full take says the words as written, so respellings are not applied to the alignment words
+        take_id = sha(take.read_bytes().hex()[:200000], take.stat().st_size)
+        specs = []
+        for b in beats:
+            tokens = normalize_sentence(b["text"], None)
+            say = tts_text(tokens)
+            key = sha("take", take_id, b["id"], say, lang, "t1")
+            specs.append({"beat": b, "tokens": tokens, "say": say, "raw_wav": cache / f"{key}.raw.wav", "meta_p": cache / f"{key}.json"})
+        if a.force or not all(s["raw_wav"].exists() for s in specs):
+            split_take(take, specs, cache, lang, align_py)
     clips = []
     for b in beats:
-        tokens = normalize_sentence(b["text"], pron)
-        say = b.get("say") or tts_text(tokens)
+        tokens = normalize_sentence(b["text"], None if take else pron)
+        say = tts_text(tokens) if take else (b.get("say") or tts_text(tokens))
         edge_rate = vcfg.get("rate", "+8%")
-        key = sha(provider, voice, say, vcfg.get("settings"), vcfg.get("model"), lang, edge_rate if provider == "edge" else "", "v3")
+        key = (sha("take", take_id, b["id"], say, lang, "t1") if take else
+               sha(provider, voice, say, vcfg.get("settings"), vcfg.get("model"), lang, edge_rate if provider == "edge" else "", "v3"))
         raw_wav = cache / f"{key}.raw.wav"
         meta_p = cache / f"{key}.json"
-        if a.force or not raw_wav.exists():
+        if take and not raw_wav.exists():
+            die(f"take clip for {b['id']} is missing; re-run with --force")
+        if not take and (a.force or not raw_wav.exists()):
             mp3 = cache / f"{key}.mp3"
             native = None
             if provider == "edge":

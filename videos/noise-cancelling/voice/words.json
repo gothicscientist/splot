@@ -1,0 +1,1193 @@
+{
+ "version": 2,
+ "sampleRate": 48000,
+ "duration": 39.5848,
+ "lead": 0.06,
+ "provider": "take",
+ "voice": "ElevenLabs Liam (viral short-form storyteller)",
+ "tempo": 1.0,
+ "wpm": 186.3,
+ "beats": [
+  {
+   "id": "b01",
+   "shot": "s01",
+   "start": 0.06,
+   "speechEnd": 3.1092,
+   "end": 3.3292,
+   "say": "Your headphones don't block noise. They make more of it.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b02",
+   "shot": "s02",
+   "start": 3.3292,
+   "speechEnd": 7.2762,
+   "end": 7.4362,
+   "say": "Tiny microphones on the outside listen to every sound around you.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b03",
+   "shot": "s03",
+   "start": 7.4362,
+   "speechEnd": 10.599,
+   "end": 10.659,
+   "say": "A chip takes that sound wave and flips it upside down.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b04",
+   "shot": "s03",
+   "start": 10.659,
+   "speechEnd": 14.0556,
+   "end": 14.2156,
+   "say": "Then the speaker plays the flipped wave straight into your ear.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b05",
+   "shot": "s04",
+   "start": 14.2156,
+   "speechEnd": 18.1903,
+   "end": 18.3503,
+   "say": "Peak meets valley, the two waves cancel, and you hear almost nothing.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b06",
+   "shot": "s05",
+   "start": 18.3503,
+   "speechEnd": 19.568,
+   "end": 19.628,
+   "say": "But there's a catch.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b07",
+   "shot": "s05",
+   "start": 19.628,
+   "speechEnd": 23.766,
+   "end": 23.926,
+   "say": "It works best on steady, low sounds, like the hum of a plane engine.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b08",
+   "shot": "s06",
+   "start": 23.926,
+   "speechEnd": 27.6878,
+   "end": 27.8078,
+   "say": "You see, a steady hum repeats, so the chip can keep matching it.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b09",
+   "shot": "s06",
+   "start": 27.8078,
+   "speechEnd": 31.2565,
+   "end": 31.4165,
+   "say": "A sudden voice changes too fast, and slips right through.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b10",
+   "shot": "s07",
+   "start": 31.4165,
+   "speechEnd": 35.2956,
+   "end": 35.3556,
+   "say": "That's why the padding matters. It blocks the high sounds the chip can't.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b11",
+   "shot": "s07",
+   "start": 35.3556,
+   "speechEnd": 38.8848,
+   "end": 38.8848,
+   "say": "So the silence you paid for is really two noises fighting.",
+   "tightenedSec": 0.0
+  }
+ ],
+ "words": [
+  {
+   "i": 0,
+   "beat": "b01",
+   "text": "Your",
+   "spoken": "your",
+   "start": 0.1,
+   "end": 0.241,
+   "emph": false
+  },
+  {
+   "i": 1,
+   "beat": "b01",
+   "text": "headphones",
+   "spoken": "headphones",
+   "start": 0.281,
+   "end": 0.742,
+   "emph": false
+  },
+  {
+   "i": 2,
+   "beat": "b01",
+   "text": "don't",
+   "spoken": "don't",
+   "start": 0.782,
+   "end": 0.983,
+   "emph": false
+  },
+  {
+   "i": 3,
+   "beat": "b01",
+   "text": "block",
+   "spoken": "block",
+   "start": 1.103,
+   "end": 1.424,
+   "emph": false
+  },
+  {
+   "i": 4,
+   "beat": "b01",
+   "text": "noise.",
+   "spoken": "noise",
+   "start": 1.484,
+   "end": 1.785,
+   "emph": false
+  },
+  {
+   "i": 5,
+   "beat": "b01",
+   "text": "They",
+   "spoken": "they",
+   "start": 2.146,
+   "end": 2.287,
+   "emph": false
+  },
+  {
+   "i": 6,
+   "beat": "b01",
+   "text": "make",
+   "spoken": "make",
+   "start": 2.327,
+   "end": 2.487,
+   "emph": false
+  },
+  {
+   "i": 7,
+   "beat": "b01",
+   "text": "more",
+   "spoken": "more",
+   "start": 2.588,
+   "end": 2.828,
+   "emph": true
+  },
+  {
+   "i": 8,
+   "beat": "b01",
+   "text": "of",
+   "spoken": "of",
+   "start": 2.868,
+   "end": 2.928,
+   "emph": false
+  },
+  {
+   "i": 9,
+   "beat": "b01",
+   "text": "it.",
+   "spoken": "it",
+   "start": 3.009,
+   "end": 3.069,
+   "emph": false
+  },
+  {
+   "i": 10,
+   "beat": "b02",
+   "text": "Tiny",
+   "spoken": "tiny",
+   "start": 3.8302,
+   "end": 4.1502,
+   "emph": false
+  },
+  {
+   "i": 11,
+   "beat": "b02",
+   "text": "microphones",
+   "spoken": "microphones",
+   "start": 4.1912,
+   "end": 4.7112,
+   "emph": false
+  },
+  {
+   "i": 12,
+   "beat": "b02",
+   "text": "on",
+   "spoken": "on",
+   "start": 4.7522,
+   "end": 4.8122,
+   "emph": false
+  },
+  {
+   "i": 13,
+   "beat": "b02",
+   "text": "the",
+   "spoken": "the",
+   "start": 4.8322,
+   "end": 4.9122,
+   "emph": false
+  },
+  {
+   "i": 14,
+   "beat": "b02",
+   "text": "outside",
+   "spoken": "outside",
+   "start": 5.0322,
+   "end": 5.4332,
+   "emph": false
+  },
+  {
+   "i": 15,
+   "beat": "b02",
+   "text": "listen",
+   "spoken": "listen",
+   "start": 5.4932,
+   "end": 5.7732,
+   "emph": false
+  },
+  {
+   "i": 16,
+   "beat": "b02",
+   "text": "to",
+   "spoken": "to",
+   "start": 5.7932,
+   "end": 5.8542,
+   "emph": false
+  },
+  {
+   "i": 17,
+   "beat": "b02",
+   "text": "every",
+   "spoken": "every",
+   "start": 6.0942,
+   "end": 6.3542,
+   "emph": false
+  },
+  {
+   "i": 18,
+   "beat": "b02",
+   "text": "sound",
+   "spoken": "sound",
+   "start": 6.4152,
+   "end": 6.6752,
+   "emph": false
+  },
+  {
+   "i": 19,
+   "beat": "b02",
+   "text": "around",
+   "spoken": "around",
+   "start": 6.7352,
+   "end": 6.9962,
+   "emph": true
+  },
+  {
+   "i": 20,
+   "beat": "b02",
+   "text": "you.",
+   "spoken": "you",
+   "start": 7.0362,
+   "end": 7.1362,
+   "emph": false
+  },
+  {
+   "i": 21,
+   "beat": "b03",
+   "text": "A",
+   "spoken": "a",
+   "start": 7.7992,
+   "end": 7.8592,
+   "emph": false
+  },
+  {
+   "i": 22,
+   "beat": "b03",
+   "text": "chip",
+   "spoken": "chip",
+   "start": 7.8992,
+   "end": 8.1212,
+   "emph": false
+  },
+  {
+   "i": 23,
+   "beat": "b03",
+   "text": "takes",
+   "spoken": "takes",
+   "start": 8.2022,
+   "end": 8.4432,
+   "emph": false
+  },
+  {
+   "i": 24,
+   "beat": "b03",
+   "text": "that",
+   "spoken": "that",
+   "start": 8.4842,
+   "end": 8.6252,
+   "emph": false
+  },
+  {
+   "i": 25,
+   "beat": "b03",
+   "text": "sound",
+   "spoken": "sound",
+   "start": 8.6852,
+   "end": 8.9272,
+   "emph": false
+  },
+  {
+   "i": 26,
+   "beat": "b03",
+   "text": "wave",
+   "spoken": "wave",
+   "start": 8.9672,
+   "end": 9.1682,
+   "emph": false
+  },
+  {
+   "i": 27,
+   "beat": "b03",
+   "text": "and",
+   "spoken": "and",
+   "start": 9.2492,
+   "end": 9.3302,
+   "emph": false
+  },
+  {
+   "i": 28,
+   "beat": "b03",
+   "text": "flips",
+   "spoken": "flips",
+   "start": 9.4102,
+   "end": 9.6922,
+   "emph": false
+  },
+  {
+   "i": 29,
+   "beat": "b03",
+   "text": "it",
+   "spoken": "it",
+   "start": 9.7332,
+   "end": 9.7932,
+   "emph": false
+  },
+  {
+   "i": 30,
+   "beat": "b03",
+   "text": "upside",
+   "spoken": "upside",
+   "start": 9.9342,
+   "end": 10.2562,
+   "emph": false
+  },
+  {
+   "i": 31,
+   "beat": "b03",
+   "text": "down.",
+   "spoken": "down",
+   "start": 10.2972,
+   "end": 10.4782,
+   "emph": true
+  },
+  {
+   "i": 32,
+   "beat": "b04",
+   "text": "Then",
+   "spoken": "then",
+   "start": 11.001,
+   "end": 11.202,
+   "emph": false
+  },
+  {
+   "i": 33,
+   "beat": "b04",
+   "text": "the",
+   "spoken": "the",
+   "start": 11.362,
+   "end": 11.443,
+   "emph": false
+  },
+  {
+   "i": 34,
+   "beat": "b04",
+   "text": "speaker",
+   "spoken": "speaker",
+   "start": 11.483,
+   "end": 11.805,
+   "emph": false
+  },
+  {
+   "i": 35,
+   "beat": "b04",
+   "text": "plays",
+   "spoken": "plays",
+   "start": 11.885,
+   "end": 12.186,
+   "emph": false
+  },
+  {
+   "i": 36,
+   "beat": "b04",
+   "text": "the",
+   "spoken": "the",
+   "start": 12.227,
+   "end": 12.307,
+   "emph": false
+  },
+  {
+   "i": 37,
+   "beat": "b04",
+   "text": "flipped",
+   "spoken": "flipped",
+   "start": 12.327,
+   "end": 12.609,
+   "emph": false
+  },
+  {
+   "i": 38,
+   "beat": "b04",
+   "text": "wave",
+   "spoken": "wave",
+   "start": 12.649,
+   "end": 12.87,
+   "emph": false
+  },
+  {
+   "i": 39,
+   "beat": "b04",
+   "text": "straight",
+   "spoken": "straight",
+   "start": 12.97,
+   "end": 13.312,
+   "emph": false
+  },
+  {
+   "i": 40,
+   "beat": "b04",
+   "text": "into",
+   "spoken": "into",
+   "start": 13.332,
+   "end": 13.533,
+   "emph": false
+  },
+  {
+   "i": 41,
+   "beat": "b04",
+   "text": "your",
+   "spoken": "your",
+   "start": 13.573,
+   "end": 13.694,
+   "emph": false
+  },
+  {
+   "i": 42,
+   "beat": "b04",
+   "text": "ear.",
+   "spoken": "ear",
+   "start": 13.794,
+   "end": 13.875,
+   "emph": true
+  },
+  {
+   "i": 43,
+   "beat": "b05",
+   "text": "Peak",
+   "spoken": "peak",
+   "start": 14.3566,
+   "end": 14.5966,
+   "emph": false
+  },
+  {
+   "i": 44,
+   "beat": "b05",
+   "text": "meets",
+   "spoken": "meets",
+   "start": 14.6976,
+   "end": 14.8986,
+   "emph": false
+  },
+  {
+   "i": 45,
+   "beat": "b05",
+   "text": "valley,",
+   "spoken": "valley",
+   "start": 14.9386,
+   "end": 15.2796,
+   "emph": false
+  },
+  {
+   "i": 46,
+   "beat": "b05",
+   "text": "the",
+   "spoken": "the",
+   "start": 15.5006,
+   "end": 15.6006,
+   "emph": false
+  },
+  {
+   "i": 47,
+   "beat": "b05",
+   "text": "two",
+   "spoken": "two",
+   "start": 15.6406,
+   "end": 15.7816,
+   "emph": false
+  },
+  {
+   "i": 48,
+   "beat": "b05",
+   "text": "waves",
+   "spoken": "waves",
+   "start": 15.8016,
+   "end": 16.0226,
+   "emph": false
+  },
+  {
+   "i": 49,
+   "beat": "b05",
+   "text": "cancel,",
+   "spoken": "cancel",
+   "start": 16.0626,
+   "end": 16.4836,
+   "emph": true
+  },
+  {
+   "i": 50,
+   "beat": "b05",
+   "text": "and",
+   "spoken": "and",
+   "start": 16.6646,
+   "end": 16.7446,
+   "emph": false
+  },
+  {
+   "i": 51,
+   "beat": "b05",
+   "text": "you",
+   "spoken": "you",
+   "start": 16.7846,
+   "end": 16.8856,
+   "emph": false
+  },
+  {
+   "i": 52,
+   "beat": "b05",
+   "text": "hear",
+   "spoken": "hear",
+   "start": 16.9256,
+   "end": 17.1266,
+   "emph": false
+  },
+  {
+   "i": 53,
+   "beat": "b05",
+   "text": "almost",
+   "spoken": "almost",
+   "start": 17.2866,
+   "end": 17.5876,
+   "emph": false
+  },
+  {
+   "i": 54,
+   "beat": "b05",
+   "text": "nothing.",
+   "spoken": "nothing",
+   "start": 17.7286,
+   "end": 18.0496,
+   "emph": false
+  },
+  {
+   "i": 55,
+   "beat": "b06",
+   "text": "But",
+   "spoken": "but",
+   "start": 18.7363,
+   "end": 18.8173,
+   "emph": false
+  },
+  {
+   "i": 56,
+   "beat": "b06",
+   "text": "there's",
+   "spoken": "there's",
+   "start": 18.8373,
+   "end": 19.0403,
+   "emph": false
+  },
+  {
+   "i": 57,
+   "beat": "b06",
+   "text": "a",
+   "spoken": "a",
+   "start": 19.0603,
+   "end": 19.1203,
+   "emph": false
+  },
+  {
+   "i": 58,
+   "beat": "b06",
+   "text": "catch.",
+   "spoken": "catch",
+   "start": 19.1423,
+   "end": 19.4053,
+   "emph": true
+  },
+  {
+   "i": 59,
+   "beat": "b07",
+   "text": "It",
+   "spoken": "it",
+   "start": 20.01,
+   "end": 20.07,
+   "emph": false
+  },
+  {
+   "i": 60,
+   "beat": "b07",
+   "text": "works",
+   "spoken": "works",
+   "start": 20.09,
+   "end": 20.331,
+   "emph": false
+  },
+  {
+   "i": 61,
+   "beat": "b07",
+   "text": "best",
+   "spoken": "best",
+   "start": 20.411,
+   "end": 20.673,
+   "emph": false
+  },
+  {
+   "i": 62,
+   "beat": "b07",
+   "text": "on",
+   "spoken": "on",
+   "start": 20.773,
+   "end": 20.853,
+   "emph": false
+  },
+  {
+   "i": 63,
+   "beat": "b07",
+   "text": "steady,",
+   "spoken": "steady",
+   "start": 20.974,
+   "end": 21.355,
+   "emph": false
+  },
+  {
+   "i": 64,
+   "beat": "b07",
+   "text": "low",
+   "spoken": "low",
+   "start": 21.536,
+   "end": 21.777,
+   "emph": false
+  },
+  {
+   "i": 65,
+   "beat": "b07",
+   "text": "sounds,",
+   "spoken": "sounds",
+   "start": 21.838,
+   "end": 22.199,
+   "emph": false
+  },
+  {
+   "i": 66,
+   "beat": "b07",
+   "text": "like",
+   "spoken": "like",
+   "start": 22.4,
+   "end": 22.541,
+   "emph": false
+  },
+  {
+   "i": 67,
+   "beat": "b07",
+   "text": "the",
+   "spoken": "the",
+   "start": 22.601,
+   "end": 22.681,
+   "emph": false
+  },
+  {
+   "i": 68,
+   "beat": "b07",
+   "text": "hum",
+   "spoken": "hum",
+   "start": 22.741,
+   "end": 22.902,
+   "emph": false
+  },
+  {
+   "i": 69,
+   "beat": "b07",
+   "text": "of",
+   "spoken": "of",
+   "start": 22.942,
+   "end": 23.003,
+   "emph": false
+  },
+  {
+   "i": 70,
+   "beat": "b07",
+   "text": "a",
+   "spoken": "a",
+   "start": 23.063,
+   "end": 23.123,
+   "emph": false
+  },
+  {
+   "i": 71,
+   "beat": "b07",
+   "text": "plane",
+   "spoken": "plane",
+   "start": 23.143,
+   "end": 23.404,
+   "emph": false
+  },
+  {
+   "i": 72,
+   "beat": "b07",
+   "text": "engine.",
+   "spoken": "engine",
+   "start": 23.465,
+   "end": 23.686,
+   "emph": true
+  },
+  {
+   "i": 73,
+   "beat": "b08",
+   "text": "You",
+   "spoken": "you",
+   "start": 24.308,
+   "end": 24.389,
+   "emph": false
+  },
+  {
+   "i": 74,
+   "beat": "b08",
+   "text": "see,",
+   "spoken": "see",
+   "start": 24.429,
+   "end": 24.55,
+   "emph": false
+  },
+  {
+   "i": 75,
+   "beat": "b08",
+   "text": "a",
+   "spoken": "a",
+   "start": 24.57,
+   "end": 24.63,
+   "emph": false
+  },
+  {
+   "i": 76,
+   "beat": "b08",
+   "text": "steady",
+   "spoken": "steady",
+   "start": 24.912,
+   "end": 25.213,
+   "emph": false
+  },
+  {
+   "i": 77,
+   "beat": "b08",
+   "text": "hum",
+   "spoken": "hum",
+   "start": 25.274,
+   "end": 25.495,
+   "emph": false
+  },
+  {
+   "i": 78,
+   "beat": "b08",
+   "text": "repeats,",
+   "spoken": "repeats",
+   "start": 25.535,
+   "end": 25.998,
+   "emph": false
+  },
+  {
+   "i": 79,
+   "beat": "b08",
+   "text": "so",
+   "spoken": "so",
+   "start": 26.239,
+   "end": 26.34,
+   "emph": false
+  },
+  {
+   "i": 80,
+   "beat": "b08",
+   "text": "the",
+   "spoken": "the",
+   "start": 26.38,
+   "end": 26.481,
+   "emph": false
+  },
+  {
+   "i": 81,
+   "beat": "b08",
+   "text": "chip",
+   "spoken": "chip",
+   "start": 26.521,
+   "end": 26.742,
+   "emph": false
+  },
+  {
+   "i": 82,
+   "beat": "b08",
+   "text": "can",
+   "spoken": "can",
+   "start": 26.762,
+   "end": 26.923,
+   "emph": false
+  },
+  {
+   "i": 83,
+   "beat": "b08",
+   "text": "keep",
+   "spoken": "keep",
+   "start": 26.943,
+   "end": 27.145,
+   "emph": false
+  },
+  {
+   "i": 84,
+   "beat": "b08",
+   "text": "matching",
+   "spoken": "matching",
+   "start": 27.205,
+   "end": 27.547,
+   "emph": true
+  },
+  {
+   "i": 85,
+   "beat": "b08",
+   "text": "it.",
+   "spoken": "it",
+   "start": 27.587,
+   "end": 27.647,
+   "emph": false
+  },
+  {
+   "i": 86,
+   "beat": "b09",
+   "text": "A",
+   "spoken": "a",
+   "start": 28.1688,
+   "end": 28.2288,
+   "emph": false
+  },
+  {
+   "i": 87,
+   "beat": "b09",
+   "text": "sudden",
+   "spoken": "sudden",
+   "start": 28.2488,
+   "end": 28.5098,
+   "emph": false
+  },
+  {
+   "i": 88,
+   "beat": "b09",
+   "text": "voice",
+   "spoken": "voice",
+   "start": 28.5898,
+   "end": 28.9108,
+   "emph": true
+  },
+  {
+   "i": 89,
+   "beat": "b09",
+   "text": "changes",
+   "spoken": "changes",
+   "start": 29.0108,
+   "end": 29.3518,
+   "emph": false
+  },
+  {
+   "i": 90,
+   "beat": "b09",
+   "text": "too",
+   "spoken": "too",
+   "start": 29.4318,
+   "end": 29.6328,
+   "emph": false
+  },
+  {
+   "i": 91,
+   "beat": "b09",
+   "text": "fast,",
+   "spoken": "fast",
+   "start": 29.7128,
+   "end": 30.0938,
+   "emph": false
+  },
+  {
+   "i": 92,
+   "beat": "b09",
+   "text": "and",
+   "spoken": "and",
+   "start": 30.1538,
+   "end": 30.2538,
+   "emph": false
+  },
+  {
+   "i": 93,
+   "beat": "b09",
+   "text": "slips",
+   "spoken": "slips",
+   "start": 30.3138,
+   "end": 30.5948,
+   "emph": false
+  },
+  {
+   "i": 94,
+   "beat": "b09",
+   "text": "right",
+   "spoken": "right",
+   "start": 30.6948,
+   "end": 30.8758,
+   "emph": false
+  },
+  {
+   "i": 95,
+   "beat": "b09",
+   "text": "through.",
+   "spoken": "through",
+   "start": 30.9158,
+   "end": 31.1358,
+   "emph": false
+  },
+  {
+   "i": 96,
+   "beat": "b10",
+   "text": "That's",
+   "spoken": "that's",
+   "start": 31.4965,
+   "end": 31.7585,
+   "emph": false
+  },
+  {
+   "i": 97,
+   "beat": "b10",
+   "text": "why",
+   "spoken": "why",
+   "start": 31.7985,
+   "end": 31.9395,
+   "emph": false
+  },
+  {
+   "i": 98,
+   "beat": "b10",
+   "text": "the",
+   "spoken": "the",
+   "start": 31.9595,
+   "end": 32.0595,
+   "emph": false
+  },
+  {
+   "i": 99,
+   "beat": "b10",
+   "text": "padding",
+   "spoken": "padding",
+   "start": 32.0995,
+   "end": 32.4215,
+   "emph": false
+  },
+  {
+   "i": 100,
+   "beat": "b10",
+   "text": "matters.",
+   "spoken": "matters",
+   "start": 32.4815,
+   "end": 32.8235,
+   "emph": false
+  },
+  {
+   "i": 101,
+   "beat": "b10",
+   "text": "It",
+   "spoken": "it",
+   "start": 33.2655,
+   "end": 33.3255,
+   "emph": false
+  },
+  {
+   "i": 102,
+   "beat": "b10",
+   "text": "blocks",
+   "spoken": "blocks",
+   "start": 33.3865,
+   "end": 33.6875,
+   "emph": false
+  },
+  {
+   "i": 103,
+   "beat": "b10",
+   "text": "the",
+   "spoken": "the",
+   "start": 33.7275,
+   "end": 33.8285,
+   "emph": false
+  },
+  {
+   "i": 104,
+   "beat": "b10",
+   "text": "high",
+   "spoken": "high",
+   "start": 33.8685,
+   "end": 34.1095,
+   "emph": false
+  },
+  {
+   "i": 105,
+   "beat": "b10",
+   "text": "sounds",
+   "spoken": "sounds",
+   "start": 34.1505,
+   "end": 34.4715,
+   "emph": false
+  },
+  {
+   "i": 106,
+   "beat": "b10",
+   "text": "the",
+   "spoken": "the",
+   "start": 34.5115,
+   "end": 34.5925,
+   "emph": false
+  },
+  {
+   "i": 107,
+   "beat": "b10",
+   "text": "chip",
+   "spoken": "chip",
+   "start": 34.6325,
+   "end": 34.8535,
+   "emph": false
+  },
+  {
+   "i": 108,
+   "beat": "b10",
+   "text": "can't.",
+   "spoken": "can't",
+   "start": 34.8935,
+   "end": 35.1755,
+   "emph": true
+  },
+  {
+   "i": 109,
+   "beat": "b11",
+   "text": "So",
+   "spoken": "so",
+   "start": 35.6966,
+   "end": 35.8166,
+   "emph": false
+  },
+  {
+   "i": 110,
+   "beat": "b11",
+   "text": "the",
+   "spoken": "the",
+   "start": 35.8366,
+   "end": 35.9166,
+   "emph": false
+  },
+  {
+   "i": 111,
+   "beat": "b11",
+   "text": "silence",
+   "spoken": "silence",
+   "start": 35.9976,
+   "end": 36.3586,
+   "emph": false
+  },
+  {
+   "i": 112,
+   "beat": "b11",
+   "text": "you",
+   "spoken": "you",
+   "start": 36.3986,
+   "end": 36.5186,
+   "emph": false
+  },
+  {
+   "i": 113,
+   "beat": "b11",
+   "text": "paid",
+   "spoken": "paid",
+   "start": 36.5586,
+   "end": 36.7596,
+   "emph": false
+  },
+  {
+   "i": 114,
+   "beat": "b11",
+   "text": "for",
+   "spoken": "for",
+   "start": 36.8196,
+   "end": 37.0196,
+   "emph": false
+  },
+  {
+   "i": 115,
+   "beat": "b11",
+   "text": "is",
+   "spoken": "is",
+   "start": 37.2006,
+   "end": 37.2806,
+   "emph": false
+  },
+  {
+   "i": 116,
+   "beat": "b11",
+   "text": "really",
+   "spoken": "really",
+   "start": 37.3606,
+   "end": 37.6216,
+   "emph": false
+  },
+  {
+   "i": 117,
+   "beat": "b11",
+   "text": "two",
+   "spoken": "two",
+   "start": 37.7416,
+   "end": 37.9626,
+   "emph": false
+  },
+  {
+   "i": 118,
+   "beat": "b11",
+   "text": "noises",
+   "spoken": "noises",
+   "start": 38.0226,
+   "end": 38.3636,
+   "emph": false
+  },
+  {
+   "i": 119,
+   "beat": "b11",
+   "text": "fighting.",
+   "spoken": "fighting",
+   "start": 38.4436,
+   "end": 38.7446,
+   "emph": true
+  }
+ ]
+}

@@ -1,0 +1,1256 @@
+{
+ "version": 2,
+ "sampleRate": 48000,
+ "duration": 41.9047,
+ "lead": 0.06,
+ "provider": "take",
+ "voice": "ElevenLabs Liam (viral short-form storyteller)",
+ "tempo": 1.0392,
+ "wpm": 184.7,
+ "beats": [
+  {
+   "id": "b01",
+   "shot": "s01",
+   "start": 0.06,
+   "speechEnd": 3.4264,
+   "end": 3.6464,
+   "say": "This country is twenty-four times longer than it is wide.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b02",
+   "shot": "s02",
+   "start": 3.6464,
+   "speechEnd": 7.5434,
+   "end": 7.6634,
+   "say": "Chile runs four thousand, two hundred and seventy kilometers from top to bottom.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b03",
+   "shot": "s02",
+   "start": 7.6634,
+   "speechEnd": 11.766,
+   "end": 11.926,
+   "say": "It starts in one of the driest deserts on Earth, and ends among glaciers.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b04",
+   "shot": "s03",
+   "start": 11.926,
+   "speechEnd": 16.1571,
+   "end": 16.3171,
+   "say": "Slide it over Europe, and it reaches from the top of Norway past the bottom of Spain.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b05",
+   "shot": "s04",
+   "start": 16.3171,
+   "speechEnd": 20.4125,
+   "end": 20.5325,
+   "say": "But side to side, it averages just one hundred and seventy-seven kilometers.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b06",
+   "shot": "s04",
+   "start": 20.5325,
+   "speechEnd": 21.9728,
+   "end": 22.1328,
+   "say": "So why is it so thin?",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b07",
+   "shot": "s05",
+   "start": 22.1328,
+   "speechEnd": 23.9273,
+   "end": 24.0473,
+   "say": "On one side, the Pacific Ocean.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b08",
+   "shot": "s05",
+   "start": 24.0473,
+   "speechEnd": 28.0805,
+   "end": 28.2405,
+   "say": "On the other, the Andes, the longest mountain range on any continent.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b09",
+   "shot": "s06",
+   "start": 28.2405,
+   "speechEnd": 32.0225,
+   "end": 32.0825,
+   "say": "You see, in eighteen eighty-one, Chile and Argentina signed a border treaty.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b10",
+   "shot": "s06",
+   "start": 32.0825,
+   "speechEnd": 34.7513,
+   "end": 34.9113,
+   "say": "The line would follow the highest peaks of the Andes.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b11",
+   "shot": "s07",
+   "start": 34.9113,
+   "speechEnd": 38.218,
+   "end": 38.278,
+   "say": "So Chile kept the narrow strip between the mountains and the sea.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b12",
+   "shot": "s07",
+   "start": 38.278,
+   "speechEnd": 41.2047,
+   "end": 41.2047,
+   "say": "It's not a strange shape. It's the edge of a continent.",
+   "tightenedSec": 0.0
+  }
+ ],
+ "words": [
+  {
+   "i": 0,
+   "beat": "b01",
+   "text": "This",
+   "spoken": "this",
+   "start": 0.12,
+   "end": 0.28,
+   "emph": false
+  },
+  {
+   "i": 1,
+   "beat": "b01",
+   "text": "country",
+   "spoken": "country",
+   "start": 0.341,
+   "end": 0.701,
+   "emph": false
+  },
+  {
+   "i": 2,
+   "beat": "b01",
+   "text": "is",
+   "spoken": "is",
+   "start": 0.801,
+   "end": 0.882,
+   "emph": false
+  },
+  {
+   "i": 3,
+   "beat": "b01",
+   "text": "24",
+   "spoken": "twenty four",
+   "start": 1.062,
+   "end": 1.603,
+   "emph": false
+  },
+  {
+   "i": 4,
+   "beat": "b01",
+   "text": "times",
+   "spoken": "times",
+   "start": 1.643,
+   "end": 1.903,
+   "emph": false
+  },
+  {
+   "i": 5,
+   "beat": "b01",
+   "text": "longer",
+   "spoken": "longer",
+   "start": 2.044,
+   "end": 2.424,
+   "emph": false
+  },
+  {
+   "i": 6,
+   "beat": "b01",
+   "text": "than",
+   "spoken": "than",
+   "start": 2.485,
+   "end": 2.645,
+   "emph": false
+  },
+  {
+   "i": 7,
+   "beat": "b01",
+   "text": "it",
+   "spoken": "it",
+   "start": 2.665,
+   "end": 2.725,
+   "emph": false
+  },
+  {
+   "i": 8,
+   "beat": "b01",
+   "text": "is",
+   "spoken": "is",
+   "start": 2.785,
+   "end": 2.865,
+   "emph": false
+  },
+  {
+   "i": 9,
+   "beat": "b01",
+   "text": "wide.",
+   "spoken": "wide",
+   "start": 2.945,
+   "end": 3.226,
+   "emph": true
+  },
+  {
+   "i": 10,
+   "beat": "b02",
+   "text": "Chile",
+   "spoken": "chile",
+   "start": 3.7064,
+   "end": 4.0484,
+   "emph": false
+  },
+  {
+   "i": 11,
+   "beat": "b02",
+   "text": "runs",
+   "spoken": "runs",
+   "start": 4.0884,
+   "end": 4.2894,
+   "emph": false
+  },
+  {
+   "i": 12,
+   "beat": "b02",
+   "text": "4,270",
+   "spoken": "four thousand two hundred and seventy",
+   "start": 4.3094,
+   "end": 6.0164,
+   "emph": true
+  },
+  {
+   "i": 13,
+   "beat": "b02",
+   "text": "kilometers",
+   "spoken": "kilometers",
+   "start": 6.0574,
+   "end": 6.5594,
+   "emph": false
+  },
+  {
+   "i": 14,
+   "beat": "b02",
+   "text": "from",
+   "spoken": "from",
+   "start": 6.6194,
+   "end": 6.7604,
+   "emph": false
+  },
+  {
+   "i": 15,
+   "beat": "b02",
+   "text": "top",
+   "spoken": "top",
+   "start": 6.8204,
+   "end": 7.0614,
+   "emph": false
+  },
+  {
+   "i": 16,
+   "beat": "b02",
+   "text": "to",
+   "spoken": "to",
+   "start": 7.1014,
+   "end": 7.2024,
+   "emph": false
+  },
+  {
+   "i": 17,
+   "beat": "b02",
+   "text": "bottom.",
+   "spoken": "bottom",
+   "start": 7.2424,
+   "end": 7.5034,
+   "emph": false
+  },
+  {
+   "i": 18,
+   "beat": "b03",
+   "text": "It",
+   "spoken": "it",
+   "start": 7.9454,
+   "end": 8.0054,
+   "emph": false
+  },
+  {
+   "i": 19,
+   "beat": "b03",
+   "text": "starts",
+   "spoken": "starts",
+   "start": 8.0654,
+   "end": 8.3274,
+   "emph": false
+  },
+  {
+   "i": 20,
+   "beat": "b03",
+   "text": "in",
+   "spoken": "in",
+   "start": 8.3674,
+   "end": 8.4274,
+   "emph": false
+  },
+  {
+   "i": 21,
+   "beat": "b03",
+   "text": "one",
+   "spoken": "one",
+   "start": 8.4674,
+   "end": 8.5684,
+   "emph": false
+  },
+  {
+   "i": 22,
+   "beat": "b03",
+   "text": "of",
+   "spoken": "of",
+   "start": 8.5884,
+   "end": 8.6484,
+   "emph": false
+  },
+  {
+   "i": 23,
+   "beat": "b03",
+   "text": "the",
+   "spoken": "the",
+   "start": 8.6694,
+   "end": 8.7694,
+   "emph": false
+  },
+  {
+   "i": 24,
+   "beat": "b03",
+   "text": "driest",
+   "spoken": "driest",
+   "start": 8.8294,
+   "end": 9.2724,
+   "emph": false
+  },
+  {
+   "i": 25,
+   "beat": "b03",
+   "text": "deserts",
+   "spoken": "deserts",
+   "start": 9.3324,
+   "end": 9.6344,
+   "emph": false
+  },
+  {
+   "i": 26,
+   "beat": "b03",
+   "text": "on",
+   "spoken": "on",
+   "start": 9.6944,
+   "end": 9.7754,
+   "emph": false
+  },
+  {
+   "i": 27,
+   "beat": "b03",
+   "text": "Earth,",
+   "spoken": "earth",
+   "start": 9.8754,
+   "end": 10.1174,
+   "emph": false
+  },
+  {
+   "i": 28,
+   "beat": "b03",
+   "text": "and",
+   "spoken": "and",
+   "start": 10.3384,
+   "end": 10.4384,
+   "emph": false
+  },
+  {
+   "i": 29,
+   "beat": "b03",
+   "text": "ends",
+   "spoken": "ends",
+   "start": 10.5994,
+   "end": 10.8004,
+   "emph": false
+  },
+  {
+   "i": 30,
+   "beat": "b03",
+   "text": "among",
+   "spoken": "among",
+   "start": 10.8414,
+   "end": 11.0624,
+   "emph": false
+  },
+  {
+   "i": 31,
+   "beat": "b03",
+   "text": "glaciers.",
+   "spoken": "glaciers",
+   "start": 11.1224,
+   "end": 11.5854,
+   "emph": true
+  },
+  {
+   "i": 32,
+   "beat": "b04",
+   "text": "Slide",
+   "spoken": "slide",
+   "start": 12.026,
+   "end": 12.267,
+   "emph": false
+  },
+  {
+   "i": 33,
+   "beat": "b04",
+   "text": "it",
+   "spoken": "it",
+   "start": 12.287,
+   "end": 12.347,
+   "emph": false
+  },
+  {
+   "i": 34,
+   "beat": "b04",
+   "text": "over",
+   "spoken": "over",
+   "start": 12.407,
+   "end": 12.548,
+   "emph": false
+  },
+  {
+   "i": 35,
+   "beat": "b04",
+   "text": "Europe,",
+   "spoken": "europe",
+   "start": 12.688,
+   "end": 12.949,
+   "emph": false
+  },
+  {
+   "i": 36,
+   "beat": "b04",
+   "text": "and",
+   "spoken": "and",
+   "start": 13.069,
+   "end": 13.169,
+   "emph": false
+  },
+  {
+   "i": 37,
+   "beat": "b04",
+   "text": "it",
+   "spoken": "it",
+   "start": 13.189,
+   "end": 13.249,
+   "emph": false
+  },
+  {
+   "i": 38,
+   "beat": "b04",
+   "text": "reaches",
+   "spoken": "reaches",
+   "start": 13.29,
+   "end": 13.55,
+   "emph": false
+  },
+  {
+   "i": 39,
+   "beat": "b04",
+   "text": "from",
+   "spoken": "from",
+   "start": 13.59,
+   "end": 13.711,
+   "emph": false
+  },
+  {
+   "i": 40,
+   "beat": "b04",
+   "text": "the",
+   "spoken": "the",
+   "start": 13.751,
+   "end": 13.811,
+   "emph": false
+  },
+  {
+   "i": 41,
+   "beat": "b04",
+   "text": "top",
+   "spoken": "top",
+   "start": 13.871,
+   "end": 14.152,
+   "emph": false
+  },
+  {
+   "i": 42,
+   "beat": "b04",
+   "text": "of",
+   "spoken": "of",
+   "start": 14.172,
+   "end": 14.252,
+   "emph": false
+  },
+  {
+   "i": 43,
+   "beat": "b04",
+   "text": "Norway",
+   "spoken": "norway",
+   "start": 14.312,
+   "end": 14.673,
+   "emph": false
+  },
+  {
+   "i": 44,
+   "beat": "b04",
+   "text": "past",
+   "spoken": "past",
+   "start": 14.753,
+   "end": 15.014,
+   "emph": false
+  },
+  {
+   "i": 45,
+   "beat": "b04",
+   "text": "the",
+   "spoken": "the",
+   "start": 15.034,
+   "end": 15.114,
+   "emph": false
+  },
+  {
+   "i": 46,
+   "beat": "b04",
+   "text": "bottom",
+   "spoken": "bottom",
+   "start": 15.195,
+   "end": 15.515,
+   "emph": false
+  },
+  {
+   "i": 47,
+   "beat": "b04",
+   "text": "of",
+   "spoken": "of",
+   "start": 15.555,
+   "end": 15.616,
+   "emph": false
+  },
+  {
+   "i": 48,
+   "beat": "b04",
+   "text": "Spain.",
+   "spoken": "spain",
+   "start": 15.716,
+   "end": 15.997,
+   "emph": true
+  },
+  {
+   "i": 49,
+   "beat": "b05",
+   "text": "But",
+   "spoken": "but",
+   "start": 16.6581,
+   "end": 16.7591,
+   "emph": false
+  },
+  {
+   "i": 50,
+   "beat": "b05",
+   "text": "side",
+   "spoken": "side",
+   "start": 16.8191,
+   "end": 17.0201,
+   "emph": false
+  },
+  {
+   "i": 51,
+   "beat": "b05",
+   "text": "to",
+   "spoken": "to",
+   "start": 17.0401,
+   "end": 17.1201,
+   "emph": false
+  },
+  {
+   "i": 52,
+   "beat": "b05",
+   "text": "side,",
+   "spoken": "side",
+   "start": 17.1801,
+   "end": 17.4811,
+   "emph": false
+  },
+  {
+   "i": 53,
+   "beat": "b05",
+   "text": "it",
+   "spoken": "it",
+   "start": 17.7021,
+   "end": 17.7621,
+   "emph": false
+  },
+  {
+   "i": 54,
+   "beat": "b05",
+   "text": "averages",
+   "spoken": "averages",
+   "start": 17.8631,
+   "end": 18.2041,
+   "emph": false
+  },
+  {
+   "i": 55,
+   "beat": "b05",
+   "text": "just",
+   "spoken": "just",
+   "start": 18.2641,
+   "end": 18.4451,
+   "emph": false
+  },
+  {
+   "i": 56,
+   "beat": "b05",
+   "text": "177",
+   "spoken": "one hundred and seventy seven",
+   "start": 18.6461,
+   "end": 19.7501,
+   "emph": true
+  },
+  {
+   "i": 57,
+   "beat": "b05",
+   "text": "kilometers.",
+   "spoken": "kilometers",
+   "start": 19.7701,
+   "end": 20.2321,
+   "emph": false
+  },
+  {
+   "i": 58,
+   "beat": "b06",
+   "text": "So",
+   "spoken": "so",
+   "start": 20.5935,
+   "end": 20.7155,
+   "emph": false
+  },
+  {
+   "i": 59,
+   "beat": "b06",
+   "text": "why",
+   "spoken": "why",
+   "start": 20.9585,
+   "end": 21.1415,
+   "emph": false
+  },
+  {
+   "i": 60,
+   "beat": "b06",
+   "text": "is",
+   "spoken": "is",
+   "start": 21.1815,
+   "end": 21.2625,
+   "emph": false
+  },
+  {
+   "i": 61,
+   "beat": "b06",
+   "text": "it",
+   "spoken": "it",
+   "start": 21.3035,
+   "end": 21.3845,
+   "emph": false
+  },
+  {
+   "i": 62,
+   "beat": "b06",
+   "text": "so",
+   "spoken": "so",
+   "start": 21.4045,
+   "end": 21.5265,
+   "emph": false
+  },
+  {
+   "i": 63,
+   "beat": "b06",
+   "text": "thin?",
+   "spoken": "thin",
+   "start": 21.6075,
+   "end": 21.7905,
+   "emph": true
+  },
+  {
+   "i": 64,
+   "beat": "b07",
+   "text": "On",
+   "spoken": "on",
+   "start": 22.1928,
+   "end": 22.2738,
+   "emph": false
+  },
+  {
+   "i": 65,
+   "beat": "b07",
+   "text": "one",
+   "spoken": "one",
+   "start": 22.3948,
+   "end": 22.4958,
+   "emph": false
+  },
+  {
+   "i": 66,
+   "beat": "b07",
+   "text": "side,",
+   "spoken": "side",
+   "start": 22.5358,
+   "end": 22.7778,
+   "emph": false
+  },
+  {
+   "i": 67,
+   "beat": "b07",
+   "text": "the",
+   "spoken": "the",
+   "start": 23.0198,
+   "end": 23.1208,
+   "emph": false
+  },
+  {
+   "i": 68,
+   "beat": "b07",
+   "text": "Pacific",
+   "spoken": "pacific",
+   "start": 23.1408,
+   "end": 23.5438,
+   "emph": true
+  },
+  {
+   "i": 69,
+   "beat": "b07",
+   "text": "Ocean.",
+   "spoken": "ocean",
+   "start": 23.6448,
+   "end": 23.8068,
+   "emph": false
+  },
+  {
+   "i": 70,
+   "beat": "b08",
+   "text": "On",
+   "spoken": "on",
+   "start": 24.1673,
+   "end": 24.2283,
+   "emph": false
+  },
+  {
+   "i": 71,
+   "beat": "b08",
+   "text": "the",
+   "spoken": "the",
+   "start": 24.2483,
+   "end": 24.3283,
+   "emph": false
+  },
+  {
+   "i": 72,
+   "beat": "b08",
+   "text": "other,",
+   "spoken": "other",
+   "start": 24.3883,
+   "end": 24.5693,
+   "emph": false
+  },
+  {
+   "i": 73,
+   "beat": "b08",
+   "text": "the",
+   "spoken": "the",
+   "start": 24.8503,
+   "end": 24.9503,
+   "emph": false
+  },
+  {
+   "i": 74,
+   "beat": "b08",
+   "text": "Andes,",
+   "spoken": "andes",
+   "start": 25.1313,
+   "end": 25.4523,
+   "emph": false
+  },
+  {
+   "i": 75,
+   "beat": "b08",
+   "text": "the",
+   "spoken": "the",
+   "start": 25.7533,
+   "end": 25.8533,
+   "emph": false
+  },
+  {
+   "i": 76,
+   "beat": "b08",
+   "text": "longest",
+   "spoken": "longest",
+   "start": 25.9533,
+   "end": 26.3143,
+   "emph": false
+  },
+  {
+   "i": 77,
+   "beat": "b08",
+   "text": "mountain",
+   "spoken": "mountain",
+   "start": 26.3753,
+   "end": 26.6353,
+   "emph": false
+  },
+  {
+   "i": 78,
+   "beat": "b08",
+   "text": "range",
+   "spoken": "range",
+   "start": 26.6763,
+   "end": 26.9163,
+   "emph": false
+  },
+  {
+   "i": 79,
+   "beat": "b08",
+   "text": "on",
+   "spoken": "on",
+   "start": 26.9973,
+   "end": 27.0573,
+   "emph": false
+  },
+  {
+   "i": 80,
+   "beat": "b08",
+   "text": "any",
+   "spoken": "any",
+   "start": 27.2573,
+   "end": 27.4183,
+   "emph": false
+  },
+  {
+   "i": 81,
+   "beat": "b08",
+   "text": "continent.",
+   "spoken": "continent",
+   "start": 27.4783,
+   "end": 27.9203,
+   "emph": true
+  },
+  {
+   "i": 82,
+   "beat": "b09",
+   "text": "You",
+   "spoken": "you",
+   "start": 28.2605,
+   "end": 28.3615,
+   "emph": false
+  },
+  {
+   "i": 83,
+   "beat": "b09",
+   "text": "see,",
+   "spoken": "see",
+   "start": 28.3815,
+   "end": 28.5225,
+   "emph": false
+  },
+  {
+   "i": 84,
+   "beat": "b09",
+   "text": "in",
+   "spoken": "in",
+   "start": 28.8035,
+   "end": 28.8645,
+   "emph": false
+  },
+  {
+   "i": 85,
+   "beat": "b09",
+   "text": "1881,",
+   "spoken": "eighteen eighty one",
+   "start": 28.9445,
+   "end": 29.6885,
+   "emph": false
+  },
+  {
+   "i": 86,
+   "beat": "b09",
+   "text": "Chile",
+   "spoken": "chile",
+   "start": 29.9105,
+   "end": 30.2725,
+   "emph": false
+  },
+  {
+   "i": 87,
+   "beat": "b09",
+   "text": "and",
+   "spoken": "and",
+   "start": 30.2925,
+   "end": 30.3725,
+   "emph": false
+  },
+  {
+   "i": 88,
+   "beat": "b09",
+   "text": "Argentina",
+   "spoken": "argentina",
+   "start": 30.4135,
+   "end": 30.9565,
+   "emph": false
+  },
+  {
+   "i": 89,
+   "beat": "b09",
+   "text": "signed",
+   "spoken": "signed",
+   "start": 31.0165,
+   "end": 31.2585,
+   "emph": false
+  },
+  {
+   "i": 90,
+   "beat": "b09",
+   "text": "a",
+   "spoken": "a",
+   "start": 31.2985,
+   "end": 31.3585,
+   "emph": false
+  },
+  {
+   "i": 91,
+   "beat": "b09",
+   "text": "border",
+   "spoken": "border",
+   "start": 31.3785,
+   "end": 31.6805,
+   "emph": false
+  },
+  {
+   "i": 92,
+   "beat": "b09",
+   "text": "treaty.",
+   "spoken": "treaty",
+   "start": 31.7205,
+   "end": 31.9625,
+   "emph": true
+  },
+  {
+   "i": 93,
+   "beat": "b10",
+   "text": "The",
+   "spoken": "the",
+   "start": 32.3435,
+   "end": 32.4235,
+   "emph": false
+  },
+  {
+   "i": 94,
+   "beat": "b10",
+   "text": "line",
+   "spoken": "line",
+   "start": 32.4835,
+   "end": 32.7045,
+   "emph": false
+  },
+  {
+   "i": 95,
+   "beat": "b10",
+   "text": "would",
+   "spoken": "would",
+   "start": 32.7445,
+   "end": 32.8855,
+   "emph": false
+  },
+  {
+   "i": 96,
+   "beat": "b10",
+   "text": "follow",
+   "spoken": "follow",
+   "start": 32.9255,
+   "end": 33.1865,
+   "emph": false
+  },
+  {
+   "i": 97,
+   "beat": "b10",
+   "text": "the",
+   "spoken": "the",
+   "start": 33.2265,
+   "end": 33.3065,
+   "emph": false
+  },
+  {
+   "i": 98,
+   "beat": "b10",
+   "text": "highest",
+   "spoken": "highest",
+   "start": 33.3865,
+   "end": 33.7075,
+   "emph": false
+  },
+  {
+   "i": 99,
+   "beat": "b10",
+   "text": "peaks",
+   "spoken": "peaks",
+   "start": 33.8085,
+   "end": 34.0285,
+   "emph": true
+  },
+  {
+   "i": 100,
+   "beat": "b10",
+   "text": "of",
+   "spoken": "of",
+   "start": 34.0695,
+   "end": 34.1295,
+   "emph": false
+  },
+  {
+   "i": 101,
+   "beat": "b10",
+   "text": "the",
+   "spoken": "the",
+   "start": 34.1695,
+   "end": 34.2495,
+   "emph": false
+  },
+  {
+   "i": 102,
+   "beat": "b10",
+   "text": "Andes.",
+   "spoken": "andes",
+   "start": 34.3495,
+   "end": 34.6105,
+   "emph": false
+  },
+  {
+   "i": 103,
+   "beat": "b11",
+   "text": "So",
+   "spoken": "so",
+   "start": 35.1723,
+   "end": 35.3123,
+   "emph": false
+  },
+  {
+   "i": 104,
+   "beat": "b11",
+   "text": "Chile",
+   "spoken": "chile",
+   "start": 35.4523,
+   "end": 35.7733,
+   "emph": false
+  },
+  {
+   "i": 105,
+   "beat": "b11",
+   "text": "kept",
+   "spoken": "kept",
+   "start": 35.8133,
+   "end": 36.0133,
+   "emph": false
+  },
+  {
+   "i": 106,
+   "beat": "b11",
+   "text": "the",
+   "spoken": "the",
+   "start": 36.0333,
+   "end": 36.1333,
+   "emph": false
+  },
+  {
+   "i": 107,
+   "beat": "b11",
+   "text": "narrow",
+   "spoken": "narrow",
+   "start": 36.1943,
+   "end": 36.4943,
+   "emph": false
+  },
+  {
+   "i": 108,
+   "beat": "b11",
+   "text": "strip",
+   "spoken": "strip",
+   "start": 36.5343,
+   "end": 36.7753,
+   "emph": false
+  },
+  {
+   "i": 109,
+   "beat": "b11",
+   "text": "between",
+   "spoken": "between",
+   "start": 36.8153,
+   "end": 37.0753,
+   "emph": false
+  },
+  {
+   "i": 110,
+   "beat": "b11",
+   "text": "the",
+   "spoken": "the",
+   "start": 37.0953,
+   "end": 37.1763,
+   "emph": false
+  },
+  {
+   "i": 111,
+   "beat": "b11",
+   "text": "mountains",
+   "spoken": "mountains",
+   "start": 37.2163,
+   "end": 37.5563,
+   "emph": false
+  },
+  {
+   "i": 112,
+   "beat": "b11",
+   "text": "and",
+   "spoken": "and",
+   "start": 37.6373,
+   "end": 37.7573,
+   "emph": false
+  },
+  {
+   "i": 113,
+   "beat": "b11",
+   "text": "the",
+   "spoken": "the",
+   "start": 37.7773,
+   "end": 37.8373,
+   "emph": false
+  },
+  {
+   "i": 114,
+   "beat": "b11",
+   "text": "sea.",
+   "spoken": "sea",
+   "start": 37.8973,
+   "end": 38.0573,
+   "emph": true
+  },
+  {
+   "i": 115,
+   "beat": "b12",
+   "text": "It's",
+   "spoken": "it's",
+   "start": 38.378,
+   "end": 38.498,
+   "emph": false
+  },
+  {
+   "i": 116,
+   "beat": "b12",
+   "text": "not",
+   "spoken": "not",
+   "start": 38.519,
+   "end": 38.659,
+   "emph": false
+  },
+  {
+   "i": 117,
+   "beat": "b12",
+   "text": "a",
+   "spoken": "a",
+   "start": 38.699,
+   "end": 38.759,
+   "emph": false
+  },
+  {
+   "i": 118,
+   "beat": "b12",
+   "text": "strange",
+   "spoken": "strange",
+   "start": 38.779,
+   "end": 39.1,
+   "emph": false
+  },
+  {
+   "i": 119,
+   "beat": "b12",
+   "text": "shape.",
+   "spoken": "shape",
+   "start": 39.16,
+   "end": 39.441,
+   "emph": false
+  },
+  {
+   "i": 120,
+   "beat": "b12",
+   "text": "It's",
+   "spoken": "it's",
+   "start": 39.781,
+   "end": 39.902,
+   "emph": false
+  },
+  {
+   "i": 121,
+   "beat": "b12",
+   "text": "the",
+   "spoken": "the",
+   "start": 39.942,
+   "end": 40.042,
+   "emph": false
+  },
+  {
+   "i": 122,
+   "beat": "b12",
+   "text": "edge",
+   "spoken": "edge",
+   "start": 40.222,
+   "end": 40.363,
+   "emph": false
+  },
+  {
+   "i": 123,
+   "beat": "b12",
+   "text": "of",
+   "spoken": "of",
+   "start": 40.383,
+   "end": 40.443,
+   "emph": false
+  },
+  {
+   "i": 124,
+   "beat": "b12",
+   "text": "a",
+   "spoken": "a",
+   "start": 40.483,
+   "end": 40.543,
+   "emph": false
+  },
+  {
+   "i": 125,
+   "beat": "b12",
+   "text": "continent.",
+   "spoken": "continent",
+   "start": 40.583,
+   "end": 41.044,
+   "emph": true
+  }
+ ]
+}

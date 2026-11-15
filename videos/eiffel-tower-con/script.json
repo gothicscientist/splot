@@ -5,7 +5,7 @@
  "style": "stickworld",
  "language": "en",
  "fps": 30,
- "voice": { "provider": "auto", "voice": "en-US-AndrewMultilingualNeural", "wpm": 188 },
+ "voice": { "provider": "take", "voice": "ElevenLabs Liam (viral short-form storyteller)", "voiceId": "VCgLBmBjldJmfphyB8sZ", "model": "eleven_v4", "direction": "mischievously", "wpm": 184 },
  "music": { "mood": "heist" },
  "captions": { "preset": "boxed" },
  "pronounce": { "Poisson": "Pwa-sohn", "Crillon": "Kree-yon" },

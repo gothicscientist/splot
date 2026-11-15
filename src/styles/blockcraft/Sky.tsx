@@ -85,16 +85,46 @@ export const PixelTag: React.FC<{ at: number; out?: number; text: string; x: num
 };
 
 /** Pixel depth gauge (e.g. "Y: -12,262 m") that counts with the camera. */
-export const PixelGauge: React.FC<{ at: number; label: string; value: number; x?: number; y?: number; unit?: string }> = ({ at, label, value, x = 540, y = 330, unit = "" }) => {
+export const PixelGauge: React.FC<{ at: number; out?: number; label: string; value: number; x?: number; y?: number; unit?: string; decimals?: number; size?: number; color?: string }> = ({ at, out, label, value, x = 540, y = 330, unit = "", decimals = 0, size = 64, color = "#9ee05a" }) => {
   const f = useLocalFrame();
-  if (f < at) return null;
-  const s = backOut(invLerp(at, at + 6, f), 2.0);
+  if (f < at || (out !== undefined && f > out + 5)) return null;
+  const s = backOut(invLerp(at, at + 6, f), 2.0) * (out !== undefined && f > out ? 1 - invLerp(out, out + 5, f) : 1);
   return (
     <AbsoluteFill style={{ pointerEvents: "none" }}>
       <Pix x={x} y={y} s={s}>
-        <div style={{ fontFamily: font("Pixelify Sans"), fontWeight: 700, fontSize: 64, color: "#ffffff", background: "rgba(20,18,26,0.85)", border: "6px solid #f2f2f2", padding: "8px 28px", textShadow: "5px 5px 0 #2a2a2a", whiteSpace: "nowrap" }}>
-          <span style={{ color: "#9ee05a" }}>{label}</span> {Math.round(value).toLocaleString("en-US")}
+        <div style={{ fontFamily: font("Pixelify Sans"), fontWeight: 700, fontSize: size, color: "#ffffff", background: "rgba(20,18,26,0.85)", border: "6px solid #f2f2f2", padding: "8px 28px", textShadow: `${Math.round(size * 0.08)}px ${Math.round(size * 0.08)}px 0 #2a2a2a`, whiteSpace: "nowrap", fontVariantNumeric: "tabular-nums" }}>
+          <span style={{ color }}>{label}</span> {value.toLocaleString("en-US", { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}
           {unit}
+        </div>
+      </Pix>
+    </AbsoluteFill>
+  );
+};
+
+/** Pixel thermometer: a segmented tube that fills (0..1) from green to red, with the reading beside it. */
+export const PixelThermo: React.FC<{ at: number; out?: number; x?: number; y?: number; fill: number; value: number; unit?: string }> = ({ at, out, x = 800, y = 560, fill, value, unit = "°C" }) => {
+  const f = useLocalFrame();
+  if (f < at || (out !== undefined && f > out + 5)) return null;
+  const s = backOut(invLerp(at, at + 6, f), 2.0) * (out !== undefined && f > out ? 1 - invLerp(out, out + 5, f) : 1);
+  const n = 10;
+  const lit = Math.round(Math.max(0, Math.min(1, fill)) * n);
+  const hot = fill > 0.8;
+  const shake = hot ? Math.sin(f * 2.4) * 4 : 0;
+  return (
+    <AbsoluteFill style={{ pointerEvents: "none" }}>
+      <Pix x={x + shake} y={y} s={s}>
+        <div style={{ display: "flex", alignItems: "flex-end", gap: 22 }}>
+          <div style={{ background: "#1e1b24", border: "8px solid #f2f2f2", boxShadow: "8px 10px 0 rgba(0,0,0,.4)", padding: 10, display: "flex", flexDirection: "column-reverse", gap: 6 }}>
+            {Array.from({ length: n }).map((_, i) => {
+              const on = i < lit;
+              const c = i < 4 ? "#7bd84f" : i < 7 ? "#ffcf3a" : "#ff4b3a";
+              return <div key={i} style={{ width: 64, height: 30, background: on ? c : "#3a3644" }} />;
+            })}
+          </div>
+          <div style={{ fontFamily: font("Pixelify Sans"), fontWeight: 700, fontSize: 110, lineHeight: 1, color: hot ? "#ff5a4a" : "#ffffff", textShadow: "8px 8px 0 #2a2a2a", whiteSpace: "nowrap", fontVariantNumeric: "tabular-nums", marginBottom: 6 }}>
+            {Math.round(value)}
+            <span style={{ fontSize: 70 }}>{unit}</span>
+          </div>
         </div>
       </Pix>
     </AbsoluteFill>

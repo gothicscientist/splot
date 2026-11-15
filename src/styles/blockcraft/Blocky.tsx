@@ -224,6 +224,10 @@ const ITEMS: Record<string, { rows: string[]; pal: Record<string, string> }> = {
     rows: ["................", "...BBBBBBBBB....", "...BWWWWWWWB....", "...BBBBBBBBB....", "...BBBBBBBBB....", "...BB.GG..BB....", "...BBBBBBBBB....", "...BBBBBBBBB....", "...BBBBBBBBB....", "................", "................", "................", "................", "................", "................", "................"],
     pal: { B: "#7a2f2f", W: "#f4ecd8", G: "#e9b423" },
   },
+  plate: {
+    rows: ["................", "................", ".....WWWWWW.....", "...WWWWWWWWWW...", "..WWWGGGGGGWWW..", "..WWGWWWWWWGWW..", ".WWGWWWWWWWWGWW.", ".WWGWWWWWWWWGWW.", ".WWGWWWWWWWWGWW.", ".WWGWWWWWWWWGWW.", "..WWGWWWWWWGWW..", "..WWWGGGGGGWWW..", "...WWWWWWWWWW...", ".....WWWWWW.....", "................", "................"],
+    pal: { W: "#f4f1ea", G: "#c9d1da" },
+  },
   map: {
     rows: ["................", "..PPPPPPPPPPP...", "..PGGPPPBBPPP...", "..PGGGPPBBBPP...", "..PPGPPPPBBPP...", "..PPPPRPPPPPP...", "..PPPPPRPPGGP...", "..PPPPPPPPGGP...", "..PPPPPPPPPPP...", "................", "................", "................", "................", "................", "................", "................"],
     pal: { P: "#e8d9a8", G: "#6fbf5b", B: "#4a7bd6", R: "#d8332b" },
@@ -453,7 +457,9 @@ const Hat: React.FC<{ kind: string; color: string; T: number }> = ({ kind, color
 };
 
 export const BCAST: Record<string, BlockySpec> = {
-  hero: { skin: "#e0a77f", hair: "#4a2f1d", hairStyle: "short", eyes: "#3d6bd6", shirt: "#2fa6a0", pants: "#3a3f8f", shoes: "#4a4a4a", seed: 3 },
+  // "Pip": coral hoodie + denim. Deliberately NOT a cyan shirt + blue trousers + brown hair (that reads as the
+  // genre's most famous default skin).
+  hero: { skin: "#e8b48a", hair: "#3a2618", hairStyle: "spiky", eyes: "#2f7a4a", shirt: "#ff6b57", shirtStyle: "hoodie", pants: "#3d5a8c", shoes: "#4a4a4a", seed: 3 },
   heroine: { skin: "#f0c09a", hair: "#c2552a", hairStyle: "long", eyes: "#3a8a3a", shirt: "#d94f7a", pants: "#2e3a5a", shoes: "#5a3a2a", seed: 4 },
   miner: { skin: "#d49a72", hair: "#2a1c12", hairStyle: "buzz", shirt: "#8a6a3a", shirtStyle: "jacket", shirtAccent: "#c9a26a", pants: "#4a4a52", hat: { kind: "hardhat", color: "#f2c230" }, beard: "#2a1c12", seed: 5 },
   scientist: { skin: "#f2d2b6", hair: "#d8d8d8", hairStyle: "bob", shirt: "#f4f6fb", shirtStyle: "lab", shirtAccent: "#4a7bd6", pants: "#3a3a46", seed: 6 },

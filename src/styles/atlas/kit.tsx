@@ -1,9 +1,9 @@
 // Atlas kit: accurate cartography + data viz in motion (the moat: generative video gets borders and numbers wrong).
 // Natural Earth borders via world-atlas (ISC), d3-geo projections, van Wijk smooth zoom (d3-interpolate) for fly-tos,
 // constant-width lines at any zoom (vector-effect), focus countries saturated over dimmed context.
-import React, { useMemo } from "react";
+import React, { useId, useMemo } from "react";
 import { AbsoluteFill, Easing, interpolate, spring, useVideoConfig } from "remotion";
-import { geoPath, geoMercator, geoNaturalEarth1, geoEquirectangular, geoOrthographic, geoInterpolate, GeoProjection } from "d3-geo";
+import { geoPath, geoMercator, geoNaturalEarth1, geoEquirectangular, geoOrthographic, geoAzimuthalEquidistant, geoInterpolate, geoBounds, GeoProjection } from "d3-geo";
 import { interpolateZoom } from "d3-interpolate";
 import { feature, mesh } from "topojson-client";
 import type { Topology } from "topojson-specification";
@@ -40,11 +40,35 @@ export function country(nameOrId: string, res: "50m" | "110m" = "50m") {
 }
 
 export type MapKey = { f: number; lon: number; lat: number; zoom: number };
-export type ProjName = "mercator" | "naturalEarth" | "equirect" | "globe";
+export type ProjName = "mercator" | "naturalEarth" | "equirect" | "globe" | "local";
 const W = 1080;
 const H = 1920;
+/** Projected px per km at zoom 1 for the "local" projection (scale 190 px per Earth radius). */
+export const KM_PX = 190 / 6371;
+
+/** The border two countries share, as a GeoJSON MultiLineString (e.g. the Chile-Argentina line along the Andes). */
+export function sharedBorder(a: string, b: string, res: "50m" | "110m" = "50m") {
+  const topo = (res === "50m" ? world50 : world110) as unknown as Topology;
+  const A = country(a, res).id;
+  const B = country(b, res).id;
+  return mesh(topo, (topo.objects as any).countries, (x: any, y: any) => (x.id === A && y.id === B) || (x.id === B && y.id === A));
+}
+
+const boundsCache = new Map<string, [[number, number], [number, number]]>();
+const boundsOf = (c: Feat, res: string) => {
+  const k = `${res}:${c.id}:${c.properties.name}`;
+  let b = boundsCache.get(k);
+  if (!b) {
+    b = geoBounds(c as any) as [[number, number], [number, number]];
+    boundsCache.set(k, b);
+  }
+  return b;
+};
 
 function makeProj(name: ProjName, rotate: [number, number] = [0, 0]): GeoProjection {
+  // "local": azimuthal equidistant centred on `rotate` = true distances from the centre, under 2 % distortion
+  // within ~2,000 km. Use it for one country or region so its shape and proportions are honest.
+  if (name === "local") return geoAzimuthalEquidistant().clipAngle(75).scale(190).translate([W / 2, H / 2]).rotate([-rotate[0], -rotate[1]]);
   const p = name === "mercator" ? geoMercator() : name === "naturalEarth" ? geoNaturalEarth1() : name === "equirect" ? geoEquirectangular() : geoOrthographic().clipAngle(90);
   if (name === "globe") return p.scale(470).translate([W / 2, H / 2]).rotate([-rotate[0], -rotate[1]]);
   return p.scale(name === "mercator" ? 172 : 190).translate([W / 2, H / 2]);
@@ -78,18 +102,30 @@ export type MapProps = {
   res?: "50m" | "110m";
   focus?: Focus[];
   dimOthers?: boolean;
+  /** centre of the "local" projection [lon, lat] */
+  center?: [number, number];
+  /** only draw countries whose bounds touch this box [lonMin, latMin, lonMax, latMax] (big speed-up at 50m) */
+  clip?: [number, number, number, number];
+  /** screen point (px at 1080x1920) where the key centre lands; default the frame centre [540, 960] */
+  anchor?: [number, number];
+  /** CSS background behind the map (default: the palette's ocean gradient; pass a dark space gradient for globes) */
+  background?: string;
+  /** layer drawn UNDER the land in map space (ocean texture, graticule) */
+  under?: (helpers: MapHelpers) => React.ReactNode;
   children?: (helpers: MapHelpers) => React.ReactNode;
 };
 export type MapHelpers = { p: (lon: number, lat: number) => [number, number]; k: number; f: number; proj: GeoProjection; path: (g: any) => string };
 
 /** The map. Overlays are drawn by `children(helpers)` in map space (use helpers.p(lon, lat) for positions; divide
  *  screen sizes by helpers.k so they stay constant on screen). */
-export const MapView: React.FC<MapProps> = ({ keys, proj = "mercator", palette = "dark", res = "50m", focus = [], dimOthers = true, children }) => {
+export const MapView: React.FC<MapProps> = ({ keys, proj = "mercator", palette = "dark", res = "50m", focus = [], dimOthers = true, center, clip, anchor = [W / 2, H / 2], background, under, children }) => {
   const f = useLocalFrame();
+  const uid = useId().replace(/:/g, "");
   const P = ATLAS[palette];
   const isGlobe = proj === "globe";
   // globe: rotate toward the key centre (geoInterpolate) instead of zooming a flat map
-  let rot: [number, number] = [0, 0];
+  let rot: [number, number] = center ?? [0, 0];
+  let globeZoom = 1;
   if (isGlobe) {
     const ks = [...keys].sort((a, b) => a.f - b.f);
     let i = 0;
@@ -99,28 +135,49 @@ export const MapView: React.FC<MapProps> = ({ keys, proj = "mercator", palette =
     const t = Easing.inOut(Easing.cubic)(invLerp(a.f, b.f, f));
     const c = geoInterpolate([a.lon, a.lat], [b.lon, b.lat])(t);
     rot = [c[0], c[1]];
+    // zoom in log space between the keys, then a slow push so a hold never freezes
+    globeZoom = Math.exp(Math.log(a.zoom) + (Math.log(b.zoom) - Math.log(a.zoom)) * t) * (f > b.f ? 1 + (f - b.f) * 0.0012 : 1);
   }
   const projection = useMemo(() => makeProj(proj, rot), [proj, rot[0], rot[1]]);
   const path = useMemo(() => geoPath(projection), [projection]);
-  const d = data(isGlobe ? "110m" : res);
-  const paths = useMemo(() => d.countries.map((c) => ({ id: c.id, name: c.properties.name, d: path(c as any) ?? "" })), [d, path]);
-  const borders = useMemo(() => path(d.borders) ?? "", [d, path]);
+  const resName = isGlobe ? "110m" : res;
+  const d = data(resName);
+  const shown = useMemo(
+    () =>
+      clip
+        ? d.countries.filter((c) => {
+            const [[x0, y0], [x1, y1]] = boundsOf(c, resName);
+            const lonOk = x0 <= x1 ? x0 <= clip[2] && x1 >= clip[0] : true; // crosses the antimeridian: keep
+            return lonOk && y0 <= clip[3] && y1 >= clip[1];
+          })
+        : d.countries,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [d, resName, clip?.[0], clip?.[1], clip?.[2], clip?.[3]],
+  );
+  const paths = useMemo(() => shown.map((c) => ({ id: c.id, name: c.properties.name, d: path(c as any) ?? "" })).filter((c) => c.d), [shown, path]);
+  const borders = useMemo(() => (clip ? "" : path(d.borders) ?? ""), [d, path, clip]);
   const { v } = isGlobe ? { v: [W / 2, H / 2, W] as [number, number, number] } : viewAt(keys, f, projection);
-  const k = isGlobe ? (keys.find((x) => x.f >= f)?.zoom ?? keys[keys.length - 1].zoom) : W / v[2];
-  const tx = W / 2 - v[0] * k;
-  const ty = H / 2 - v[1] * k;
+  const k = isGlobe ? globeZoom : W / v[2];
+  const tx = anchor[0] - v[0] * k;
+  const ty = anchor[1] - v[1] * k;
   const focusMap = new Map(focus.map((x) => [country(x.name, isGlobe ? "110m" : res).id, x]));
   const helpers: MapHelpers = { p: (lon, lat) => projection([lon, lat]) as [number, number], k, f, proj: projection, path: (g) => path(g) ?? "" };
   return (
-    <AbsoluteFill style={{ background: `radial-gradient(ellipse at 50% 45%, ${P.oceanA}, ${P.oceanB})` }}>
+    <AbsoluteFill style={{ background: background ?? `radial-gradient(ellipse at 50% 45%, ${P.oceanA}, ${P.oceanB})` }}>
       <svg width="100%" height="100%" viewBox={`0 0 ${W} ${H}`}>
         <defs>
-          <filter id="focusGlow" x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur stdDeviation={10 / Math.max(1, Math.sqrt(k))} />
+          <filter id={`fg${uid}`} x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation={10 / Math.max(1, k)} />
           </filter>
+          <radialGradient id={`gs${uid}`} cx="0.36" cy="0.3" r="0.8">
+            <stop offset="0" stopColor="#BFE3FF" stopOpacity="0.16" />
+            <stop offset="0.55" stopColor="#0B1220" stopOpacity="0" />
+            <stop offset="1" stopColor="#02060F" stopOpacity="0.55" />
+          </radialGradient>
         </defs>
-        {isGlobe ? <circle cx={W / 2} cy={H / 2} r={470} fill={P.oceanA} stroke="#6FC3FF" strokeOpacity={0.35} strokeWidth={10} /> : null}
-        <g transform={isGlobe ? `translate(${W / 2} ${H / 2}) scale(${k}) translate(${-W / 2} ${-H / 2})` : `translate(${tx} ${ty}) scale(${k})`}>
+        {isGlobe ? <circle cx={anchor[0]} cy={anchor[1]} r={470 * k} fill={P.oceanA} stroke="#6FC3FF" strokeOpacity={0.35} strokeWidth={10} /> : null}
+        <g transform={isGlobe ? `translate(${anchor[0]} ${anchor[1]}) scale(${k}) translate(${-W / 2} ${-H / 2})` : `translate(${tx} ${ty}) scale(${k})`}>
+          {under ? under(helpers) : null}
           {/* coast glow under the land */}
           <g opacity={0.9}>
             {paths.map((c) => (
@@ -135,7 +192,11 @@ export const MapView: React.FC<MapProps> = ({ keys, proj = "mercator", palette =
             const dim = dimOthers && focus.length > 0 && !on;
             return <path key={`${c.id}${c.name}`} d={c.d} fill={fill} fillOpacity={on ? 0.35 + 0.65 * t : dim ? 0.62 : 1} stroke="none" />;
           })}
-          <path d={borders} fill="none" stroke={P.border} strokeWidth={1.5} vectorEffect="non-scaling-stroke" />
+          {clip ? (
+            paths.map((c) => <path key={`b${c.id}${c.name}`} d={c.d} fill="none" stroke={P.border} strokeWidth={1.5} vectorEffect="non-scaling-stroke" />)
+          ) : (
+            <path d={borders} fill="none" stroke={P.border} strokeWidth={1.5} vectorEffect="non-scaling-stroke" />
+          )}
           {focus.map((fo) => {
             const id = country(fo.name, isGlobe ? "110m" : res).id;
             const pp = paths.find((x) => x.id === id);
@@ -143,13 +204,14 @@ export const MapView: React.FC<MapProps> = ({ keys, proj = "mercator", palette =
             if (!pp || !on || fo.outline === false) return null;
             return (
               <g key={`o${fo.name}`}>
-                <path d={pp.d} fill="none" stroke={fo.color} strokeWidth={14} strokeOpacity={0.4} vectorEffect="non-scaling-stroke" filter="url(#focusGlow)" />
+                <path d={pp.d} fill="none" stroke={fo.color} strokeWidth={14} strokeOpacity={0.4} vectorEffect="non-scaling-stroke" filter={`url(#fg${uid})`} />
                 <path d={pp.d} fill="none" stroke="#FFFFFF" strokeWidth={4} vectorEffect="non-scaling-stroke" />
               </g>
             );
           })}
           {children ? children(helpers) : null}
         </g>
+        {isGlobe ? <circle cx={anchor[0]} cy={anchor[1]} r={470 * k} fill={`url(#gs${uid})`} style={{ pointerEvents: "none" }} /> : null}
       </svg>
     </AbsoluteFill>
   );
