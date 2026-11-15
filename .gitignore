@@ -1,0 +1,12 @@
+node_modules/
+.venv/
+videos/*/renders/
+videos/*/qa/
+videos/*/voice/cache/
+out/
+*.log
+# regenerable audio: sound.py rebuilds the stems and mix.wav, timeline.mjs re-copies voice.wav into public/v/.
+# videos/<slug>/voice/voice.wav stays tracked: it is the timing master (free TTS is not bit-reproducible).
+videos/*/audio/stems/
+videos/*/voice/*.16k.wav
+public/v/

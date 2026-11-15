@@ -1,0 +1,1270 @@
+// StickWorld characters: flat 2D cartoon people drawn with Canvas2D (crisp at any size), shown as lit cards in the
+// 3D toon world. Look (measured from the reference shorts): big white round heads (~1/3 of the height), tiny dot
+// eyes, optional round glasses, bean-shaped coloured torsos with a thick ink outline, single-stroke stick limbs with
+// ink-dot hands, small oval shoes. Ink is a warm near-black; no blush or catchlights unless the face asks for it.
+//
+// Design space: 600 x 1000 units, soles at y = 975, head centre x = 300. drawStick() scales it to any canvas size.
+
+export type HairStyle = "none" | "short" | "side" | "spiky" | "curly" | "bun" | "long" | "mohawk" | "bob" | "ponytail" | "slick" | "bald";
+export type HatStyle = "none" | "cap" | "beanie" | "hood" | "tophat" | "helmet" | "crown" | "chef" | "cowboy" | "hardhat" | "police" | "grad" | "headband";
+export type OutfitKind = "tee" | "hoodie" | "suit" | "dress" | "lab" | "uniform" | "jacket" | "robe" | "armor";
+export type Build = "adult" | "kid" | "tall" | "stout";
+
+export type StickSpec = {
+  /** torso colour (the bean) */
+  body: string;
+  head?: string;
+  outfit?: OutfitKind;
+  accent?: string; // tie / trim / lapels
+  text?: string; // printed on the chest ("FBI")
+  textColor?: string;
+  hair?: HairStyle;
+  hairColor?: string;
+  hat?: HatStyle;
+  hatColor?: string;
+  hatText?: string;
+  glasses?: "none" | "round" | "square" | "shades";
+  mustache?: string | null;
+  beard?: string | null;
+  nose?: "none" | "dot" | "big" | "red";
+  mask?: boolean; // the hooded-villain look: dark hood framing a white face
+  build?: Build;
+  legColor?: string;
+  shoes?: string;
+  seed?: number;
+};
+
+export type Eyes = "dot" | "wide" | "happy" | "closed" | "angry" | "sad" | "lidded" | "x" | "spiral" | "hearts" | "stars" | "side" | "tiny";
+export type Mouth = "smile" | "grin" | "teeth" | "open" | "o" | "flat" | "frown" | "wavy" | "smirk" | "laugh" | "scream" | "tongue" | "evil" | "none";
+export type Brows = "none" | "neutral" | "raised" | "angry" | "sad" | "worried" | "oneUp";
+export type Extra = "sweat" | "blush" | "tears" | "anger" | "sparkle" | "shock" | "question" | "zzz";
+export type Face = { eyes: Eyes; mouth: Mouth; brows: Brows; extras?: Extra[]; look?: [number, number] };
+
+export const FACES: Record<string, Face> = {
+  neutral: { eyes: "dot", mouth: "flat", brows: "neutral" },
+  happy: { eyes: "dot", mouth: "smile", brows: "raised" },
+  grin: { eyes: "happy", mouth: "teeth", brows: "raised" },
+  joy: { eyes: "happy", mouth: "laugh", brows: "raised", extras: ["blush"] },
+  smug: { eyes: "lidded", mouth: "smirk", brows: "oneUp" },
+  shocked: { eyes: "wide", mouth: "o", brows: "raised", extras: ["shock"] },
+  scared: { eyes: "wide", mouth: "wavy", brows: "worried", extras: ["sweat"] },
+  panic: { eyes: "wide", mouth: "scream", brows: "worried", extras: ["sweat", "shock"] },
+  sad: { eyes: "sad", mouth: "frown", brows: "sad" },
+  crying: { eyes: "closed", mouth: "frown", brows: "sad", extras: ["tears"] },
+  angry: { eyes: "angry", mouth: "teeth", brows: "angry", extras: ["anger"] },
+  furious: { eyes: "angry", mouth: "scream", brows: "angry", extras: ["anger"] },
+  worried: { eyes: "dot", mouth: "wavy", brows: "worried", extras: ["sweat"] },
+  thinking: { eyes: "side", mouth: "flat", brows: "oneUp", look: [0.6, -0.4] },
+  confused: { eyes: "dot", mouth: "wavy", brows: "oneUp", extras: ["question"] },
+  sleepy: { eyes: "closed", mouth: "flat", brows: "none", extras: ["zzz"] },
+  determined: { eyes: "lidded", mouth: "flat", brows: "angry" },
+  evil: { eyes: "lidded", mouth: "evil", brows: "angry" },
+  love: { eyes: "hearts", mouth: "smile", brows: "raised", extras: ["blush"] },
+  starstruck: { eyes: "stars", mouth: "open", brows: "raised", extras: ["sparkle"] },
+  dead: { eyes: "x", mouth: "tongue", brows: "none" },
+  dizzy: { eyes: "spiral", mouth: "wavy", brows: "none" },
+  unimpressed: { eyes: "lidded", mouth: "flat", brows: "neutral" },
+  nervousSmile: { eyes: "dot", mouth: "teeth", brows: "worried", extras: ["sweat"] },
+};
+
+/** Joint angles in degrees (0 = limb hanging straight down; + = forward/up for arms, + = forward for legs). */
+export type Pose = {
+  lean?: number; // whole body tilt (deg, + = leaning right on screen)
+  head?: number; // head tilt (deg)
+  armL: [number, number]; // [shoulder, elbow]
+  armR: [number, number];
+  legL: [number, number]; // [hip, knee]
+  legR: [number, number];
+  bob?: number; // vertical offset in units (+ = up)
+  squash?: number; // 1 = normal, <1 squashed, >1 stretched
+  crouch?: number; // 0..1 lowers the body by bending knees
+};
+
+const P = (armL: [number, number], armR: [number, number], legL: [number, number] = [0, 0], legR: [number, number] = [0, 0], extra: Partial<Pose> = {}): Pose => ({
+  armL,
+  armR,
+  legL,
+  legR,
+  ...extra,
+});
+
+/** Arm convention (both arms): 0 = hanging down, +90 = straight OUT to that side, 180 = straight up,
+ *  negative = swinging in across the body. Elbow angle is added to the upper-arm direction. */
+export const POSES: Record<string, Pose> = {
+  idle: P([10, 5], [10, 5]),
+  relaxed: P([16, 14], [14, 12], [3, 0], [-3, 0]),
+  handsHips: P([42, -100], [42, -100]),
+  wave: P([10, 5], [150, 28], [0, 0], [0, 0], { head: 4 }),
+  waveB: P([10, 5], [150, -18], [0, 0], [0, 0], { head: 4 }),
+  point: P([10, 5], [90, 2], [0, 0], [0, 0], { lean: 2 }),
+  pointUp: P([10, 5], [165, 4], [0, 0], [0, 0], { head: -4 }),
+  pointDown: P([10, 5], [42, 0]),
+  pointAcross: P([10, 5], [-70, -10], [0, 0], [0, 0], { head: -6 }),
+  present: P([10, 5], [72, 32], [0, 0], [0, 0], { head: 6 }),
+  shrug: P([55, 112], [55, 112], [0, 0], [0, 0], { head: 8, bob: 6 }),
+  armsUp: P([160, 14], [160, 14], [0, 0], [0, 0], { bob: 10, head: -4 }),
+  cheer: P([170, 10], [122, 48], [-6, 10], [8, -4], { bob: 16 }),
+  facepalm: P([10, 5], [35, -178], [0, 0], [0, 0], { head: 14, lean: 3 }),
+  think: P([35, -100], [30, -165], [0, 0], [0, 0], { head: 9 }),
+  headScratch: P([10, 5], [128, 82], [0, 0], [0, 0], { head: 10 }),
+  typing: P([58, -72], [58, -72], [0, 0], [0, 0], { head: 6 }),
+  holdFront: P([55, -78], [55, -78]),
+  holdOne: P([10, 5], [52, -62]),
+  carry: P([70, -88], [70, -88], [0, 0], [0, 0], { lean: -2 }),
+  scared: P([78, -142], [78, -142], [-6, 8], [6, -8], { head: -6, crouch: 0.15 }),
+  crossArms: P([34, -122], [34, -122]),
+  salute: P([10, 5], [96, 114], [0, 0], [0, 0], { head: -3 }),
+  sneak: P([40, -60], [30, -50], [18, 40], [-10, 30], { lean: 10, crouch: 0.35 }),
+  sit: P([42, -40], [42, -40], [90, -90], [90, -90], { crouch: 0.45 }),
+  fall: P([150, 40], [140, 30], [40, 20], [-30, 30], { lean: -30 }),
+  dance1: P([150, -40], [40, -100], [20, 30], [-10, 0], { lean: 8, bob: 8 }),
+  dance2: P([40, -100], [150, -40], [-10, 0], [20, 30], { lean: -8, bob: 8 }),
+  bow: P([20, 10], [20, 10], [0, 0], [0, 0], { head: 30 }),
+  victory: P([10, 5], [165, 0], [0, 0], [0, 0], { bob: 6 }),
+  presentBoth: P([68, 30], [68, 30], [0, 0], [0, 0], { head: 4 }),
+  phone: P([10, 5], [32, -150], [0, 0], [0, 0], { head: 8 }),
+  readPhone: P([10, 5], [44, -96], [0, 0], [0, 0], { head: 16 }),
+};
+
+/** Walk cycle (phase in cycles): planted 0.8 m stride, bob 3-7 %, arms counter-swing. */
+export function walkPose(phase: number, speed = 1, base: Pose = POSES.idle): Pose {
+  const a = Math.sin(phase * Math.PI * 2);
+  const b = Math.sin(phase * Math.PI * 2 + Math.PI);
+  const sw = 26 * speed;
+  const knee = (x: number) => Math.max(0, x) * 32 * speed;
+  return {
+    ...base,
+    legL: [a * sw, -knee(-a)],
+    legR: [b * sw, -knee(-b)],
+    armL: [8 + a * 14 * speed, 10],
+    armR: [8 + b * 14 * speed, 10],
+    bob: Math.abs(Math.cos(phase * Math.PI * 2)) * 10 * speed,
+    lean: 3 * speed,
+  };
+}
+export function runPose(phase: number): Pose {
+  const a = Math.sin(phase * Math.PI * 2);
+  const b = -a;
+  return {
+    armL: [30 + a * 30, -70],
+    armR: [30 + b * 30, -70],
+    legL: [a * 48, -Math.max(0, -a) * 70 - 15],
+    legR: [b * 48, -Math.max(0, -b) * 70 - 15],
+    bob: Math.abs(Math.cos(phase * Math.PI * 2)) * 22,
+    lean: 10,
+    head: -4,
+  };
+}
+
+export function mixPose(a: Pose, b: Pose, t: number): Pose {
+  const L = (x = 0, y = 0) => x + (y - x) * t;
+  const L2 = (x: [number, number], y: [number, number]): [number, number] => [L(x[0], y[0]), L(x[1], y[1])];
+  return {
+    lean: L(a.lean, b.lean),
+    head: L(a.head, b.head),
+    armL: L2(a.armL, b.armL),
+    armR: L2(a.armR, b.armR),
+    legL: L2(a.legL, b.legL),
+    legR: L2(a.legR, b.legR),
+    bob: L(a.bob, b.bob),
+    squash: L(a.squash ?? 1, b.squash ?? 1),
+    crouch: L(a.crouch, b.crouch),
+  };
+}
+
+// ------------------------------------------------------------------------------------------------ drawing
+export const INK = "#1d1418";
+const rad = (d: number) => (d * Math.PI) / 180;
+
+function hexMul(c: string, k: number) {
+  const n = parseInt(c.replace("#", "").padEnd(6, "0").slice(0, 6), 16);
+  const ch = (v: number) => Math.max(0, Math.min(255, Math.round(v * k))).toString(16).padStart(2, "0");
+  return `#${ch((n >> 16) & 255)}${ch((n >> 8) & 255)}${ch(n & 255)}`;
+}
+
+type Ctx = CanvasRenderingContext2D;
+type V = [number, number];
+
+const DIMS: Record<Build, { headR: number; bodyW: number; bodyH: number; legL: number; armL: number }> = {
+  adult: { headR: 134, bodyW: 218, bodyH: 272, legL: 236, armL: 200 },
+  tall: { headR: 126, bodyW: 200, bodyH: 300, legL: 272, armL: 220 },
+  stout: { headR: 136, bodyW: 256, bodyH: 262, legL: 214, armL: 196 },
+  kid: { headR: 138, bodyW: 182, bodyH: 196, legL: 160, armL: 156 },
+};
+
+export type ItemKind = "cup" | "phone" | "magnifier" | "bag" | "sign" | "briefcase" | "laptop" | "pen" | "flag" | "trophy" | "money" | "coin" | "book" | "sword" | "torch" | "wrench" | "mic" | "pointer";
+export type Item = { kind: ItemKind; hand?: "L" | "R"; text?: string; color?: string };
+export type DrawOpts = { talk?: number; blink?: number; flip?: boolean; time?: number; ink?: string; item?: Item | null };
+
+/** Draw a character into ctx scaled so the 600x1000 design fills (w, h). */
+export function drawStick(g: Ctx, w: number, h: number, spec: StickSpec, pose: Pose, face: Face, o: DrawOpts = {}) {
+  const ink = o.ink ?? INK;
+  const k = Math.min(w / 600, h / 1000);
+  g.save();
+  g.clearRect(0, 0, w, h);
+  g.translate((w - 600 * k) / 2, h - 1000 * k);
+  g.scale(k, k);
+  if (o.flip) {
+    g.translate(600, 0);
+    g.scale(-1, 1);
+  }
+  g.lineCap = "round";
+  g.lineJoin = "round";
+  const D = DIMS[spec.build ?? "adult"];
+  const OL = D.headR * 0.075; // outline width
+  const LIMB = D.headR * 0.07;
+  const crouch = (pose.crouch ?? 0) * D.legL * 0.45;
+  const bob = (pose.bob ?? 0) - crouch;
+  const squash = pose.squash ?? 1;
+  const hipY = 975 - D.legL - bob + crouch * 0.2;
+  const bodyTop = hipY - D.bodyH * squash;
+  const cx = 300;
+  const lean = rad(pose.lean ?? 0);
+  // rotate the upper body around the hips
+  const rot = (p: V): V => {
+    const dx = p[0] - cx;
+    const dy = p[1] - hipY;
+    return [cx + dx * Math.cos(lean) - dy * Math.sin(lean), hipY + dx * Math.sin(lean) + dy * Math.cos(lean)];
+  };
+
+  // ---- contact shadow is drawn in 3D (blob); here only the figure
+  // ---- legs
+  const legX = D.bodyW * 0.22;
+  const drawLeg = (side: -1 | 1, ang: [number, number]) => {
+    const hip: V = [cx + side * legX, hipY - 8];
+    const a1 = rad(ang[0]);
+    const thigh = D.legL * 0.52;
+    const knee: V = [hip[0] + Math.sin(a1) * thigh, hip[1] + Math.cos(a1) * thigh];
+    const a2 = a1 + rad(ang[1]);
+    const shin = D.legL * 0.5;
+    const foot: V = [knee[0] + Math.sin(a2) * shin, knee[1] + Math.cos(a2) * shin];
+    g.strokeStyle = spec.legColor ?? ink;
+    g.lineWidth = LIMB;
+    g.beginPath();
+    g.moveTo(...hip);
+    g.quadraticCurveTo(knee[0], knee[1], foot[0], foot[1]);
+    g.stroke();
+    // shoe: small oval pointing forward (+x)
+    g.fillStyle = spec.shoes ?? ink;
+    g.strokeStyle = ink;
+    g.lineWidth = OL * 0.7;
+    g.beginPath();
+    g.ellipse(foot[0] + 14, foot[1] - 4, 26, 14, 0, 0, Math.PI * 2);
+    g.fill();
+    if (spec.shoes) g.stroke();
+  };
+  drawLeg(-1, pose.legL);
+  drawLeg(1, pose.legR);
+
+  // ---- body (bean)
+  const bw = D.bodyW;
+  const bh = D.bodyH * squash;
+  const bodyPath = () => {
+    const t = bodyTop;
+    const b = hipY + 18;
+    const l = cx - bw / 2;
+    const r = cx + bw / 2;
+    const pts: V[] = [];
+    // bean: narrower shoulders, round bottom
+    const N = 40;
+    for (let i = 0; i <= N; i++) {
+      const u = (i / N) * Math.PI * 2;
+      const sx = Math.sin(u);
+      const cy = Math.cos(u);
+      const yy = t + (1 - cy) * 0.5 * (b - t);
+      const widen = 0.86 + 0.14 * (1 - cy) * 0.5; // wider toward the bottom
+      const xx = cx + sx * (bw / 2) * widen * Math.pow(Math.abs(Math.sin(u)), 0.06) * (yy < t + 40 ? 0.92 : 1);
+      pts.push(rot([xx, yy]));
+    }
+    g.beginPath();
+    pts.forEach((p, i) => (i ? g.lineTo(...p) : g.moveTo(...p)));
+    g.closePath();
+    void l;
+    void r;
+  };
+  // arms behind the body for some poses? keep in front for readability (reference draws them in front)
+  const shoulderY = bodyTop + 62;
+  const drawArm = (side: -1 | 1, ang: [number, number]) => {
+    const sh = rot([cx + side * (bw / 2 - 18), shoulderY]);
+    const a1 = rad(ang[0]) * side * -1 + lean; // + angle = forward/up on the character's side
+    const upper = D.armL * 0.5;
+    const elbow: V = [sh[0] - Math.sin(a1) * upper * side * -1 * -1, sh[1] + Math.cos(a1) * upper];
+    // compute with explicit side: arm rotates outward for +angles on the left (side -1) to the left
+    const a1b = rad(ang[0]);
+    const ex = sh[0] + side * Math.sin(a1b) * upper;
+    const ey = sh[1] + Math.cos(a1b) * upper;
+    const a2 = a1b + rad(ang[1]) * 1;
+    const fore = D.armL * 0.5;
+    const hx = ex + side * Math.sin(a2) * fore;
+    const hy = ey + Math.cos(a2) * fore;
+    void elbow;
+    g.strokeStyle = ink;
+    g.lineWidth = LIMB;
+    g.beginPath();
+    g.moveTo(...sh);
+    g.quadraticCurveTo(ex, ey, hx, hy);
+    g.stroke();
+    g.fillStyle = ink;
+    g.beginPath();
+    g.arc(hx, hy, LIMB * 1.15, 0, Math.PI * 2);
+    g.fill();
+    return [hx, hy] as V;
+  };
+
+  // body fill with a soft form gradient (light from the upper left)
+  const outfit = spec.outfit ?? "tee";
+  const bodyCol = spec.body;
+  bodyPath();
+  const grd = g.createLinearGradient(cx - bw / 2, bodyTop, cx + bw / 2, hipY);
+  grd.addColorStop(0, hexMul(bodyCol, 1.08));
+  grd.addColorStop(0.55, bodyCol);
+  grd.addColorStop(1, hexMul(bodyCol, 0.8));
+  g.fillStyle = grd;
+  g.fill();
+  // outfit details (clipped to the body)
+  g.save();
+  bodyPath();
+  g.clip();
+  if (outfit === "suit" || outfit === "lab" || outfit === "jacket") {
+    const shirt = outfit === "lab" ? "#ffffff" : "#ffffff";
+    g.fillStyle = outfit === "lab" ? hexMul(bodyCol, 0.96) : bodyCol;
+    // V of the shirt
+    g.fillStyle = shirt;
+    g.beginPath();
+    g.moveTo(...rot([cx - 34, bodyTop - 4]));
+    g.lineTo(...rot([cx, bodyTop + 120]));
+    g.lineTo(...rot([cx + 34, bodyTop - 4]));
+    g.closePath();
+    g.fill();
+    if (outfit === "suit") {
+      g.fillStyle = spec.accent ?? "#d62f3a";
+      g.beginPath();
+      g.moveTo(...rot([cx - 9, bodyTop + 8]));
+      g.lineTo(...rot([cx + 9, bodyTop + 8]));
+      g.lineTo(...rot([cx + 14, bodyTop + 110]));
+      g.lineTo(...rot([cx, bodyTop + 132]));
+      g.lineTo(...rot([cx - 14, bodyTop + 110]));
+      g.closePath();
+      g.fill();
+    }
+    g.strokeStyle = ink;
+    g.lineWidth = OL * 0.55;
+    g.beginPath();
+    g.moveTo(...rot([cx - 36, bodyTop - 4]));
+    g.lineTo(...rot([cx - 2, bodyTop + 150]));
+    g.moveTo(...rot([cx + 36, bodyTop - 4]));
+    g.lineTo(...rot([cx + 2, bodyTop + 150]));
+    g.stroke();
+  } else if (outfit === "hoodie") {
+    g.strokeStyle = hexMul(bodyCol, 0.7);
+    g.lineWidth = OL * 0.5;
+    g.beginPath();
+    const p1 = rot([cx - 60, hipY - 70]);
+    const p2 = rot([cx + 60, hipY - 70]);
+    g.moveTo(...p1);
+    g.lineTo(...p2);
+    g.stroke();
+    g.beginPath();
+    g.moveTo(...rot([cx - 18, bodyTop + 10]));
+    g.lineTo(...rot([cx - 22, bodyTop + 70]));
+    g.moveTo(...rot([cx + 18, bodyTop + 10]));
+    g.lineTo(...rot([cx + 22, bodyTop + 70]));
+    g.stroke();
+  } else if (outfit === "dress") {
+    g.fillStyle = hexMul(bodyCol, 0.9);
+    g.fillRect(cx - bw, hipY - 60, bw * 2, 120);
+  } else if (outfit === "uniform") {
+    g.fillStyle = spec.accent ?? "#e8c45a";
+    for (let i = 0; i < 4; i++) {
+      const p = rot([cx, bodyTop + 60 + i * 52]);
+      g.beginPath();
+      g.arc(p[0], p[1], 7, 0, Math.PI * 2);
+      g.fill();
+    }
+  } else if (outfit === "robe") {
+    g.fillStyle = spec.accent ?? hexMul(bodyCol, 0.75);
+    g.fillRect(cx - 10, bodyTop, 20, bh + 30);
+  } else if (outfit === "armor") {
+    g.strokeStyle = hexMul(bodyCol, 0.65);
+    g.lineWidth = OL * 0.5;
+    for (let i = 1; i < 4; i++) {
+      g.beginPath();
+      g.moveTo(...rot([cx - bw, bodyTop + (bh * i) / 4]));
+      g.lineTo(...rot([cx + bw, bodyTop + (bh * i) / 4]));
+      g.stroke();
+    }
+  }
+  if (spec.text) {
+    const c = rot([cx + 6, bodyTop + bh * 0.42]);
+    g.save();
+    g.translate(c[0], c[1]);
+    g.rotate(lean);
+    g.fillStyle = spec.textColor ?? "#ffd23f";
+    g.font = `900 ${Math.min(64, 220 / Math.max(2, spec.text.length))}px "Montserrat", "Arial Black", sans-serif`;
+    g.textAlign = "center";
+    g.textBaseline = "middle";
+    g.fillText(spec.text, 0, 0);
+    g.restore();
+  }
+  g.restore();
+  bodyPath();
+  g.strokeStyle = ink;
+  g.lineWidth = OL;
+  g.stroke();
+
+  // ---- arms (in front of the body)
+  const handL = drawArm(-1, pose.armL);
+  const handR = drawArm(1, pose.armR);
+  if (o.item) drawItem(g, o.item, o.item.hand === "L" ? handL : handR, D.headR, ink, OL);
+
+  // ---- head
+  const headR = D.headR;
+  const headTilt = rad(pose.head ?? 0) + lean * 0.6;
+  const neck = rot([cx, bodyTop + 6]);
+  const hc: V = [neck[0] + Math.sin(lean) * headR * 0.9, neck[1] - headR * 0.92];
+  g.save();
+  g.translate(hc[0], hc[1]);
+  g.rotate(headTilt);
+  const R = headR;
+  // hood behind the head
+  if (spec.mask || spec.hat === "hood") {
+    g.fillStyle = spec.hatColor ?? "#26262c";
+    g.beginPath();
+    g.ellipse(0, 6, R * 1.2, R * 1.17, 0, 0, Math.PI * 2);
+    g.fill();
+    g.strokeStyle = ink;
+    g.lineWidth = OL;
+    g.stroke();
+  }
+  // long hair behind
+  if (spec.hair === "long" || spec.hair === "ponytail" || spec.hair === "bob") {
+    g.fillStyle = spec.hairColor ?? "#6b4226";
+    g.beginPath();
+    if (spec.hair === "long") g.ellipse(0, R * 0.35, R * 1.08, R * 1.25, 0, 0, Math.PI * 2);
+    else if (spec.hair === "bob") g.ellipse(0, R * 0.12, R * 1.12, R * 1.06, 0, 0, Math.PI * 2);
+    else g.ellipse(R * 0.95, R * 0.1, R * 0.32, R * 0.6, -0.5, 0, Math.PI * 2);
+    g.fill();
+    g.strokeStyle = ink;
+    g.lineWidth = OL;
+    g.stroke();
+  }
+  // head disc (slightly bean shaped: h/w 0.94)
+  const headCol = spec.head ?? "#ffffff";
+  const hg = g.createRadialGradient(-R * 0.35, -R * 0.4, R * 0.15, 0, 0, R * 1.05);
+  hg.addColorStop(0, hexMul(headCol, 1.02));
+  hg.addColorStop(0.7, headCol);
+  hg.addColorStop(1, hexMul(headCol, 0.88));
+  g.fillStyle = hg;
+  g.beginPath();
+  g.ellipse(0, 0, R, R * (spec.mask ? 0.98 : 0.95), 0, 0, Math.PI * 2);
+  g.fill();
+  g.strokeStyle = ink;
+  g.lineWidth = OL;
+  g.stroke();
+
+  // ---- face
+  drawFace(g, R, face, spec, o, ink, OL);
+
+  // ---- hair / hats on top
+  drawHairHat(g, R, spec, ink, OL);
+  g.restore();
+  g.restore();
+}
+
+function drawFace(g: Ctx, R: number, face: Face, spec: StickSpec, o: DrawOpts, ink: string, OL: number) {
+  const look = face.look ?? [0, 0];
+  const ex = R * 0.3;
+  const ey = -R * 0.02;
+  const er = R * 0.075;
+  const lx = look[0] * R * 0.06;
+  const ly = look[1] * R * 0.06;
+  const blink = o.blink ?? 0;
+  const eyeY = ey;
+  g.fillStyle = ink;
+  g.strokeStyle = ink;
+  g.lineWidth = OL * 0.62;
+  const eye = (sx: number) => {
+    const x = sx * ex + lx;
+    const y = eyeY + ly;
+    const kind = blink > 0.5 && !["x", "spiral", "hearts", "stars", "happy", "closed"].includes(face.eyes) ? "closed" : face.eyes;
+    g.beginPath();
+    switch (kind) {
+      case "dot":
+      case "side":
+        g.ellipse(x, y, er, er * 1.15, 0, 0, Math.PI * 2);
+        g.fill();
+        break;
+      case "tiny":
+        g.arc(x, y, er * 0.6, 0, Math.PI * 2);
+        g.fill();
+        break;
+      case "wide":
+        g.fillStyle = "#ffffff";
+        g.ellipse(x, y, er * 2.1, er * 2.4, 0, 0, Math.PI * 2);
+        g.fill();
+        g.stroke();
+        g.fillStyle = ink;
+        g.beginPath();
+        g.arc(x + lx * 0.5, y + ly * 0.5, er * 0.9, 0, Math.PI * 2);
+        g.fill();
+        break;
+      case "happy":
+        g.arc(x, y + er * 0.8, er * 1.5, Math.PI * 1.1, Math.PI * 1.9);
+        g.stroke();
+        break;
+      case "closed":
+        g.moveTo(x - er * 1.4, y);
+        g.quadraticCurveTo(x, y + er * 1.1, x + er * 1.4, y);
+        g.stroke();
+        break;
+      case "angry":
+        g.ellipse(x, y + er * 0.3, er, er * 0.95, 0, 0, Math.PI * 2);
+        g.fill();
+        break;
+      case "sad":
+        g.ellipse(x, y + er * 0.2, er * 0.9, er * 1.1, 0, 0, Math.PI * 2);
+        g.fill();
+        break;
+      case "lidded":
+        g.ellipse(x, y + er * 0.35, er * 1.05, er * 0.7, 0, 0, Math.PI * 2);
+        g.fill();
+        g.beginPath();
+        g.moveTo(x - er * 1.6, y - er * 0.25);
+        g.lineTo(x + er * 1.6, y - er * 0.25);
+        g.stroke();
+        break;
+      case "x":
+        g.moveTo(x - er * 1.3, y - er * 1.3);
+        g.lineTo(x + er * 1.3, y + er * 1.3);
+        g.moveTo(x + er * 1.3, y - er * 1.3);
+        g.lineTo(x - er * 1.3, y + er * 1.3);
+        g.stroke();
+        break;
+      case "spiral": {
+        for (let t = 0; t < 12; t += 0.2) {
+          const rr = er * 0.12 * t;
+          const px = x + Math.cos(t * 1.4) * rr;
+          const py = y + Math.sin(t * 1.4) * rr;
+          if (t === 0) g.moveTo(px, py);
+          else g.lineTo(px, py);
+        }
+        g.stroke();
+        break;
+      }
+      case "hearts": {
+        g.fillStyle = "#ff3d6e";
+        const s = er * 1.6;
+        g.moveTo(x, y + s * 0.7);
+        g.bezierCurveTo(x - s * 1.4, y - s * 0.2, x - s * 0.5, y - s * 1.2, x, y - s * 0.4);
+        g.bezierCurveTo(x + s * 0.5, y - s * 1.2, x + s * 1.4, y - s * 0.2, x, y + s * 0.7);
+        g.fill();
+        g.fillStyle = ink;
+        break;
+      }
+      case "stars": {
+        g.fillStyle = "#ffd23f";
+        for (let i = 0; i < 10; i++) {
+          const a = (i / 10) * Math.PI * 2 - Math.PI / 2;
+          const rr = i % 2 ? er * 0.8 : er * 2;
+          const px = x + Math.cos(a) * rr;
+          const py = y + Math.sin(a) * rr;
+          if (i === 0) g.moveTo(px, py);
+          else g.lineTo(px, py);
+        }
+        g.closePath();
+        g.fill();
+        g.stroke();
+        g.fillStyle = ink;
+        break;
+      }
+    }
+  };
+  eye(-1);
+  eye(1);
+  // glasses
+  if (spec.glasses && spec.glasses !== "none") {
+    g.lineWidth = OL * 0.55;
+    g.strokeStyle = ink;
+    const gr = R * 0.2;
+    if (spec.glasses === "shades") {
+      g.fillStyle = "#141418";
+      g.beginPath();
+      g.roundRect(-ex - gr * 1.2, eyeY - gr * 0.7, gr * 2.4, gr * 1.4, gr * 0.5);
+      g.roundRect(ex - gr * 1.2, eyeY - gr * 0.7, gr * 2.4, gr * 1.4, gr * 0.5);
+      g.fill();
+      g.stroke();
+    } else {
+      g.beginPath();
+      if (spec.glasses === "round") {
+        g.arc(-ex, eyeY, gr, 0, Math.PI * 2);
+        g.moveTo(ex + gr, eyeY);
+        g.arc(ex, eyeY, gr, 0, Math.PI * 2);
+      } else {
+        g.rect(-ex - gr, eyeY - gr * 0.78, gr * 2, gr * 1.56);
+        g.rect(ex - gr, eyeY - gr * 0.78, gr * 2, gr * 1.56);
+      }
+      g.stroke();
+    }
+    g.beginPath();
+    g.moveTo(-ex + gr, eyeY - gr * 0.1);
+    g.quadraticCurveTo(0, eyeY - gr * 0.45, ex - gr, eyeY - gr * 0.1);
+    g.moveTo(-ex - gr, eyeY - gr * 0.1);
+    g.lineTo(-R * 0.92, eyeY - gr * 0.3);
+    g.moveTo(ex + gr, eyeY - gr * 0.1);
+    g.lineTo(R * 0.92, eyeY - gr * 0.3);
+    g.stroke();
+  }
+  // brows
+  g.lineWidth = OL * 0.6;
+  g.strokeStyle = ink;
+  const by = eyeY - R * (spec.glasses && spec.glasses !== "none" ? 0.3 : 0.22);
+  const brow = (sx: number) => {
+    const x = sx * ex;
+    g.beginPath();
+    switch (face.brows) {
+      case "neutral":
+        g.moveTo(x - R * 0.1, by);
+        g.lineTo(x + R * 0.1, by);
+        break;
+      case "raised":
+        g.moveTo(x - R * 0.11, by - R * 0.03);
+        g.quadraticCurveTo(x, by - R * 0.1, x + R * 0.11, by - R * 0.03);
+        break;
+      case "angry": // inner ends low: \ /
+        g.moveTo(x - sx * R * 0.13, by + R * 0.05);
+        g.lineTo(x + sx * R * 0.09, by - R * 0.05);
+        break;
+      case "sad":
+      case "worried": // inner ends high: /         g.moveTo(x - sx * R * 0.12, by - R * 0.06);
+        g.lineTo(x + sx * R * 0.1, by + R * 0.04);
+        break;
+      case "oneUp":
+        if (sx > 0) {
+          g.moveTo(x - R * 0.11, by - R * 0.06);
+          g.quadraticCurveTo(x, by - R * 0.13, x + R * 0.11, by - R * 0.05);
+        } else {
+          g.moveTo(x - R * 0.1, by + R * 0.02);
+          g.lineTo(x + R * 0.1, by + R * 0.02);
+        }
+        break;
+      default:
+        return;
+    }
+    g.stroke();
+  };
+  brow(-1);
+  brow(1);
+  // nose
+  if (spec.nose === "red" || spec.nose === "big") {
+    g.fillStyle = spec.nose === "red" ? "#f07b8c" : "#f3ddd0";
+    g.beginPath();
+    g.ellipse(0, R * 0.16, R * 0.11, R * 0.09, 0, 0, Math.PI * 2);
+    g.fill();
+    g.lineWidth = OL * 0.5;
+    g.stroke();
+  } else if (spec.nose === "dot") {
+    g.fillStyle = ink;
+    g.beginPath();
+    g.arc(0, R * 0.14, R * 0.025, 0, Math.PI * 2);
+    g.fill();
+  }
+  // mustache / beard
+  if (spec.beard) {
+    g.fillStyle = spec.beard;
+    g.beginPath();
+    g.ellipse(0, R * 0.62, R * 0.62, R * 0.36, 0, 0, Math.PI);
+    g.fill();
+    g.lineWidth = OL * 0.6;
+    g.stroke();
+  }
+  // mouth (talk overrides closed mouths)
+  const talk = o.talk ?? 0;
+  const my = R * 0.4;
+  let mouth = face.mouth;
+  if (talk > 0.05 && ["flat", "smile", "smirk", "frown", "wavy", "none"].includes(mouth)) mouth = talk > 0.55 ? "open" : "o";
+  g.lineWidth = OL * 0.62;
+  g.strokeStyle = ink;
+  const mouthW = R * 0.22;
+  g.beginPath();
+  switch (mouth) {
+    case "smile":
+      g.moveTo(-mouthW, my - R * 0.04);
+      g.quadraticCurveTo(0, my + R * 0.14, mouthW, my - R * 0.04);
+      g.stroke();
+      break;
+    case "flat":
+      g.moveTo(-mouthW * 0.6, my);
+      g.lineTo(mouthW * 0.6, my);
+      g.stroke();
+      break;
+    case "frown":
+      g.moveTo(-mouthW * 0.8, my + R * 0.06);
+      g.quadraticCurveTo(0, my - R * 0.08, mouthW * 0.8, my + R * 0.06);
+      g.stroke();
+      break;
+    case "smirk":
+      g.moveTo(-mouthW * 0.6, my + R * 0.02);
+      g.quadraticCurveTo(mouthW * 0.2, my + R * 0.06, mouthW * 0.9, my - R * 0.08);
+      g.stroke();
+      break;
+    case "wavy":
+      g.moveTo(-mouthW, my);
+      for (let i = 1; i <= 6; i++) g.lineTo(-mouthW + (i * mouthW * 2) / 6, my + (i % 2 ? -R * 0.04 : R * 0.04));
+      g.stroke();
+      break;
+    case "o": {
+      const a = 0.35 + talk * 0.4;
+      g.fillStyle = "#5a1e28";
+      g.ellipse(0, my + R * 0.02, R * 0.07, R * 0.07 * (1 + a), 0, 0, Math.PI * 2);
+      g.fill();
+      g.stroke();
+      break;
+    }
+    case "scream": {
+      g.fillStyle = "#5a1e28";
+      g.ellipse(0, my + R * 0.06, R * 0.13, R * 0.2, 0, 0, Math.PI * 2);
+      g.fill();
+      g.stroke();
+      g.fillStyle = "#e86e78";
+      g.beginPath();
+      g.ellipse(0, my + R * 0.18, R * 0.08, R * 0.06, 0, 0, Math.PI * 2);
+      g.fill();
+      break;
+    }
+    case "open":
+    case "laugh": {
+      const hgt = mouth === "laugh" ? R * 0.22 : R * (0.1 + talk * 0.12);
+      const wdt = R * 0.2;
+      g.fillStyle = "#5a1e28";
+      g.moveTo(-wdt, my - R * 0.03);
+      g.quadraticCurveTo(0, my + hgt * 1.6, wdt, my - R * 0.03);
+      g.closePath();
+      g.fill();
+      g.stroke();
+      if (mouth === "laugh" || talk > 0.6) {
+        g.fillStyle = "#e86e78";
+        g.beginPath();
+        g.ellipse(0, my + hgt * 0.6, wdt * 0.45, hgt * 0.25, 0, 0, Math.PI * 2);
+        g.fill();
+      }
+      break;
+    }
+    case "teeth":
+    case "grin":
+    case "evil": {
+      const wdt = mouth === "evil" ? R * 0.42 : R * 0.3;
+      const hgt = R * 0.18;
+      g.fillStyle = "#ffffff";
+      g.moveTo(-wdt, my - hgt * 0.4);
+      g.quadraticCurveTo(0, my - hgt * (mouth === "evil" ? 0.1 : 0.7), wdt, my - hgt * 0.4);
+      g.quadraticCurveTo(0, my + hgt * 1.5, -wdt, my - hgt * 0.4);
+      g.closePath();
+      g.fill();
+      g.stroke();
+      g.lineWidth = OL * 0.35;
+      g.beginPath();
+      for (let i = -2; i <= 2; i++) {
+        g.moveTo((i * wdt) / 3, my - hgt * 0.35);
+        g.lineTo((i * wdt) / 3.2, my + hgt * 0.55);
+      }
+      g.moveTo(-wdt * 0.92, my + hgt * 0.1);
+      g.quadraticCurveTo(0, my + hgt * 0.45, wdt * 0.92, my + hgt * 0.1);
+      g.stroke();
+      break;
+    }
+    case "tongue":
+      g.moveTo(-mouthW * 0.7, my);
+      g.lineTo(mouthW * 0.7, my);
+      g.stroke();
+      g.fillStyle = "#e86e78";
+      g.beginPath();
+      g.ellipse(mouthW * 0.2, my + R * 0.08, R * 0.08, R * 0.1, 0, 0, Math.PI * 2);
+      g.fill();
+      g.stroke();
+      break;
+    default:
+      break;
+  }
+  if (spec.mustache) {
+    g.fillStyle = spec.mustache;
+    g.beginPath();
+    g.ellipse(-R * 0.14, my - R * 0.13, R * 0.16, R * 0.07, 0.25, 0, Math.PI * 2);
+    g.ellipse(R * 0.14, my - R * 0.13, R * 0.16, R * 0.07, -0.25, 0, Math.PI * 2);
+    g.fill();
+  }
+  // extras
+  for (const x of face.extras ?? []) {
+    if (x === "sweat") {
+      g.fillStyle = "#7cc8ff";
+      g.strokeStyle = "#2b6fb0";
+      g.lineWidth = OL * 0.4;
+      g.beginPath();
+      const sx = R * 0.72;
+      const sy = -R * 0.55;
+      g.moveTo(sx, sy - R * 0.2);
+      g.quadraticCurveTo(sx + R * 0.14, sy + R * 0.02, sx, sy + R * 0.08);
+      g.quadraticCurveTo(sx - R * 0.14, sy + R * 0.02, sx, sy - R * 0.2);
+      g.fill();
+      g.stroke();
+    } else if (x === "blush") {
+      g.fillStyle = "rgba(255,120,140,0.45)";
+      g.beginPath();
+      g.ellipse(-R * 0.5, R * 0.22, R * 0.14, R * 0.08, 0, 0, Math.PI * 2);
+      g.ellipse(R * 0.5, R * 0.22, R * 0.14, R * 0.08, 0, 0, Math.PI * 2);
+      g.fill();
+    } else if (x === "tears") {
+      g.fillStyle = "#7cc8ff";
+      g.beginPath();
+      g.ellipse(-ex, eyeY + R * 0.25, R * 0.05, R * 0.14, 0, 0, Math.PI * 2);
+      g.ellipse(ex, eyeY + R * 0.25, R * 0.05, R * 0.14, 0, 0, Math.PI * 2);
+      g.fill();
+    } else if (x === "anger") {
+      g.strokeStyle = "#e0303a";
+      g.lineWidth = OL * 0.6;
+      const ax = R * 0.62;
+      const ay = -R * 0.62;
+      g.beginPath();
+      for (const [dx, dy] of [
+        [-1, -1],
+        [1, -1],
+        [-1, 1],
+        [1, 1],
+      ]) {
+        g.moveTo(ax + dx * R * 0.04, ay + dy * R * 0.04);
+        g.quadraticCurveTo(ax + dx * R * 0.06, ay + dy * R * 0.06, ax + dx * R * 0.12, ay + dy * R * 0.02);
+      }
+      g.stroke();
+    } else if (x === "shock") {
+      g.strokeStyle = ink;
+      g.lineWidth = OL * 0.5;
+      g.beginPath();
+      for (let i = -2; i <= 2; i++) {
+        const a = -Math.PI / 2 + i * 0.32;
+        g.moveTo(Math.cos(a) * R * 1.12, Math.sin(a) * R * 1.12);
+        g.lineTo(Math.cos(a) * R * 1.34, Math.sin(a) * R * 1.34);
+      }
+      g.stroke();
+    } else if (x === "question") {
+      g.fillStyle = ink;
+      g.font = `900 ${R * 0.7}px "Montserrat", "Arial Black", sans-serif`;
+      g.textAlign = "center";
+      g.fillText("?", R * 0.95, -R * 0.85);
+    } else if (x === "zzz") {
+      g.fillStyle = ink;
+      g.font = `900 ${R * 0.36}px "Montserrat", "Arial Black", sans-serif`;
+      g.fillText("z", R * 0.8, -R * 0.75);
+      g.fillText("Z", R * 1.05, -R * 1.05);
+    } else if (x === "sparkle") {
+      g.fillStyle = "#ffd23f";
+      for (const [sx, sy, s] of [
+        [-R * 1.0, -R * 0.7, 1],
+        [R * 1.05, -R * 0.4, 0.7],
+      ]) {
+        g.beginPath();
+        for (let i = 0; i < 8; i++) {
+          const a = (i / 8) * Math.PI * 2;
+          const rr = (i % 2 ? R * 0.05 : R * 0.16) * s;
+          g.lineTo(sx + Math.cos(a) * rr, sy + Math.sin(a) * rr);
+        }
+        g.closePath();
+        g.fill();
+      }
+    }
+  }
+}
+
+function drawHairHat(g: Ctx, R: number, spec: StickSpec, ink: string, OL: number) {
+  const hc = spec.hairColor ?? "#7a4a2a";
+  g.strokeStyle = ink;
+  g.lineWidth = OL;
+  const fillStroke = () => {
+    g.fill();
+    g.stroke();
+  };
+  if (!spec.mask) {
+    switch (spec.hair ?? "none") {
+      case "short":
+      case "side":
+      case "slick":
+      case "bob":
+      case "long":
+      case "ponytail": {
+        g.fillStyle = hc;
+        g.beginPath();
+        // cap of hair over the crown with a side part
+        g.moveTo(-R * 0.98, -R * 0.12);
+        g.quadraticCurveTo(-R * 1.02, -R * 1.02, 0, -R * 1.02);
+        g.quadraticCurveTo(R * 1.04, -R * 1.0, R * 0.98, -R * 0.1);
+        if (spec.hair === "side" || spec.hair === "slick") {
+          g.quadraticCurveTo(R * 0.6, -R * 0.62, -R * 0.15, -R * 0.5);
+          g.quadraticCurveTo(-R * 0.6, -R * 0.45, -R * 0.98, -R * 0.12);
+        } else {
+          g.quadraticCurveTo(R * 0.45, -R * 0.5, 0, -R * 0.58);
+          g.quadraticCurveTo(-R * 0.55, -R * 0.52, -R * 0.98, -R * 0.12);
+        }
+        g.closePath();
+        fillStroke();
+        if (spec.hair === "short" || spec.hair === "side") {
+          // the little cowlick of the reference's lead
+          g.beginPath();
+          g.moveTo(-R * 0.2, -R * 1.0);
+          g.quadraticCurveTo(-R * 0.35, -R * 1.32, -R * 0.08, -R * 1.42);
+          g.stroke();
+        }
+        break;
+      }
+      case "spiky": {
+        g.fillStyle = hc;
+        g.beginPath();
+        g.moveTo(-R * 0.98, -R * 0.2);
+        for (let i = 0; i <= 8; i++) {
+          const a = Math.PI + (i / 8) * Math.PI;
+          const rr = i % 2 ? R * 1.32 : R * 1.0;
+          g.lineTo(Math.cos(a) * rr, Math.sin(a) * rr - R * 0.05);
+        }
+        g.quadraticCurveTo(0, -R * 0.55, -R * 0.98, -R * 0.2);
+        g.closePath();
+        fillStroke();
+        break;
+      }
+      case "curly": {
+        g.fillStyle = hc;
+        for (let i = 0; i < 9; i++) {
+          const a = Math.PI * 1.05 + (i / 8) * Math.PI * 0.9;
+          g.beginPath();
+          g.arc(Math.cos(a) * R * 0.92, Math.sin(a) * R * 0.92, R * 0.28, 0, Math.PI * 2);
+          fillStroke();
+        }
+        break;
+      }
+      case "bun": {
+        g.fillStyle = hc;
+        g.beginPath();
+        g.arc(0, -R * 1.12, R * 0.34, 0, Math.PI * 2);
+        fillStroke();
+        g.beginPath();
+        g.moveTo(-R * 0.98, -R * 0.15);
+        g.quadraticCurveTo(-R * 1.0, -R * 1.0, 0, -R * 1.0);
+        g.quadraticCurveTo(R * 1.0, -R * 1.0, R * 0.98, -R * 0.15);
+        g.quadraticCurveTo(0, -R * 0.62, -R * 0.98, -R * 0.15);
+        g.closePath();
+        fillStroke();
+        break;
+      }
+      case "mohawk": {
+        g.fillStyle = hc;
+        g.beginPath();
+        g.moveTo(-R * 0.22, -R * 0.9);
+        for (let i = 0; i <= 6; i++) g.lineTo(-R * 0.22 + (i * R * 0.44) / 6, -R * (i % 2 ? 1.45 : 1.15));
+        g.lineTo(R * 0.22, -R * 0.9);
+        g.closePath();
+        fillStroke();
+        break;
+      }
+      default:
+        break;
+    }
+  }
+  const hatC = spec.hatColor ?? "#2b3a67";
+  switch (spec.hat ?? "none") {
+    case "cap":
+    case "police": {
+      g.fillStyle = hatC;
+      g.beginPath();
+      g.moveTo(-R * 0.98, -R * 0.3);
+      g.quadraticCurveTo(-R * 0.95, -R * 1.12, 0, -R * 1.1);
+      g.quadraticCurveTo(R * 0.95, -R * 1.12, R * 0.98, -R * 0.3);
+      g.closePath();
+      fillStroke();
+      g.beginPath();
+      g.moveTo(R * 0.4, -R * 0.36);
+      g.quadraticCurveTo(R * 1.35, -R * 0.42, R * 1.45, -R * 0.22);
+      g.quadraticCurveTo(R * 1.0, -R * 0.12, R * 0.4, -R * 0.24);
+      g.closePath();
+      fillStroke();
+      if (spec.hatText) {
+        g.fillStyle = "#ffd23f";
+        g.font = `900 ${R * 0.36}px "Montserrat", "Arial Black", sans-serif`;
+        g.textAlign = "center";
+        g.textBaseline = "middle";
+        g.fillText(spec.hatText, 0, -R * 0.72);
+      }
+      break;
+    }
+    case "beanie": {
+      g.fillStyle = hatC;
+      g.beginPath();
+      g.moveTo(-R * 1.0, -R * 0.35);
+      g.quadraticCurveTo(-R * 0.95, -R * 1.2, 0, -R * 1.18);
+      g.quadraticCurveTo(R * 0.95, -R * 1.2, R * 1.0, -R * 0.35);
+      g.closePath();
+      fillStroke();
+      g.beginPath();
+      g.roundRect(-R * 1.04, -R * 0.5, R * 2.08, R * 0.26, R * 0.1);
+      fillStroke();
+      break;
+    }
+    case "tophat": {
+      g.fillStyle = hatC;
+      g.beginPath();
+      g.roundRect(-R * 0.58, -R * 1.85, R * 1.16, R * 1.05, R * 0.06);
+      fillStroke();
+      g.beginPath();
+      g.ellipse(0, -R * 0.82, R * 1.0, R * 0.16, 0, 0, Math.PI * 2);
+      fillStroke();
+      break;
+    }
+    case "hardhat":
+    case "helmet": {
+      g.fillStyle = spec.hat === "hardhat" ? spec.hatColor ?? "#ffc21a" : hatC;
+      g.beginPath();
+      g.moveTo(-R * 1.1, -R * 0.34);
+      g.quadraticCurveTo(-R * 1.0, -R * 1.25, 0, -R * 1.22);
+      g.quadraticCurveTo(R * 1.0, -R * 1.25, R * 1.1, -R * 0.34);
+      g.closePath();
+      fillStroke();
+      break;
+    }
+    case "crown": {
+      g.fillStyle = spec.hatColor ?? "#ffcc33";
+      g.beginPath();
+      g.moveTo(-R * 0.62, -R * 0.82);
+      g.lineTo(-R * 0.7, -R * 1.42);
+      g.lineTo(-R * 0.32, -R * 1.12);
+      g.lineTo(0, -R * 1.5);
+      g.lineTo(R * 0.32, -R * 1.12);
+      g.lineTo(R * 0.7, -R * 1.42);
+      g.lineTo(R * 0.62, -R * 0.82);
+      g.closePath();
+      fillStroke();
+      break;
+    }
+    case "chef": {
+      g.fillStyle = "#ffffff";
+      for (const [x, y, r] of [
+        [-R * 0.45, -R * 1.25, R * 0.42],
+        [R * 0.45, -R * 1.25, R * 0.42],
+        [0, -R * 1.45, R * 0.48],
+      ]) {
+        g.beginPath();
+        g.arc(x, y, r, 0, Math.PI * 2);
+        fillStroke();
+      }
+      g.beginPath();
+      g.roundRect(-R * 0.75, -R * 1.15, R * 1.5, R * 0.42, R * 0.1);
+      fillStroke();
+      break;
+    }
+    case "cowboy": {
+      g.fillStyle = spec.hatColor ?? "#8b5a2b";
+      g.beginPath();
+      g.ellipse(0, -R * 0.74, R * 1.45, R * 0.2, 0, 0, Math.PI * 2);
+      fillStroke();
+      g.beginPath();
+      g.roundRect(-R * 0.6, -R * 1.4, R * 1.2, R * 0.7, R * 0.25);
+      fillStroke();
+      break;
+    }
+    case "grad": {
+      g.fillStyle = "#1b1b22";
+      g.beginPath();
+      g.moveTo(-R * 1.25, -R * 1.0);
+      g.lineTo(0, -R * 1.35);
+      g.lineTo(R * 1.25, -R * 1.0);
+      g.lineTo(0, -R * 0.68);
+      g.closePath();
+      fillStroke();
+      break;
+    }
+    case "headband": {
+      g.fillStyle = hatC;
+      g.beginPath();
+      g.roundRect(-R * 1.0, -R * 0.62, R * 2.0, R * 0.2, R * 0.08);
+      fillStroke();
+      break;
+    }
+    default:
+      break;
+  }
+}
+
+
+/** Hand-held props drawn in the same ink style (anchored at the hand dot). */
+function drawItem(g: Ctx, it: Item, at: V, R: number, ink: string, OL: number) {
+  const [x, y] = at;
+  const c = it.color;
+  g.save();
+  g.translate(x, y);
+  g.strokeStyle = ink;
+  g.lineWidth = OL * 0.7;
+  g.lineJoin = "round";
+  const box = (bx: number, by: number, w: number, h: number, fill: string, r = 6) => {
+    g.fillStyle = fill;
+    g.beginPath();
+    g.roundRect(bx, by, w, h, r);
+    g.fill();
+    g.stroke();
+  };
+  switch (it.kind) {
+    case "cup":
+      box(-22, -58, 44, 58, c ?? "#ffffff", 6);
+      g.fillStyle = "#2b2b2b";
+      g.fillRect(-22, -42, 44, 10);
+      break;
+    case "phone":
+      box(-20, -70, 40, 74, c ?? "#26262c", 8);
+      g.fillStyle = "#7fd3ff";
+      g.fillRect(-14, -62, 28, 54);
+      break;
+    case "magnifier":
+      g.lineWidth = OL * 1.2;
+      g.beginPath();
+      g.moveTo(0, 0);
+      g.lineTo(-36, -36);
+      g.stroke();
+      g.fillStyle = "rgba(190,230,255,0.75)";
+      g.lineWidth = OL * 0.9;
+      g.beginPath();
+      g.arc(-60, -60, 34, 0, Math.PI * 2);
+      g.fill();
+      g.stroke();
+      break;
+    case "bag":
+      g.fillStyle = c ?? "#c98a3d";
+      g.beginPath();
+      g.ellipse(0, 46, 52, 56, 0, 0, Math.PI * 2);
+      g.fill();
+      g.stroke();
+      g.beginPath();
+      g.moveTo(-14, -4);
+      g.lineTo(14, -4);
+      g.stroke();
+      g.fillStyle = ink;
+      g.font = `900 46px "Montserrat", "Arial Black", sans-serif`;
+      g.textAlign = "center";
+      g.textBaseline = "middle";
+      g.fillText(it.text ?? "$", 0, 50);
+      break;
+    case "sign": {
+      g.lineWidth = OL * 1.0;
+      g.beginPath();
+      g.moveTo(0, 30);
+      g.lineTo(0, -150);
+      g.stroke();
+      box(-105, -250, 210, 110, c ?? "#ffffff", 10);
+      if (it.text) {
+        g.fillStyle = "#d8303a";
+        g.font = `900 ${Math.min(46, 330 / Math.max(4, it.text.length))}px "Montserrat", "Arial Black", sans-serif`;
+        g.textAlign = "center";
+        g.textBaseline = "middle";
+        g.fillText(it.text, 0, -195);
+      }
+      break;
+    }
+    case "briefcase":
+      box(-60, -10, 120, 86, c ?? "#5b3a24", 8);
+      g.beginPath();
+      g.moveTo(-20, -10);
+      g.lineTo(-20, -24);
+      g.lineTo(20, -24);
+      g.lineTo(20, -10);
+      g.stroke();
+      break;
+    case "laptop":
+      box(-80, -70, 160, 100, c ?? "#c9ced6", 8);
+      g.fillStyle = "#2b3550";
+      g.fillRect(-68, -60, 136, 76);
+      break;
+    case "pen":
+    case "pointer":
+      g.lineWidth = OL * 0.9;
+      g.strokeStyle = c ?? ink;
+      g.beginPath();
+      g.moveTo(0, 0);
+      g.lineTo(it.kind === "pointer" ? -120 : -40, it.kind === "pointer" ? -120 : -46);
+      g.stroke();
+      break;
+    case "flag":
+      g.lineWidth = OL;
+      g.beginPath();
+      g.moveTo(0, 30);
+      g.lineTo(0, -250);
+      g.stroke();
+      box(0, -250, 150, 96, c ?? "#e23d3d", 4);
+      break;
+    case "trophy":
+      g.fillStyle = c ?? "#ffcc33";
+      g.beginPath();
+      g.moveTo(-38, -110);
+      g.lineTo(38, -110);
+      g.quadraticCurveTo(36, -40, 0, -36);
+      g.quadraticCurveTo(-36, -40, -38, -110);
+      g.closePath();
+      g.fill();
+      g.stroke();
+      box(-26, -36, 52, 30, c ?? "#ffcc33", 4);
+      break;
+    case "money":
+      for (let i = 0; i < 3; i++) box(-56 + i * 6, -40 - i * 10, 112, 56, "#7cc576", 6);
+      g.fillStyle = "#2f6b2a";
+      g.font = `900 34px "Montserrat", "Arial Black", sans-serif`;
+      g.textAlign = "center";
+      g.fillText("$", -44 + 12, -10 - 20);
+      break;
+    case "coin":
+      g.fillStyle = "#ffcc33";
+      g.beginPath();
+      g.arc(0, -30, 34, 0, Math.PI * 2);
+      g.fill();
+      g.stroke();
+      break;
+    case "book":
+      box(-56, -76, 112, 84, c ?? "#3d6fd6", 6);
+      break;
+    case "sword":
+      g.lineWidth = OL * 0.8;
+      g.fillStyle = "#dfe6ee";
+      g.beginPath();
+      g.moveTo(-10, -20);
+      g.lineTo(-10, -260);
+      g.lineTo(0, -290);
+      g.lineTo(10, -260);
+      g.lineTo(10, -20);
+      g.closePath();
+      g.fill();
+      g.stroke();
+      box(-36, -26, 72, 16, c ?? "#8b5a2b", 4);
+      break;
+    case "torch":
+      box(-10, -120, 20, 130, "#8b5a2b", 4);
+      g.fillStyle = "#ffb02e";
+      g.beginPath();
+      g.moveTo(0, -200);
+      g.quadraticCurveTo(36, -150, 0, -118);
+      g.quadraticCurveTo(-36, -150, 0, -200);
+      g.fill();
+      break;
+    case "wrench":
+      g.lineWidth = OL * 1.4;
+      g.strokeStyle = "#9aa4b0";
+      g.beginPath();
+      g.moveTo(0, 0);
+      g.lineTo(-70, -70);
+      g.stroke();
+      g.lineWidth = OL * 0.7;
+      g.strokeStyle = ink;
+      g.beginPath();
+      g.arc(-80, -80, 22, 0, Math.PI * 2);
+      g.stroke();
+      break;
+    case "mic":
+      box(-14, -40, 28, 60, "#2b2b2b", 8);
+      g.fillStyle = "#9aa4b0";
+      g.beginPath();
+      g.arc(0, -56, 26, 0, Math.PI * 2);
+      g.fill();
+      g.stroke();
+      break;
+  }
+  g.restore();
+}

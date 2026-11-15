@@ -1,0 +1,91 @@
+# Status (updated 2026-11-14)
+
+Live state of the studio. `CLAUDE.md` has the stable rules; this file has what is done, what is not, and what's next.
+Update it at the end of every session.
+
+## Done and verified
+- **Engine** (`src/core/`): timeline word clock, `<Reel>` with 13 seam types (incl. hard cut), captions (8 presets: bold-pop,
+  boxed, karaoke, pixel, clean, comic, marker, serif), screen FX (`fx2d`), 3D `Stage` (camera rig, looks: day golden
+  overcast dawn dusk night interior alarm studio, custom post chain), particles.
+- **Pipeline** (`scripts/`): new-video, voice (+ `--verify`), timeline, register, stills, sound, render
+  (`--variants`), check. All ran end to end on the sample below.
+- **StickWorld kit**: complete and production-tested (cast presets, 30+ poses incl. walk/run, 24 faces, 18 hand
+  items, 2 prop files, rooms/streets/vehicles/landmarks). Kit API doc: `skills/reel/references/styles/stickworld.md`.
+- **Sample 1: `eiffel-tower-con`** (StickWorld x case-file, "This man sold the Eiffel Tower... for scrap metal.",
+  63.7 s, 197 words, 188 wpm, 10 shots, 3 hook variants). Voice ASR check WER 2.0 % (only the respelled name).
+  Renders: `videos/eiffel-tower-con/renders/eiffel-tower-con.mp4` + `.hook2.mp4` + `.hook3.mp4`.
+  QA: see "Last QA result" below.
+- **Skill** `skills/reel/SKILL.md` + references: 8 mode playbooks, hook library + rubric, script rules,
+  captions/audio, posting, quality bar, failure modes, tools, 4 style bibles, the StickWorld kit doc.
+- **Research** preserved in `docs/research/` (4 reports + the reference analysis).
+
+## Last QA result (eiffel-tower-con, 2026-11-14 21:57)
+**PASS** (`node scripts/check.mjs eiffel-tower-con`): 1080x1920, 30 fps, 63.73 s, 37.0 MB; -14 LUFS, -1.5 dBTP;
+0 frozen spans, 0 pops; 197 words, 188 wpm, 10 words by 3 s; voice WER 2.0 %; no masked words. Remaining warnings
+are only "shot longer than 6.5 s" for s02/s04/s05/s06/s09 (the camera keeps moving inside them). The earlier
+frozen-picture failure was fixed by the camera-creep change in `src/core/three/camera.ts`. No fresh-critic review
+of this final render has been run yet.
+
+## Not done (exact gaps)
+1. **Sub-skills referenced by `skills/reel/SKILL.md` do not exist yet:** `reel-research` (step 2), `reel-hooks`
+   (step 3), `reel-script` (step 4), `reel-critic` (step 8). Write each as `skills/<name>/SKILL.md`, sourcing from
+   `docs/research/` (A §2-4 for research/critic, C §1-3 for hooks/script).
+2. **Missing references:** `skills/reel/references/critic.md` (critic rubric, 7 scored areas, ban list; sources: A §0
+   item 7, §3.8, §4) and the kit API docs `references/styles/blockcraft.md`, `glowvector.md`, `atlas.md` (model them
+   on `styles/stickworld.md`; the `*-bible.md` files are look rules, not APIs).
+3. **Skills are not installed** in `~/.claude/skills/` and there is no install script (copy the folders; junctions
+   are untested with Claude Code's skill loader).
+4. **`scripts/doctor.mjs`** is referenced by `npm run doctor` but not written (environment check: node, ffmpeg,
+   rubberband, .venv imports, WhisperX venv, edge-tts reachability, Chrome headless shell, fonts).
+5. **Glowvector and Atlas kits** (`src/styles/glowvector/kit.tsx`, `src/styles/atlas/kit.tsx`) typecheck but have
+   never been rendered: add lab compositions like `src/lab/BlockLab.tsx` and look-dev them. Watch Atlas performance
+   (all 50m country paths per frame) and the Glowvector `Grain` SVG filter cost.
+6. **Blockcraft** has only been look-dev'd (`BlockLab`). Its terrain has no surface-height helper, so characters on
+   hilly terrain sink in (use `flat: true` under them for now).
+7. **Three planned samples** (facts already checked, below): Blockcraft x what-if, Glowvector x how-it-works,
+   Atlas x map.
+8. **Cleanup candidates:** pipeline test data `videos/_test/`, `src/videos/_test/`, `public/v/_test/`; the unused
+   canvas measuring helpers in `src/core/captions.tsx` (`measureText`, `spaceWidth`, `layout`, `useFontReady`
+   is still used); `src/lab/PostTest.tsx` / `PostRaw.tsx` (post-chain experiments).
+9. **Git:** the initial commit is on branch `studio/initial-import` (`master` was never created; merge or rename when
+   ready). Tracked: code, docs, skills, scripts, per-video data incl. `videos/<slug>/voice/voice.wav`. Ignored and
+   regenerable: stems, 16 kHz copies, `public/v/`. No remote is configured.
+
+## Known issues / watch-outs
+- The free Edge TTS endpoint fails intermittently ("No audio was received"); voice.py retries, but a long outage
+  stops the run. ElevenLabs (`ELEVENLABS_API_KEY`) avoids it.
+- The masking check in `sound.py` flags voice-vs-bed < 3 dB per content word; a word or two can stay flagged after the
+  3 fix passes. Check them by ear before shipping.
+- `check.mjs` warns on shots longer than 6.5 s even when the camera keeps moving; the hard gate is the frozen /
+  dead-stretch detection.
+- Hook variants cut at shot 2's start + 8 frames: a hook shot's variant must not change anything after that frame.
+
+## Verified facts for the planned samples
+- **Kola Superdeep Borehole** (Blockcraft x what-if): ~12,262 m true vertical depth reached in 1989; ~23 cm (9 in)
+  wide; ~180 °C at the bottom vs ~100 °C expected; rock behaved "more like plastic"; drilling halted in 1992 because
+  of the heat; sealing date conflicts between sources (avoid it). Sources:
+  https://en.wikipedia.org/wiki/Kola_Superdeep_Borehole ,
+  https://www.scientificamerican.com/article/how-deep-is-the-deepest-hole-in-the-world/ ,
+  https://science.howstuffworks.com/engineering/civil/kola-superdeep-borehole.htm
+- **Chile** (Atlas x map): ~4,270 km long, ~175-177 km average width (widest ~350 km, narrowest ~64 km per
+  Wikipedia; gob.cl gives 445 / 90 km); 1881 Boundary Treaty set the border along the Andes' highest peaks /
+  continental divide down to 52 S. Sources: https://en.wikipedia.org/wiki/Geography_of_Chile ,
+  https://en.wikipedia.org/wiki/Boundary_Treaty_of_1881_between_Chile_and_Argentina , https://www.gob.cl/en/our-country/
+  Planned comparison (geometry, not yet sourced): Chile's ~38.5 degrees of latitude exceed Europe's North Cape (71 N) to
+  Tarifa (36 N) span (~3,900 km); show it with `Ghost` on an equirectangular map.
+- **Active noise cancelling** (Glowvector x how-it-works): mics sample outside noise, a processor plays an inverted
+  (anti-phase) wave, destructive interference near the ear; best on steady low-frequency sound (engines, below
+  ~1 kHz), weak on sudden/high sounds (voices); passive padding handles highs. Sources:
+  https://en.wikipedia.org/wiki/Noise-cancelling_headphones , https://en.wikipedia.org/wiki/Active_noise_control ,
+  https://www.scientificamerican.com/blog/psi-vid/how-do-active-noise-canceling-headphones-work/
+
+## Next steps (in order)
+1. Write `skills/reel-critic/SKILL.md` + `skills/reel/references/critic.md` (gap 1-2; scored areas and ban list from
+   `docs/research/A-x-playbooks.md` §0 item 7, §1 #1 look-match loop, §3.8, §4).
+2. Use it: a fresh subagent reviews the final Eiffel render (`videos/eiffel-tower-con/qa/sheet_*.jpg`); fix anything
+   scored < 8, re-render, re-run `check.mjs`.
+3. Write the other sub-skills and kit docs (gaps 1-2), `scripts/doctor.mjs` and an install step; install the skills
+   into `~/.claude/skills/` (gaps 3-4).
+4. Look-dev Glowvector and Atlas in lab compositions (gap 5), fix what the stills show.
+5. Produce the three planned samples through the full pipeline, each passing `check.mjs` and a fresh-critic review.
+6. Cleanup (gap 8); decide the main branch name and merge `studio/initial-import` into it (gap 9).

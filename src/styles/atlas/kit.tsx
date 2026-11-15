@@ -1,0 +1,300 @@
+// Atlas kit: accurate cartography + data viz in motion (the moat: generative video gets borders and numbers wrong).
+// Natural Earth borders via world-atlas (ISC), d3-geo projections, van Wijk smooth zoom (d3-interpolate) for fly-tos,
+// constant-width lines at any zoom (vector-effect), focus countries saturated over dimmed context.
+import React, { useMemo } from "react";
+import { AbsoluteFill, Easing, interpolate, spring, useVideoConfig } from "remotion";
+import { geoPath, geoMercator, geoNaturalEarth1, geoEquirectangular, geoOrthographic, geoInterpolate, GeoProjection } from "d3-geo";
+import { interpolateZoom } from "d3-interpolate";
+import { feature, mesh } from "topojson-client";
+import type { Topology } from "topojson-specification";
+import world50 from "world-atlas/countries-50m.json";
+import world110 from "world-atlas/countries-110m.json";
+import { useLocalFrame } from "../../core/timeline";
+import { clamp, invLerp } from "../../core/anim";
+import { font } from "../../core/fonts";
+
+export const ATLAS = {
+  dark: { oceanA: "#13263B", oceanB: "#0E1B2C", land: "#2A3A4C", landHi: "#33475C", border: "rgba(143,163,184,0.45)", coast: "rgba(76,125,168,0.35)", label: "#F1F5F9", halo: "#0B1220" },
+  parchment: { oceanA: "#B8CCC9", oceanB: "#A9BFBC", land: "#E6D7B0", landHi: "#EFE3C2", border: "rgba(122,92,62,0.7)", coast: "rgba(122,92,62,0.25)", label: "#3B2A1A", halo: "#EBDDBE" },
+  focus: { red: "#E63946", blue: "#3A86FF", gold: "#FFBE0B", teal: "#2EC4B6", orange: "#FB8500", purple: "#8338EC", green: "#52B788" },
+};
+
+type Feat = { id: string; properties: { name: string }; geometry: any; type: "Feature" };
+const cache: Record<string, { countries: Feat[]; borders: any; land: any }> = {};
+function data(res: "50m" | "110m") {
+  if (cache[res]) return cache[res];
+  const topo = (res === "50m" ? world50 : world110) as unknown as Topology;
+  const countries = (feature(topo, (topo.objects as any).countries) as any).features as Feat[];
+  const borders = mesh(topo, (topo.objects as any).countries, (a: any, b: any) => a !== b);
+  const land = feature(topo, (topo.objects as any).land ?? (topo.objects as any).countries);
+  cache[res] = { countries, borders, land };
+  return cache[res];
+}
+/** Find a country by name (case-insensitive, also partial) or ISO numeric id. */
+export function country(nameOrId: string, res: "50m" | "110m" = "50m") {
+  const { countries } = data(res);
+  const q = nameOrId.toLowerCase();
+  const c = countries.find((x) => x.id === nameOrId || x.properties.name.toLowerCase() === q) ?? countries.find((x) => x.properties.name.toLowerCase().includes(q));
+  if (!c) throw new Error(`atlas: no country "${nameOrId}". Example names: ${countries.slice(0, 12).map((x) => x.properties.name).join(", ")}`);
+  return c;
+}
+
+export type MapKey = { f: number; lon: number; lat: number; zoom: number };
+export type ProjName = "mercator" | "naturalEarth" | "equirect" | "globe";
+const W = 1080;
+const H = 1920;
+
+function makeProj(name: ProjName, rotate: [number, number] = [0, 0]): GeoProjection {
+  const p = name === "mercator" ? geoMercator() : name === "naturalEarth" ? geoNaturalEarth1() : name === "equirect" ? geoEquirectangular() : geoOrthographic().clipAngle(90);
+  if (name === "globe") return p.scale(470).translate([W / 2, H / 2]).rotate([-rotate[0], -rotate[1]]);
+  return p.scale(name === "mercator" ? 172 : 190).translate([W / 2, H / 2]);
+}
+
+/** View at frame f from keys: van Wijk-Nuij smooth zoom between keys (ease-in-out on t). Returns centre + zoom. */
+export function viewAt(keys: MapKey[], f: number, proj: GeoProjection) {
+  const ks = [...keys].sort((a, b) => a.f - b.f);
+  const toView = (k: MapKey) => {
+    const [x, y] = proj([k.lon, k.lat]) as [number, number];
+    return [x, y, W / k.zoom] as [number, number, number];
+  };
+  if (f <= ks[0].f) return { v: toView(ks[0]), key: ks[0] };
+  for (let i = 0; i + 1 < ks.length; i++) {
+    if (f <= ks[i + 1].f) {
+      const t = Easing.inOut(Easing.cubic)(invLerp(ks[i].f, ks[i + 1].f, f));
+      return { v: interpolateZoom(toView(ks[i]), toView(ks[i + 1]))(t) as [number, number, number], key: ks[i + 1] };
+    }
+  }
+  const last = ks[ks.length - 1];
+  const v = toView(last);
+  const d = f - last.f;
+  return { v: [v[0], v[1], v[2] / (1 + d * 0.0015)] as [number, number, number], key: last }; // hold: slow push
+}
+
+export type Focus = { name: string; color: string; at?: number; out?: number; outline?: boolean };
+export type MapProps = {
+  keys: MapKey[];
+  proj?: ProjName;
+  palette?: "dark" | "parchment";
+  res?: "50m" | "110m";
+  focus?: Focus[];
+  dimOthers?: boolean;
+  children?: (helpers: MapHelpers) => React.ReactNode;
+};
+export type MapHelpers = { p: (lon: number, lat: number) => [number, number]; k: number; f: number; proj: GeoProjection; path: (g: any) => string };
+
+/** The map. Overlays are drawn by `children(helpers)` in map space (use helpers.p(lon, lat) for positions; divide
+ *  screen sizes by helpers.k so they stay constant on screen). */
+export const MapView: React.FC<MapProps> = ({ keys, proj = "mercator", palette = "dark", res = "50m", focus = [], dimOthers = true, children }) => {
+  const f = useLocalFrame();
+  const P = ATLAS[palette];
+  const isGlobe = proj === "globe";
+  // globe: rotate toward the key centre (geoInterpolate) instead of zooming a flat map
+  let rot: [number, number] = [0, 0];
+  if (isGlobe) {
+    const ks = [...keys].sort((a, b) => a.f - b.f);
+    let i = 0;
+    while (i + 1 < ks.length && f > ks[i + 1].f) i++;
+    const a = ks[i];
+    const b = ks[Math.min(i + 1, ks.length - 1)];
+    const t = Easing.inOut(Easing.cubic)(invLerp(a.f, b.f, f));
+    const c = geoInterpolate([a.lon, a.lat], [b.lon, b.lat])(t);
+    rot = [c[0], c[1]];
+  }
+  const projection = useMemo(() => makeProj(proj, rot), [proj, rot[0], rot[1]]);
+  const path = useMemo(() => geoPath(projection), [projection]);
+  const d = data(isGlobe ? "110m" : res);
+  const paths = useMemo(() => d.countries.map((c) => ({ id: c.id, name: c.properties.name, d: path(c as any) ?? "" })), [d, path]);
+  const borders = useMemo(() => path(d.borders) ?? "", [d, path]);
+  const { v } = isGlobe ? { v: [W / 2, H / 2, W] as [number, number, number] } : viewAt(keys, f, projection);
+  const k = isGlobe ? (keys.find((x) => x.f >= f)?.zoom ?? keys[keys.length - 1].zoom) : W / v[2];
+  const tx = W / 2 - v[0] * k;
+  const ty = H / 2 - v[1] * k;
+  const focusMap = new Map(focus.map((x) => [country(x.name, isGlobe ? "110m" : res).id, x]));
+  const helpers: MapHelpers = { p: (lon, lat) => projection([lon, lat]) as [number, number], k, f, proj: projection, path: (g) => path(g) ?? "" };
+  return (
+    <AbsoluteFill style={{ background: `radial-gradient(ellipse at 50% 45%, ${P.oceanA}, ${P.oceanB})` }}>
+      <svg width="100%" height="100%" viewBox={`0 0 ${W} ${H}`}>
+        <defs>
+          <filter id="focusGlow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation={10 / Math.max(1, Math.sqrt(k))} />
+          </filter>
+        </defs>
+        {isGlobe ? <circle cx={W / 2} cy={H / 2} r={470} fill={P.oceanA} stroke="#6FC3FF" strokeOpacity={0.35} strokeWidth={10} /> : null}
+        <g transform={isGlobe ? `translate(${W / 2} ${H / 2}) scale(${k}) translate(${-W / 2} ${-H / 2})` : `translate(${tx} ${ty}) scale(${k})`}>
+          {/* coast glow under the land */}
+          <g opacity={0.9}>
+            {paths.map((c) => (
+              <path key={`g${c.id}${c.name}`} d={c.d} fill="none" stroke={P.coast} strokeWidth={10} vectorEffect="non-scaling-stroke" />
+            ))}
+          </g>
+          {paths.map((c) => {
+            const fo = focusMap.get(c.id);
+            const on = fo && (fo.at === undefined || f >= fo.at) && (fo.out === undefined || f < fo.out);
+            const t = fo && fo.at !== undefined ? clamp((f - fo.at) / 8) : 1;
+            const fill = on ? fo!.color : P.land;
+            const dim = dimOthers && focus.length > 0 && !on;
+            return <path key={`${c.id}${c.name}`} d={c.d} fill={fill} fillOpacity={on ? 0.35 + 0.65 * t : dim ? 0.62 : 1} stroke="none" />;
+          })}
+          <path d={borders} fill="none" stroke={P.border} strokeWidth={1.5} vectorEffect="non-scaling-stroke" />
+          {focus.map((fo) => {
+            const id = country(fo.name, isGlobe ? "110m" : res).id;
+            const pp = paths.find((x) => x.id === id);
+            const on = pp && (fo.at === undefined || f >= fo.at) && (fo.out === undefined || f < fo.out);
+            if (!pp || !on || fo.outline === false) return null;
+            return (
+              <g key={`o${fo.name}`}>
+                <path d={pp.d} fill="none" stroke={fo.color} strokeWidth={14} strokeOpacity={0.4} vectorEffect="non-scaling-stroke" filter="url(#focusGlow)" />
+                <path d={pp.d} fill="none" stroke="#FFFFFF" strokeWidth={4} vectorEffect="non-scaling-stroke" />
+              </g>
+            );
+          })}
+          {children ? children(helpers) : null}
+        </g>
+      </svg>
+    </AbsoluteFill>
+  );
+};
+
+// ------------------------------------------------------------------------------------------------ overlays (map space)
+const springAt = (f: number, at: number, fps: number) => (f < at ? 0 : spring({ frame: f - at, fps, config: { mass: 1, stiffness: 180, damping: 13 } }));
+
+/** Place label with a halo (Oswald caps). Size in SCREEN px. */
+export const Label: React.FC<{ h: MapHelpers; at: number; lon: number; lat: number; text: string; size?: number; color?: string; out?: number; dy?: number }> = ({ h, at, lon, lat, text, size = 40, color = "#F1F5F9", out, dy = 0 }) => {
+  const { fps } = useVideoConfig();
+  const s = springAt(h.f, at, fps);
+  if (s <= 0 || (out !== undefined && h.f > out + 6)) return null;
+  const o = out !== undefined && h.f > out ? 1 - (h.f - out) / 6 : 1;
+  const [x, y] = h.p(lon, lat);
+  const k = h.k;
+  return (
+    <g transform={`translate(${x} ${y + dy / k}) scale(${(s * o) / k})`} opacity={clamp(s * o)}>
+      <text textAnchor="middle" y={size * 0.35} fontFamily={font("Oswald")} fontWeight={700} fontSize={size} letterSpacing={size * 0.06} fill={color} stroke="#0B1220" strokeWidth={size * 0.16} paintOrder="stroke" strokeLinejoin="round">
+        {text.toUpperCase()}
+      </text>
+    </g>
+  );
+};
+
+/** Teardrop pin that drops on a spring with a ripple ring. */
+export const Pin: React.FC<{ h: MapHelpers; at: number; lon: number; lat: number; color?: string; size?: number; label?: string }> = ({ h, at, lon, lat, color = ATLAS.focus.red, size = 56, label }) => {
+  const { fps } = useVideoConfig();
+  if (h.f < at) return null;
+  const s = springAt(h.f, at, fps);
+  const [x, y] = h.p(lon, lat);
+  const k = h.k;
+  const rip = clamp((h.f - at) / 20);
+  return (
+    <g transform={`translate(${x} ${y}) scale(${1 / k})`}>
+      <circle r={size * 2.5 * rip} fill="none" stroke={color} strokeWidth={4} opacity={1 - rip} />
+      <g transform={`translate(0 ${-(1 - s) * 80}) scale(${s})`}>
+        <path d={`M0 0 C ${-size * 0.6} ${-size * 0.55} ${-size * 0.5} ${-size * 1.15} 0 ${-size * 1.15} C ${size * 0.5} ${-size * 1.15} ${size * 0.6} ${-size * 0.55} 0 0Z`} fill={color} stroke="#0B1220" strokeWidth={4} />
+        <circle cy={-size * 0.78} r={size * 0.2} fill="#FFFFFF" />
+      </g>
+      {label ? (
+        <text x={size * 0.7} y={-size * 0.6} fontFamily={font("Oswald")} fontWeight={700} fontSize={34} fill="#F1F5F9" stroke="#0B1220" strokeWidth={6} paintOrder="stroke" opacity={s}>
+          {label.toUpperCase()}
+        </text>
+      ) : null}
+    </g>
+  );
+};
+
+/** Route drawn on along a great circle, arrowhead popping at the end. */
+export const Route: React.FC<{ h: MapHelpers; at: number; dur?: number; from: [number, number]; to: [number, number]; color?: string; width?: number; dashed?: boolean }> = ({ h, at, dur = 30, from, to, color = ATLAS.focus.gold, width = 7, dashed = false }) => {
+  if (h.f < at) return null;
+  const t = Easing.inOut(Easing.cubic)(clamp((h.f - at) / dur));
+  const gi = geoInterpolate(from, to);
+  const pts: [number, number][] = [];
+  for (let i = 0; i <= 64 * t; i++) pts.push(h.p(...(gi(i / 64) as [number, number])));
+  if (pts.length < 2) return null;
+  const d = pts.map((p, i) => `${i ? "L" : "M"}${p[0].toFixed(2)} ${p[1].toFixed(2)}`).join("");
+  const a = pts[pts.length - 1];
+  const b = pts[Math.max(0, pts.length - 3)];
+  const ang = (Math.atan2(a[1] - b[1], a[0] - b[0]) * 180) / Math.PI;
+  return (
+    <g>
+      <path d={d} fill="none" stroke="#0B1220" strokeWidth={width + 4} strokeLinecap="round" vectorEffect="non-scaling-stroke" />
+      <path d={d} fill="none" stroke={color} strokeWidth={width} strokeLinecap="round" strokeDasharray={dashed ? "14 10" : undefined} vectorEffect="non-scaling-stroke" />
+      {t > 0.98 ? <path d="M0 -14 L26 0 L0 14 Z" fill={color} transform={`translate(${a[0]} ${a[1]}) scale(${1 / h.k}) rotate(${ang})`} /> : null}
+    </g>
+  );
+};
+
+/** A measuring bar between two points with a counting distance label (screen-constant widths). */
+export const Measure: React.FC<{ h: MapHelpers; at: number; from: [number, number]; to: [number, number]; value: number; unit?: string; dur?: number; color?: string; side?: number }> = ({ h, at, from, to, value, unit = " km", dur = 26, color = "#FFBE0B", side = 1 }) => {
+  if (h.f < at) return null;
+  const t = Easing.out(Easing.cubic)(clamp((h.f - at) / dur));
+  const a = h.p(...from);
+  const b0 = h.p(...to);
+  const b: [number, number] = [a[0] + (b0[0] - a[0]) * t, a[1] + (b0[1] - a[1]) * t];
+  const k = h.k;
+  const v = Math.round(value * t);
+  const mx = (a[0] + b[0]) / 2 + (side * 90) / k;
+  const my = (a[1] + b[1]) / 2;
+  return (
+    <g>
+      <line x1={a[0]} y1={a[1]} x2={b[0]} y2={b[1]} stroke={color} strokeWidth={6} vectorEffect="non-scaling-stroke" strokeLinecap="round" />
+      {[a, b].map((p, i) => (
+        <line key={i} x1={p[0] - 22 / k} y1={p[1]} x2={p[0] + 22 / k} y2={p[1]} stroke={color} strokeWidth={6} vectorEffect="non-scaling-stroke" strokeLinecap="round" />
+      ))}
+      <g transform={`translate(${mx} ${my}) scale(${1 / k})`}>
+        <text textAnchor="middle" fontFamily={font("Bebas Neue")} fontSize={96} fill={color} stroke="#0B1220" strokeWidth={10} paintOrder="stroke" style={{ fontVariantNumeric: "tabular-nums" }}>
+          {v.toLocaleString("en-US")}
+          {unit}
+        </text>
+      </g>
+    </g>
+  );
+};
+
+/** Draw any GeoJSON feature shifted by (dLon, dLat): honest N-S length comparisons in an equirectangular map. */
+export const Ghost: React.FC<{ h: MapHelpers; name: string; dLon: number; dLat: number; at: number; color?: string; res?: "50m" | "110m"; travel?: number }> = ({ h, name, dLon, dLat, at, color = ATLAS.focus.red, res = "50m", travel = 30 }) => {
+  if (h.f < at) return null;
+  const t = Easing.inOut(Easing.cubic)(clamp((h.f - at) / travel));
+  const c = country(name, res);
+  const shift = (coords: any): any => (typeof coords[0] === "number" ? [coords[0] + dLon * t, coords[1] + dLat * t] : coords.map(shift));
+  const g = { ...c, geometry: { ...c.geometry, coordinates: shift(c.geometry.coordinates) } };
+  return <path d={h.path(g)} fill={color} fillOpacity={0.85} stroke="#FFFFFF" strokeWidth={3} vectorEffect="non-scaling-stroke" />;
+};
+
+// ------------------------------------------------------------------------------------------------ screen overlays
+/** The hero date / number counter (Bebas Neue, tabular). */
+export const DateCounter: React.FC<{ at: number; from: number; to: number; dur?: number; x?: number; y?: number; size?: number; prefix?: string; suffix?: string; color?: string; step?: number }> = ({ at, from, to, dur = 30, x = 540, y = 360, size = 220, prefix = "", suffix = "", color = "#F1F5F9", step = 1 }) => {
+  const f = useLocalFrame();
+  if (f < at) return null;
+  const v = interpolate(f, [at, at + dur], [from, to], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.out(Easing.cubic) });
+  const shown = Math.round(v / step) * step;
+  return (
+    <AbsoluteFill style={{ pointerEvents: "none" }}>
+      <div style={{ position: "absolute", left: 0, right: 0, top: y - size * 0.6, textAlign: "center", fontFamily: font("Bebas Neue"), fontSize: size, lineHeight: 1, color, fontVariantNumeric: "tabular-nums", textShadow: "0 8px 0 rgba(0,0,0,0.35)" }}>
+        {prefix}
+        {shown.toLocaleString("en-US")}
+        {suffix}
+      </div>
+    </AbsoluteFill>
+  );
+};
+
+/** Horizontal bar chart that grows (ease-out cubic), values counting, focus colours. */
+export const Bars: React.FC<{ at: number; rows: { label: string; value: number; color?: string }[]; x?: number; y?: number; width?: number; unit?: string; stagger?: number }> = ({ at, rows, x = 120, y = 520, width = 840, unit = "", stagger = 5 }) => {
+  const f = useLocalFrame();
+  if (f < at) return null;
+  const max = Math.max(...rows.map((r) => r.value));
+  return (
+    <AbsoluteFill style={{ pointerEvents: "none" }}>
+      {rows.map((r, i) => {
+        const t = Easing.out(Easing.cubic)(clamp((f - at - i * stagger) / 18));
+        return (
+          <div key={r.label} style={{ position: "absolute", left: x, top: y + i * 120, width }}>
+            <div style={{ fontFamily: font("Oswald"), fontWeight: 700, fontSize: 38, color: "#F1F5F9", letterSpacing: 2, marginBottom: 6 }}>{r.label.toUpperCase()}</div>
+            <div style={{ height: 54, width: `${(r.value / max) * 82 * t}%`, background: r.color ?? ATLAS.focus.blue, borderRadius: 8, display: "inline-block", verticalAlign: "middle" }} />
+            <span style={{ fontFamily: font("Bebas Neue"), fontSize: 64, color: "#F1F5F9", marginLeft: 18, verticalAlign: "middle", fontVariantNumeric: "tabular-nums" }}>
+              {Math.round(r.value * t).toLocaleString("en-US")}
+              {unit}
+            </span>
+          </div>
+        );
+      })}
+    </AbsoluteFill>
+  );
+};

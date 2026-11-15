@@ -1,0 +1,13 @@
+{
+  "slug": "_test",
+  "title": "test",
+  "language": "en",
+  "voice": {"provider": "edge"},
+  "pronounce": {"Binance": "Bye-nance"},
+  "beats": [
+    {"id": "b01", "shot": "s01", "role": "hook", "text": "How could one single laptop cost *$6 billion?*"},
+    {"id": "b02", "shot": "s02", "text": "For months, fake recruiters approached Binance engineers."},
+    {"id": "b03", "shot": "s02", "text": "Job interviews, video calls, everything looked real."},
+    {"id": "b04", "shot": "s03", "text": "On October 29th, the FBI found *12,000* wallets."}
+  ]
+}

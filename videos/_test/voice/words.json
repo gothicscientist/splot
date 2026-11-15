@@ -1,0 +1,320 @@
+{
+ "version": 2,
+ "sampleRate": 48000,
+ "duration": 13.4549,
+ "lead": 0.06,
+ "provider": "edge",
+ "voice": "en-US-AndrewMultilingualNeural",
+ "tempo": 1.18,
+ "wpm": 144.3,
+ "beats": [
+  {
+   "id": "b01",
+   "shot": "s01",
+   "start": 0.06,
+   "speechEnd": 2.8512,
+   "end": 3.0713,
+   "say": "How could one single laptop cost six billion dollars?",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b02",
+   "shot": "s02",
+   "start": 3.0713,
+   "speechEnd": 6.2156,
+   "end": 6.3356,
+   "say": "For months, fake recruiters approached Bye-nance engineers.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b03",
+   "shot": "s02",
+   "start": 6.3356,
+   "speechEnd": 9.4022,
+   "end": 9.5622,
+   "say": "Job interviews, video calls, everything looked real.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b04",
+   "shot": "s03",
+   "start": 9.5622,
+   "speechEnd": 12.7549,
+   "end": 12.7549,
+   "say": "On October twenty-ninth, the FBI found twelve thousand wallets.",
+   "tightenedSec": 0.159
+  }
+ ],
+ "words": [
+  {
+   "i": 0,
+   "beat": "b01",
+   "text": "How",
+   "spoken": "how",
+   "start": 0.08,
+   "end": 0.16,
+   "emph": false
+  },
+  {
+   "i": 1,
+   "beat": "b01",
+   "text": "could",
+   "spoken": "could",
+   "start": 0.18,
+   "end": 0.321,
+   "emph": false
+  },
+  {
+   "i": 2,
+   "beat": "b01",
+   "text": "one",
+   "spoken": "one",
+   "start": 0.442,
+   "end": 0.562,
+   "emph": false
+  },
+  {
+   "i": 3,
+   "beat": "b01",
+   "text": "single",
+   "spoken": "single",
+   "start": 0.602,
+   "end": 0.823,
+   "emph": false
+  },
+  {
+   "i": 4,
+   "beat": "b01",
+   "text": "laptop",
+   "spoken": "laptop",
+   "start": 0.863,
+   "end": 1.245,
+   "emph": false
+  },
+  {
+   "i": 5,
+   "beat": "b01",
+   "text": "cost",
+   "spoken": "cost",
+   "start": 1.325,
+   "end": 1.626,
+   "emph": false
+  },
+  {
+   "i": 6,
+   "beat": "b01",
+   "text": "$6",
+   "spoken": "six",
+   "start": 1.807,
+   "end": 2.028,
+   "emph": true
+  },
+  {
+   "i": 7,
+   "beat": "b01",
+   "text": "billion?",
+   "spoken": "billion dollars",
+   "start": 2.068,
+   "end": 2.63,
+   "emph": true
+  },
+  {
+   "i": 8,
+   "beat": "b02",
+   "text": "For",
+   "spoken": "for",
+   "start": 3.1522,
+   "end": 3.3133,
+   "emph": false
+  },
+  {
+   "i": 9,
+   "beat": "b02",
+   "text": "months,",
+   "spoken": "months",
+   "start": 3.3733,
+   "end": 3.6562,
+   "emph": false
+  },
+  {
+   "i": 10,
+   "beat": "b02",
+   "text": "fake",
+   "spoken": "fake",
+   "start": 4.0382,
+   "end": 4.2402,
+   "emph": false
+  },
+  {
+   "i": 11,
+   "beat": "b02",
+   "text": "recruiters",
+   "spoken": "recruiters",
+   "start": 4.2803,
+   "end": 4.6833,
+   "emph": false
+  },
+  {
+   "i": 12,
+   "beat": "b02",
+   "text": "approached",
+   "spoken": "approached",
+   "start": 4.7242,
+   "end": 5.1273,
+   "emph": false
+  },
+  {
+   "i": 13,
+   "beat": "b02",
+   "text": "Binance",
+   "spoken": "bye nance",
+   "start": 5.2483,
+   "end": 5.6113,
+   "emph": false
+  },
+  {
+   "i": 14,
+   "beat": "b02",
+   "text": "engineers.",
+   "spoken": "engineers",
+   "start": 5.6513,
+   "end": 6.0143,
+   "emph": false
+  },
+  {
+   "i": 15,
+   "beat": "b03",
+   "text": "Job",
+   "spoken": "job",
+   "start": 6.3956,
+   "end": 6.6366,
+   "emph": false
+  },
+  {
+   "i": 16,
+   "beat": "b03",
+   "text": "interviews,",
+   "spoken": "interviews",
+   "start": 6.6966,
+   "end": 7.1176,
+   "emph": false
+  },
+  {
+   "i": 17,
+   "beat": "b03",
+   "text": "video",
+   "spoken": "video",
+   "start": 7.4376,
+   "end": 7.7586,
+   "emph": false
+  },
+  {
+   "i": 18,
+   "beat": "b03",
+   "text": "calls,",
+   "spoken": "calls",
+   "start": 7.7986,
+   "end": 8.1596,
+   "emph": false
+  },
+  {
+   "i": 19,
+   "beat": "b03",
+   "text": "everything",
+   "spoken": "everything",
+   "start": 8.4806,
+   "end": 8.7806,
+   "emph": false
+  },
+  {
+   "i": 20,
+   "beat": "b03",
+   "text": "looked",
+   "spoken": "looked",
+   "start": 8.8206,
+   "end": 9.0216,
+   "emph": false
+  },
+  {
+   "i": 21,
+   "beat": "b03",
+   "text": "real.",
+   "spoken": "real",
+   "start": 9.0816,
+   "end": 9.2616,
+   "emph": false
+  },
+  {
+   "i": 22,
+   "beat": "b04",
+   "text": "On",
+   "spoken": "on",
+   "start": 9.6222,
+   "end": 9.6822,
+   "emph": false
+  },
+  {
+   "i": 23,
+   "beat": "b04",
+   "text": "October",
+   "spoken": "october",
+   "start": 9.7232,
+   "end": 10.0442,
+   "emph": false
+  },
+  {
+   "i": 24,
+   "beat": "b04",
+   "text": "29th,",
+   "spoken": "twenty ninth",
+   "start": 10.0842,
+   "end": 10.5862,
+   "emph": false
+  },
+  {
+   "i": 25,
+   "beat": "b04",
+   "text": "the",
+   "spoken": "the",
+   "start": 10.6862,
+   "end": 10.7872,
+   "emph": false
+  },
+  {
+   "i": 26,
+   "beat": "b04",
+   "text": "FBI",
+   "spoken": "eff bee eye",
+   "start": 10.8472,
+   "end": 11.2692,
+   "emph": false
+  },
+  {
+   "i": 27,
+   "beat": "b04",
+   "text": "found",
+   "spoken": "found",
+   "start": 11.3092,
+   "end": 11.5902,
+   "emph": false
+  },
+  {
+   "i": 28,
+   "beat": "b04",
+   "text": "12,000",
+   "spoken": "twelve thousand",
+   "start": 11.6902,
+   "end": 12.2532,
+   "emph": true
+  },
+  {
+   "i": 29,
+   "beat": "b04",
+   "text": "wallets.",
+   "spoken": "wallets",
+   "start": 12.2732,
+   "end": 12.5542,
+   "emph": false
+  }
+ ]
+}
