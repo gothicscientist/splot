@@ -40,7 +40,8 @@ Studio: `C:\Users\bhara\nomen-studio` (or `$NOMEN_STUDIO`). Run every command fr
 6. Write `alleged` in the `checked` column where the script must hedge ("allegedly", "according to"). Safety pass:
    no private individuals or minors by name, no gore, no weapon / drug / dangerous how-to detail, neutral wording for
    live conflicts, canon vs fan theory for lore, no invented product claims, no real person's likeness (scenes use
-   stand-ins).
+   stand-ins), except a ug-rap bio / scene: there also write the artist's `## Look sheet` (per era, traits from dated
+   public photos, two photos per trait; see "Drawing the real artist" in `modes/ug-rap.md`).
 7. While reading, collect the **spine** for the next steps: the hook number (the single most absurd figure), the twist
    (the small mistake, the irony, the counter-intuitive turn) and one drawable detail per beat (object, place, screen).
 8. Write the file in the house format (finished examples: `videos/eiffel-tower-con/research.md`,

@@ -33,7 +33,7 @@ the archive-fashion / underground-rap side of TikTok. The owner gives a broad pr
 build the story on the scene's real jokes, and tie it into **pileGo!**, the owner's app (pilego.app: snap the clothes
 pile, it lists everywhere you sell, and when one sells it comes down everywhere else).
 **ug-rap channel.** Stories, scene histories and scenarios of underground rap (rage, plugg, jerk, sleazepop, UK Ug...),
-told with ORIGINAL stand-in characters and original music, with pileGo! tie-ins through the fans' clothes.
+told with the real artists drawn recognisably from sourced look sheets (original characters in scenarios) and original music, with pileGo! tie-ins through the fans' clothes.
 
 Read before writing a single line:
 - `skills/reel/references/modes/tiff.md` or `modes/ug-rap.md`: the playbook (formats, beat sheets, hooks, visuals,
@@ -52,7 +52,7 @@ node scripts/lint-script.mjs <slug>                                         # ga
 PYTHONIOENCODING=utf-8 .venv/Scripts/python.exe scripts/voice.py <slug> --verify   # gate: ASR check (WER)
 node scripts/timeline.mjs <slug> && node scripts/register.mjs
 npx tsc --noEmit                                                            # gate: clean
-node scripts/stills.mjs v-<slug> --shots <slug> --scale 0.5 --sheet 6       # then 2 fresh reel-critic agents
+node scripts/stills.mjs v-<slug> --shots <slug> --scale 0.5 --sheet 6       # then 1 critic + 1 verify critic, max
 PYTHONIOENCODING=utf-8 .venv/Scripts/python.exe scripts/sound.py <slug>     # gate: -14 LUFS, <= -1.5 dBTP, no masking
 node scripts/render.mjs <slug> --variants                                   # main MP4 + hook variants
 node scripts/check.mjs <slug>                                               # gate: must exit 0
@@ -64,10 +64,11 @@ Look-dev compositions: `TiffStage` (Tiff in 3D sets), `SceneCast` (side cast), `
 
 ## 5. Rules you must not break
 1. **Gates:** never show the owner a render that failed `check.mjs`, a critic FAIL, a lint error or a WER above 6 %
-   without saying so plainly. The critic is always a fresh agent that did not build the video.
+   without saying so plainly. The critic is always a fresh agent that did not build the video, and a video gets at most 2 critic agents (full +
+   verify; "The critic budget" in `skills/reel/references/critic.md`): never loop critics until PASS.
 2. **Facts:** every claim in `videos/<slug>/research.md` with its source; real people (ug-rap bios, names dropped in
-   jokes): verified facts only, no rumours, allegations, private life or invented quotes, never their likeness or
-   voice, and never shown or implied using or endorsing pileGo! (lint fails a plug beat that names the real subject).
+   jokes): verified facts only, no rumours, allegations, private life or invented quotes, never their voice; their
+   likeness only in ug-rap bio / scene episodes, drawn from the look sheet (`modes/ug-rap.md`), and never in a plug shot, and never shown or implied using or endorsing pileGo! (lint fails a plug beat that names the real subject).
 3. **The plug:** pileGo! never appears before ~70 % of the runtime (lint enforces it), at most two spoken mentions,
    only the facts in `brands/pilego.md`, never "I found this app" (Tiff is the brand's own character). The owner has
    permission for pileGo!'s automatic relisting: never hedge it.

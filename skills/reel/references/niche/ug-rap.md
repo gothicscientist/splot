@@ -10,7 +10,7 @@
 - **Comedy engine:** the scene casts its expert as a guy and the "fully drained girlfriend" as a myth [4, 8]. Tiff out-knows the gatekeeper with no visible effort (the scene's own rule), then sells something.
 - **Ballhog** = the 2026 look of rare archive pieces that read as ordinary, named after the Ball Hog crew; mainstream in Oct 2026, already a worn-out hashtag [9, 10]. It is Tiff's lane.
 - **Psy-op reflex:** marketing gets called a psy-op [1]. Pitch only after 70 % of runtime and lead with "real photos, real cutouts, no AI recreations".
-- **Names only:** no faces, signature looks, logos, album art, songs, lyrics or snippets; no real person endorses pileGo! or speaks invented lines.
+- **Real artists:** ug-rap bio / scene episodes draw the artist as themselves from a sourced look sheet (owner decision 2026-11-16, `modes/ug-rap.md`); Tiff episodes and scenarios use names only. Never logos, album art, songs, lyrics or snippets; no real person endorses pileGo! or speaks invented lines.
 - **Off-limits:** deaths (Luci4 died 22 Feb 2026 [11]), drugs, allegations, feuds, private lives, real names. Nettspend is 19, with teen fans.
 - **Voice (our default):** US-online, global taste; one slang term per line, one abbreviation per video, no spelled-out swearing. Stacked "ts pmo icl" reads as parody and drew digital-blackface criticism [12].
 
@@ -128,7 +128,7 @@ pileGo! (name, app or UI) appears only after ~70 % of runtime; the chair pile ca
 Gets you clowned: stacked slang; poser words in Tiff's mouth (6-7, skibidi, rizz, sigma, pookie, bae, YOLO, it's giving, slay, bussin, vibe check, cheugy) [57, 20]; the mislabels above; misspellings (OsamaSon, EsDeeKid, 2hollis, Yhapojj, 1c34, Ø WAY); 2023 memes sold as new; explaining the joke; a pitch before 70 %; crude or misogynistic slang (huzz, chuzz, chop hoe, "ur scaring the hoes", draincel, sybau).
 
 Hard fences:
-- No likeness: no faces and none of these signatures: fakemink's skullet with the Dash Snow hoodie, EsDeeKid's balaclava, Tiffany Day's cap with headphones, plush backpack or halo, xaviersobased's hood over his afro with blue nails, Nettspend's magenta hair.
+- Likeness: these signatures are what make each artist recognisable, so in a ug-rap bio / scene they belong on the artist's look sheet (checked against photos of the era): fakemink's skullet with the Dash Snow hoodie, EsDeeKid's balaclava, Tiffany Day's cap with headphones, plush backpack or halo, xaviersobased's hood over his afro with blue nails, Nettspend's magenta hair. Never on Tiff, a scenario character or a side-cast figure; never photoreal or traced; printed artwork (the Dash Snow photo print) drawn as an abstract print.
 - No logos or album art drawn (labels, fashion houses, Fortnite, resale sites); names in text only.
 - No real person shown or implied endorsing pileGo! or anything; no invented quotes; artists never "react".
 - No songs, lyrics, beats, tags, snippets or leaks; titles only; original score.

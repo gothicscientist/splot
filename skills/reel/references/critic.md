@@ -43,7 +43,8 @@ Scoring guide: 10 = indistinguishable from a top outlier in the niche; 8 = shipp
   intro, outro or logo sting.
 - A static hold of 4+ frames; a blank or near-blank frame; a first frame without the subject.
 - Captions that restate on-screen text word for word in the same place; full stops in captions.
-- Real brands, real people's likenesses, copyrighted characters, Mojang textures, the word "Minecraft" on screen.
+- Real brands, real people's likenesses (except a ug-rap bio / scene artist drawn from the look sheet), copyrighted
+  characters, Mojang textures, the word "Minecraft" on screen.
 
 ## Story modes (`tiff`, `ug-rap`): exemptions and extra checks
 Exemptions: **pileGo!** is the owner's own app, so its wordmark, tag mark and UI are expected on screen (from ~70 % of
@@ -58,12 +59,15 @@ Extra checks (each hit is a **P0**):
 - **The plug:** app UI, logo or a spoken "pileGo!" before ~70 % of the runtime (a chair pile in the background is fine);
   the plug interrupting the story instead of paying it off; a hard CTA on screen; more than two spoken mentions.
 - **Real people:** a real artist (or anyone real) shown, named or implied as using or endorsing pileGo! or anything;
-  a stand-in drawn with a real artist's signature look (hair, tattoos, mask, outfit) in a `scenario` episode.
+  a real artist in a plug shot; a character drawn with a real artist's signature look in a `scenario` or Tiff episode.
+- **Off model (ug-rap bio / scene):** the drawn artist does not match the `## Look sheet` in research.md (hair cut or
+  colour, facial hair, skin tone, the era's signature fit or accessory), changes look between shots of the same era,
+  wears a later era's fit in an earlier era, or is drawn mocking / unflattering. Name the row it breaks.
 - **Trademarks:** a real brand's logo, monogram or signature graphic on any garment, sign or screen.
-Niche lens (score it under **hook** and **story clarity**): read the "Cringe, poser tells and hard avoids" sections of
-`skills/reel/references/niche/*.md`. Would someone from this scene clown the video in the comments: dated or misused
-slang, a wrong fact about an artist, a poser tell, a joke that only works because the app shows up? The joke must land
-with the plug cut out.
+Niche lens (score it under **hook** and **story clarity**, from `script.json` and the pictures; the builder already ran
+the niche cringe check at the script stage, so do not read the niche files): would someone from this scene clown the
+video in the comments: dated or misused slang, a poser tell, a joke that only works because the app shows up? The joke
+must land with the plug cut out.
 
 ## Readability traps (check each style's list too)
 - A figure on one rope reads as a hanging; a prop next to a hand reads as the hand; a foreground bush reads as a
@@ -85,7 +89,25 @@ VERDICT  PASS | FAIL (FAIL if any area < 8 or any P0)
 Rules: every note names a frame/time and a shot; describe what you SEE, never guess at code; at most 12 notes,
 most damaging first; if a busy shot is the problem, say which third of its motion to remove.
 
-## The fix loop (builder side)
-Fix P0s, then the P1s in areas under 8. Re-render only the changed shots' stills. Send the new sheet to a NEW critic
-(not the same agent). Stop when the verdict is PASS, or after 4 rounds: then report the remaining notes honestly.
+## The critic budget (builder side: hard caps, every agent costs the owner tokens)
+At most **2 critic agents per video**: one full review and one verify. Never more unless the owner asks for it.
+1. **Round 1 (full).** ONE fresh agent (`model: "sonnet"`) applies BOTH lenses in one pass (the outlier bar, then the
+   phone viewer + glitch hunter) to the full stills sheet and returns one report. Do not spawn one agent per lens.
+2. **One fix pass.** Fix every P0 and the P1s in areas under 8 in ONE pass, all notes together, not one at a time.
+   P2s only when they take minutes. Re-render only the changed shots, into a separate folder:
+   `node scripts/stills.mjs v-<slug> --shots <slug> --only s03,s07 --out out/stills/v-<slug>/r2 --scale 0.5 --sheet 6`.
+3. **Round 2 (verify).** ONE new fresh agent (`model: "sonnet"`) gets the round-1 report and the r2 sheet only, in
+   verify mode (see `skills/reel-critic`): FIXED / NOT FIXED per note, new P0s in those frames, re-scores only the
+   areas the notes touched (the rest carry over from round 1).
+4. **Stop.** PASS: go on to sound and render. Still FAIL: fix the remaining P0s once more, check those frames yourself
+   (no third critic), and continue; tell the owner the remaining notes and scores plainly when you deliver.
+5. **Final render.** No critic on the QA sheets when no scene changed after the last critic round: `check.mjs` exit 0
+   plus your own look at `qa/sheet_*.jpg` is the gate. If scenes changed after round 2, check those seconds yourself.
+6. **No loops by machinery.** Never wrap critic and builder in a workflow or loop that runs until PASS, never one
+   critic per video in a batch fan-out, and never re-run a critic on an unchanged sheet hoping for a better score.
+7. **Cheap inputs.** The critic reads `critic.md`, the style bible, `script.json` and the sheets: no research files, no
+   source code, at most 6 single frames. The niche cringe check is a script-stage check (`reel-script` / the
+   builder reads the cringe sections once), not a visual one.
+8. **Before round 1.** At most 2 of your own stills passes (full sheet, then changed shots only). The critic is the
+   check; do not polish in a long self-review loop first.
 Every confirmed defect class goes into `references/failure-modes.md` so the next video does not repeat it.

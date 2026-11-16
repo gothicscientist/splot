@@ -106,6 +106,14 @@ if (["tiff", "ug-rap"].includes(S.mode)) {
     else if (sub.real) {
       const rows = (fs.existsSync(`videos/${slug}/research.md`) ? read(`videos/${slug}/research.md`) : "").split("\n").filter((l) => /^\|\s*\d+/.test(l)).length;
       if (rows < 6) say("x", `subject is a real person: research.md has ${rows} sourced rows (need >= 6, two sources each)`);
+      if (sub.kind !== "scenario") {
+        // the artist is drawn as themselves: a look sheet from dated public photos is required (modes/ug-rap.md)
+        const r = fs.existsSync(`videos/${slug}/research.md`) ? read(`videos/${slug}/research.md`) : "";
+        const sec = r.split(/^## /m).find((p) => p.startsWith("Look sheet"));
+        const urls = sec ? new Set(sec.match(/https?:\/\/[^\s)|>\]]+/g) ?? []).size : 0;
+        if (!sec) say("x", `subject is a real artist: research.md has no "## Look sheet" (traits from dated public photos per era; modes/ug-rap.md)`);
+        else if (urls < 2) say("x", `research.md "## Look sheet" cites ${urls} photo URL(s) (need >= 2)`);
+      }
       const nm = norm(sub.name ?? "");
       for (const id of P?.beats ?? []) {
         const b = S.beats.find((x) => x.id === id);

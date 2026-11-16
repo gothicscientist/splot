@@ -50,10 +50,11 @@ PYTHONIOENCODING=utf-8 .venv/Scripts/python.exe scripts/voice.py <slug> --verify
 Narrator `en-US-AvaMultilingualNeural` (Edge, free); side characters from `voice.cast`. With an ElevenLabs connector,
 the narrator may be one take, but dialogue lines still need per-beat voices.
 
-## 6-8. Timeline, scenes, look check (gate: two fresh critics PASS)
+## 6-8. Timeline, scenes, look check (gate: critic PASS, 2 critic agents max)
 Scenes in StickWorld; Tiff framed only with `frameOn`; the relist snap in every episode; the pileGo! device after
-~70 %; the `EndCard` after the last line. Stills -> `reel-critic` in two fresh agents (outlier bar; phone viewer +
-glitch hunter), with the story-mode checks in `critic.md`.
+~70 %; the `EndCard` after the last line. Stills -> ONE fresh `reel-critic` agent (both lenses: outlier bar,
+phone viewer + glitch hunter) with the story-mode checks in `critic.md`, one fix pass, ONE verify critic on the
+changed shots, then stop (the critic budget in `critic.md`: 2 critic agents per episode).
 
 ## 9-11. Sound, render + QA, deliver
 `sound.py` (mood from script.json), `render.mjs --variants`, `check.mjs` must exit 0. Deliver the MP4 and write
