@@ -1,0 +1,401 @@
+{
+ "slug": "ug-02-ecco2k",
+ "title": "The slowest man in the fastest scene: the life of Ecco2k",
+ "mode": "ug-rap",
+ "style": "stickworld",
+ "language": "en",
+ "fps": 30,
+ "channel": "ug",
+ "series": {
+  "name": "UG files",
+  "episode": 2
+ },
+ "subject": {
+  "kind": "bio",
+  "name": "Ecco2k",
+  "real": true
+ },
+ "voice": {
+  "provider": "take",
+  "voice": "en-US-BrianMultilingualNeural",
+  "rate": "+6%",
+  "wpm": 205,
+  "cast": {},
+  "take": {
+   "voice": "VCgLBmBjldJmfphyB8sZ",
+   "model": "eleven_v4"
+  },
+  "direction": "gossipy, amused, fast TikTok storytime",
+  "ipa": {
+   "Ecco2k": "Ecco two K",
+   "Krossad": "Kross-ahd",
+   "pileGo!": "pile go"
+  }
+ },
+ "music": {
+  "mood": "plugg"
+ },
+ "captions": {
+  "preset": "boxed"
+ },
+ "pronounce": {
+  "pileGo": "pile go",
+  "Ecco2k": "Ecco two K",
+  "Krossad": "Kross-ahd",
+  "Bladee": "Blah-dee",
+  "Alyx": "Alix"
+ },
+ "defaultTransition": "whip-right",
+ "hooks": [
+  {
+   "text": "Ecco2k told Vogue it would *never* slow down.",
+   "family": "C3 contrarian (prophecy that aged badly) + payoff number in line 2",
+   "score": 88,
+   "chosen": true
+  },
+  {
+   "text": "Nearly seven years for one album. Here's the life of Ecco2k.",
+   "family": "B1 shock-number",
+   "score": 81
+  },
+  {
+   "text": "At sixteen, Ecco2k ran a clothing brand. The factory had no idea.",
+   "family": "A2 secret / nobody knew",
+   "score": 80
+  }
+ ],
+ "hookVariants": [
+  {
+   "id": "v1",
+   "visual": "frame 0: night street, Ecco2k (E-era: arctic-white mop, black jumpsuit tied at the waist, bare chest) striding fast towards the lens, camera tracking back; quote card 'vogue, 2016' on 'Vogue'; text hook \"'never slowing down'\" in the top band from frame 0"
+  },
+  {
+   "id": "v2",
+   "visual": "frame 0: close-up on him mid-stride, pull back fast on 'never' to the whole street; same text hook"
+  },
+  {
+   "id": "v3",
+   "visual": "frame 0: wide from the side, he speed-walks past street lamps with motion streaks, the camera whips to follow; same text hook"
+  }
+ ],
+ "plug": {
+  "pattern": "punchline",
+  "beats": [
+   "b20",
+   "b21",
+   "b22"
+  ]
+ },
+ "beats": [
+  {
+   "id": "b01",
+   "shot": "s01",
+   "role": "hook",
+   "text": "Ecco2k told Vogue it would *never* slow down.",
+   "visual": "Night street. Ecco2k (E-era look) speed-walks towards the lens, the camera tracking back. Text hook \"'never slowing down'\" from frame 0; a quote card 'vogue, 2016' pops on 'Vogue'; name label.",
+   "sfx": [
+    {
+     "at": "never",
+     "sound": "whoosh"
+    }
+   ]
+  },
+  {
+   "id": "b02",
+   "shot": "s01",
+   "text": "Album two took nearly *seven* years.",
+   "visual": "He brakes and droops into a sleepy pose; a year counter rolls 2019 -> 2026 and a 'nearly 7 years' stamp slams on 'seven'.",
+   "sfx": [
+    {
+     "at": "seven",
+     "sound": "record_scratch"
+    }
+   ]
+  },
+  {
+   "id": "b03",
+   "shot": "s02",
+   "transition": "flash",
+   "text": "Rewind: Stockholm. He and school friend Bladee start a punk band, *Krossad*.",
+   "visual": "Rewind flash to a kid's bedroom: kid Ecco with a tall spiked mohawk, studded black vest, at a mic. A hand-drawn flyer 'krossad' on the wall; tags 'stockholm', 'with school friend bladee' (Bladee is never drawn), 'it means crushed'.",
+   "sfx": [
+    {
+     "at": "Krossad",
+     "sound": "impact",
+     "gain": -12
+    }
+   ]
+  },
+  {
+   "id": "b04",
+   "shot": "s03",
+   "text": "At sixteen he runs a *clothing* brand, and the factory has no idea.",
+   "visual": "Teen Ecco at a desk with a laptop; an order email card 'to: the owner of alaska' slides in; an 'age 16' tag; a 'they had no idea' stamp on 'idea'.",
+   "sfx": [
+    {
+     "at": "idea",
+     "sound": "stamp"
+    }
+   ]
+  },
+  {
+   "id": "b05",
+   "shot": "s04",
+   "transition": "whip-left",
+   "text": "In 2013 they start *Gravity Boys*, later renamed Drain Gang.",
+   "visual": "Rain-wet housing block at night; Ecco (2013: short bleached crop tinted pink) at the front. A '2013' year stamp; an alias stack builds: gravity boys, gravity boys shield gang, shield gang, each struck out, then 'drain gang' slams on top.",
+   "sfx": [
+    {
+     "at": "Drain",
+     "sound": "impact",
+     "gain": -12
+    }
+   ]
+  },
+  {
+   "id": "b06",
+   "shot": "s05",
+   "transition": "push",
+   "text": "By day, he designs *sneakers*.",
+   "visual": "A bright design studio: a giant cartoon sneaker on the desk, sketches pinned up; Ecco (E-era white mop) sketching.",
+   "sfx": [
+    {
+     "at": "sneakers",
+     "sound": "pen_scribble"
+    }
+   ]
+  },
+  {
+   "id": "b07",
+   "shot": "s05",
+   "text": "In 2018, he walks *Alyx* in Paris.",
+   "visual": "The wall flips to a white runway with photographers' flashes; he walks towards the lens, deadpan. Tag 'paris fashion week · 2018'.",
+   "sfx": [
+    {
+     "at": "Paris",
+     "sound": "shutter"
+    }
+   ]
+  },
+  {
+   "id": "b08",
+   "shot": "s06",
+   "transition": "whip-right",
+   "text": "He quits, shaves his head, and calls it his *Britney* moment.",
+   "visual": "Bathroom mirror at night: the white mop poofs off on 'shaves' (burst), he's bald; quote tag \"'some kind of britney moment'\" on 'Britney'.",
+   "sfx": [
+    {
+     "at": "shaves",
+     "sound": "zap"
+    }
+   ]
+  },
+  {
+   "id": "b09",
+   "shot": "s06",
+   "text": "No warning: he drops his debut, *E*, recorded in six cities.",
+   "visual": "An upload card 'e' (original seeded cover, white) slams in with a 'surprise drop' stamp and 'nov 27 2019'; six city chips pop in a row.",
+   "sfx": [
+    {
+     "at": "drops",
+     "sound": "impact",
+     "gain": -10
+    }
+   ]
+  },
+  {
+   "id": "b10",
+   "shot": "s07",
+   "transition": "push",
+   "text": "He calls it *pixie* music. The internet hears helium.",
+   "visual": "Close on him singing at a mic in a dark booth, sparkles on the high notes; tag \"'pixie music'\"; a cartoon helium balloon floats up next to him on 'helium'.",
+   "sfx": [
+    {
+     "at": "pixie",
+     "sound": "sparkle"
+    },
+    {
+     "at": "helium",
+     "sound": "boing"
+    }
+   ]
+  },
+  {
+   "id": "b11",
+   "shot": "s08",
+   "transition": "dissolve",
+   "text": "For *Peroxide*, he floats alone in a dinghy between wind turbines.",
+   "visual": "Grey dusk sea, giant white wind turbines turning; he stands alone in a small white dinghy, bobbing. Tags 'peroxide · 2020' and a view counter '5.8M views'.",
+   "sfx": [],
+   "ambience": [
+    "surf"
+   ]
+  },
+  {
+   "id": "b12",
+   "shot": "s09",
+   "transition": "whip-left",
+   "text": "His next EP? A car battery in a *washing machine*, he says.",
+   "visual": "A laundromat: a cartoon car battery drops into a washing machine, which shakes violently, sparks flying; tag 'pxe · 2021'. He is not in this shot.",
+   "sfx": [
+    {
+     "at": "battery",
+     "sound": "clunk"
+    },
+    {
+     "at": "washing",
+     "sound": "metal_clang"
+    }
+   ]
+  },
+  {
+   "id": "b13",
+   "shot": "s10",
+   "transition": "flash",
+   "text": "Then five years, no solo song. Some fans call him *retired*.",
+   "visual": "A drawn forum post (no real usernames) 'ecco2k is officially retired' with a counter ticking 2021 -> 2026; a 'retired?' stamp on 'retired'.",
+   "sfx": [
+    {
+     "at": "retired",
+     "sound": "stamp"
+    }
+   ]
+  },
+  {
+   "id": "b14",
+   "shot": "s10",
+   "text": "Meanwhile, he keeps showing up at *fashion* week with new hair.",
+   "visual": "A Paris photocall wall with flashes; he poses deadpan while his look swaps on each flash: long platinum + shades (sep 2023), copper (feb 2024), jet-black to the chest (sep 2024), slicked platinum + white face paint (mar 2025), beanie + mirrored shades + a rose (oct 2025); a date tag per look.",
+   "sfx": [
+    {
+     "at": "fashion",
+     "sound": "shutter"
+    },
+    {
+     "at": "hair",
+     "sound": "shutter"
+    }
+   ]
+  },
+  {
+   "id": "b15",
+   "shot": "s11",
+   "transition": "whip-right",
+   "text": "This February, his crew *unfollows* him, and fans scream breakup.",
+   "visual": "A drainer (original fan) in a dark bedroom, phone lit; notification pings stack: 'unfollowed', 'unfollowed', 'drain gang split??'; the fan screams. Tag 'feb 2026'.",
+   "sfx": [
+    {
+     "at": "unfollows",
+     "sound": "notify"
+    },
+    {
+     "at": "breakup",
+     "sound": "error_buzz"
+    }
+   ]
+  },
+  {
+   "id": "b16",
+   "shot": "s11",
+   "text": "Bladee says it was a precaution: Ecco got logged *out*.",
+   "visual": "A plain text card 'bladee: precaution. he got logged out.' (no screenshot); the fan facepalms.",
+   "sfx": [
+    {
+     "at": "out",
+     "sound": "ding"
+    }
+   ]
+  },
+  {
+   "id": "b17",
+   "shot": "s12",
+   "transition": "dissolve",
+   "text": "Then he walks back in, carrying an *antenna*.",
+   "visual": "Thick fog on asphalt; Ecco (Echo era: black choppy hair over the eyes, red-and-black splatter track jacket, wide trousers) trudges out of the fog with a TV antenna over his shoulder. Tag 'oct 2026'.",
+   "sfx": [
+    {
+     "at": "antenna",
+     "sound": "riser"
+    }
+   ],
+   "ambience": [
+    "wind"
+   ]
+  },
+  {
+   "id": "b18",
+   "shot": "s12",
+   "text": "November twelfth: *Echo*, nearly seven years after E.",
+   "visual": "An album card 'echo' (original seeded cover) slams in, 'album · nov 12 2026'; the counter from the hook lands on 2026.",
+   "sfx": [
+    {
+     "at": "Echo",
+     "sound": "impact",
+     "gain": -10
+    }
+   ]
+  },
+  {
+   "id": "b19",
+   "shot": "s12",
+   "text": "Even he jokes he should've put out more *junk*.",
+   "visual": "He shrugs, smug; a quote tag \"'more junk' · pitchfork\".",
+   "sfx": [
+    {
+     "at": "junk",
+     "sound": "boing"
+    }
+   ]
+  },
+  {
+   "id": "b20",
+   "shot": "s13",
+   "transition": "whip-left",
+   "text": "Somewhere, a drainer's *2022* tour tee is buried in the chair pile.",
+   "visual": "A drainer's bedroom (original fan, wide jeans, beat-up sneakers): the chair pile, the black tour tee on top; tag 'world tour · 2022'. The artist is not in this shot.",
+   "sfx": [
+    {
+     "at": "pile",
+     "sound": "thud"
+    }
+   ]
+  },
+  {
+   "id": "b21",
+   "shot": "s13",
+   "text": "Snap the pile with *pileGo!*, and it lists everywhere you sell.",
+   "visual": "RelistSnap frame over the chair, then the PileGoPhone: cutouts, drafts, 'Live on 5'.",
+   "sfx": [
+    {
+     "at": "Snap",
+     "sound": "shutter"
+    }
+   ]
+  },
+  {
+   "id": "b22",
+   "shot": "s13",
+   "text": "One sells, and it comes *down* everywhere else.",
+   "visual": "The tee sells (SOLD), the other listings come down; the tee hops off the pile.",
+   "sfx": [
+    {
+     "at": "sells",
+     "sound": "cash"
+    }
+   ]
+  },
+  {
+   "id": "b23",
+   "shot": "s14",
+   "transition": "flash",
+   "text": "So which Ecco era are you? Answer before album *three*.",
+   "visual": "A lineup of original drainer fans dressed in each era's silhouette with tags 'e era', 'crest era', 'fashion week era', 'echo era'; a 'which era are you?' tag; end card after the line.",
+   "sfx": [
+    {
+     "at": "three",
+     "sound": "ding"
+    }
+   ]
+  }
+ ]
+}
