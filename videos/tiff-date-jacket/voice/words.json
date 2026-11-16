@@ -1,0 +1,986 @@
+{
+ "version": 2,
+ "sampleRate": 48000,
+ "duration": 28.713,
+ "lead": 0.06,
+ "provider": "edge",
+ "voice": "en-US-AvaNeural",
+ "tempo": 1.0,
+ "wpm": 208.5,
+ "beats": [
+  {
+   "id": "b01",
+   "shot": "s01",
+   "start": 0.06,
+   "speechEnd": 1.7713,
+   "end": 1.9913,
+   "say": "My date showed up wearing my jacket.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b02",
+   "shot": "s02",
+   "start": 1.9913,
+   "speechEnd": 5.9891,
+   "end": 6.1491,
+   "say": "Not one like mine. Mine. The olive one with the coffee stain on the sleeve.",
+   "tightenedSec": 0.453
+  },
+  {
+   "id": "b03",
+   "shot": "s03",
+   "start": 6.1491,
+   "speechEnd": 8.8159,
+   "end": 8.9759,
+   "say": "I sold it online in March, to clear out my chair.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b04",
+   "shot": "s04",
+   "start": 8.9759,
+   "speechEnd": 11.5845,
+   "end": 11.7045,
+   "say": "And now he's telling me it's his favorite thing he owns.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b05",
+   "shot": "s04",
+   "start": 11.7045,
+   "speechEnd": 14.0303,
+   "end": 14.1903,
+   "say": "He found it secondhand, and it just fit.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b06",
+   "shot": "s05",
+   "start": 14.1903,
+   "speechEnd": 15.7806,
+   "end": 16.0006,
+   "say": "Do I tell him? On a first date?",
+   "tightenedSec": 0.23
+  },
+  {
+   "id": "b07",
+   "shot": "s06",
+   "start": 16.0006,
+   "speechEnd": 18.5603,
+   "end": 18.7203,
+   "say": "Then he spills his coffee. On the same sleeve.",
+   "tightenedSec": 0.233
+  },
+  {
+   "id": "b08",
+   "shot": "s07",
+   "start": 18.7203,
+   "speechEnd": 21.576,
+   "end": 21.696,
+   "say": "So I told him. He laughed so hard he cried.",
+   "tightenedSec": 0.248
+  },
+  {
+   "id": "b09",
+   "shot": "s07",
+   "start": 21.696,
+   "speechEnd": 24.1061,
+   "end": 24.2661,
+   "say": "Second date's Friday. He's wearing it again.",
+   "tightenedSec": 0.271
+  },
+  {
+   "id": "b10",
+   "shot": "s08",
+   "start": 24.2661,
+   "speechEnd": 28.013,
+   "end": 28.013,
+   "say": "Your pile could be someone's favorite thing. I list mine with pile go.",
+   "tightenedSec": 0.276
+  }
+ ],
+ "words": [
+  {
+   "i": 0,
+   "beat": "b01",
+   "text": "My",
+   "spoken": "my",
+   "start": 0.16,
+   "end": 0.3568,
+   "emph": false
+  },
+  {
+   "i": 1,
+   "beat": "b01",
+   "text": "date",
+   "spoken": "date",
+   "start": 0.3683,
+   "end": 0.6114,
+   "emph": false
+  },
+  {
+   "i": 2,
+   "beat": "b01",
+   "text": "showed",
+   "spoken": "showed",
+   "start": 0.623,
+   "end": 0.8545,
+   "emph": false
+  },
+  {
+   "i": 3,
+   "beat": "b01",
+   "text": "up",
+   "spoken": "up",
+   "start": 0.866,
+   "end": 1.0165,
+   "emph": false
+  },
+  {
+   "i": 4,
+   "beat": "b01",
+   "text": "wearing",
+   "spoken": "wearing",
+   "start": 1.028,
+   "end": 1.248,
+   "emph": false
+  },
+  {
+   "i": 5,
+   "beat": "b01",
+   "text": "my",
+   "spoken": "my",
+   "start": 1.2595,
+   "end": 1.3869,
+   "emph": true
+  },
+  {
+   "i": 6,
+   "beat": "b01",
+   "text": "jacket.",
+   "spoken": "jacket",
+   "start": 1.3984,
+   "end": 1.9077,
+   "emph": false
+  },
+  {
+   "i": 7,
+   "beat": "b02",
+   "text": "Not",
+   "spoken": "not",
+   "start": 2.0913,
+   "end": 2.3922,
+   "emph": false
+  },
+  {
+   "i": 8,
+   "beat": "b02",
+   "text": "one",
+   "spoken": "one",
+   "start": 2.4038,
+   "end": 2.5658,
+   "emph": false
+  },
+  {
+   "i": 9,
+   "beat": "b02",
+   "text": "like",
+   "spoken": "like",
+   "start": 2.5774,
+   "end": 2.7511,
+   "emph": false
+  },
+  {
+   "i": 10,
+   "beat": "b02",
+   "text": "mine.",
+   "spoken": "mine",
+   "start": 2.7626,
+   "end": 3.1793,
+   "emph": false
+  },
+  {
+   "i": 11,
+   "beat": "b02",
+   "text": "Mine.",
+   "spoken": "mine",
+   "start": 3.5112,
+   "end": 4.0089,
+   "emph": true
+  },
+  {
+   "i": 12,
+   "beat": "b02",
+   "text": "The",
+   "spoken": "the",
+   "start": 4.3446,
+   "end": 4.5066,
+   "emph": false
+  },
+  {
+   "i": 13,
+   "beat": "b02",
+   "text": "olive",
+   "spoken": "olive",
+   "start": 4.5181,
+   "end": 4.7612,
+   "emph": false
+  },
+  {
+   "i": 14,
+   "beat": "b02",
+   "text": "one",
+   "spoken": "one",
+   "start": 4.7728,
+   "end": 4.9811,
+   "emph": false
+  },
+  {
+   "i": 15,
+   "beat": "b02",
+   "text": "with",
+   "spoken": "with",
+   "start": 4.9927,
+   "end": 5.0968,
+   "emph": false
+  },
+  {
+   "i": 16,
+   "beat": "b02",
+   "text": "the",
+   "spoken": "the",
+   "start": 5.1084,
+   "end": 5.1894,
+   "emph": false
+  },
+  {
+   "i": 17,
+   "beat": "b02",
+   "text": "coffee",
+   "spoken": "coffee",
+   "start": 5.201,
+   "end": 5.6061,
+   "emph": false
+  },
+  {
+   "i": 18,
+   "beat": "b02",
+   "text": "stain",
+   "spoken": "stain",
+   "start": 5.6177,
+   "end": 5.9533,
+   "emph": false
+  },
+  {
+   "i": 19,
+   "beat": "b02",
+   "text": "on",
+   "spoken": "on",
+   "start": 5.9649,
+   "end": 6.0575,
+   "emph": false
+  },
+  {
+   "i": 20,
+   "beat": "b02",
+   "text": "the",
+   "spoken": "the",
+   "start": 6.0691,
+   "end": 6.1291,
+   "emph": false
+  },
+  {
+   "i": 21,
+   "beat": "b02",
+   "text": "sleeve.",
+   "spoken": "sleeve",
+   "start": 6.1385,
+   "end": 6.6478,
+   "emph": false
+  },
+  {
+   "i": 22,
+   "beat": "b03",
+   "text": "I",
+   "spoken": "i",
+   "start": 6.2491,
+   "end": 6.4343,
+   "emph": false
+  },
+  {
+   "i": 23,
+   "beat": "b03",
+   "text": "sold",
+   "spoken": "sold",
+   "start": 6.4459,
+   "end": 6.7699,
+   "emph": false
+  },
+  {
+   "i": 24,
+   "beat": "b03",
+   "text": "it",
+   "spoken": "it",
+   "start": 6.7815,
+   "end": 6.8625,
+   "emph": false
+  },
+  {
+   "i": 25,
+   "beat": "b03",
+   "text": "online",
+   "spoken": "online",
+   "start": 6.8741,
+   "end": 7.2213,
+   "emph": false
+  },
+  {
+   "i": 26,
+   "beat": "b03",
+   "text": "in",
+   "spoken": "in",
+   "start": 7.2329,
+   "end": 7.3139,
+   "emph": false
+  },
+  {
+   "i": 27,
+   "beat": "b03",
+   "text": "March,",
+   "spoken": "march",
+   "start": 7.3255,
+   "end": 7.7537,
+   "emph": false
+  },
+  {
+   "i": 28,
+   "beat": "b03",
+   "text": "to",
+   "spoken": "to",
+   "start": 7.8695,
+   "end": 7.9621,
+   "emph": false
+  },
+  {
+   "i": 29,
+   "beat": "b03",
+   "text": "clear",
+   "spoken": "clear",
+   "start": 7.9736,
+   "end": 8.2514,
+   "emph": false
+  },
+  {
+   "i": 30,
+   "beat": "b03",
+   "text": "out",
+   "spoken": "out",
+   "start": 8.263,
+   "end": 8.3556,
+   "emph": false
+  },
+  {
+   "i": 31,
+   "beat": "b03",
+   "text": "my",
+   "spoken": "my",
+   "start": 8.3671,
+   "end": 8.4829,
+   "emph": false
+  },
+  {
+   "i": 32,
+   "beat": "b03",
+   "text": "chair.",
+   "spoken": "chair",
+   "start": 8.4945,
+   "end": 8.9343,
+   "emph": true
+  },
+  {
+   "i": 33,
+   "beat": "b04",
+   "text": "And",
+   "spoken": "and",
+   "start": 9.0759,
+   "end": 9.2727,
+   "emph": false
+  },
+  {
+   "i": 34,
+   "beat": "b04",
+   "text": "now",
+   "spoken": "now",
+   "start": 9.2842,
+   "end": 9.4463,
+   "emph": false
+  },
+  {
+   "i": 35,
+   "beat": "b04",
+   "text": "he's",
+   "spoken": "he's",
+   "start": 9.4579,
+   "end": 9.6894,
+   "emph": false
+  },
+  {
+   "i": 36,
+   "beat": "b04",
+   "text": "telling",
+   "spoken": "telling",
+   "start": 9.7009,
+   "end": 10.025,
+   "emph": false
+  },
+  {
+   "i": 37,
+   "beat": "b04",
+   "text": "me",
+   "spoken": "me",
+   "start": 10.0366,
+   "end": 10.1523,
+   "emph": false
+  },
+  {
+   "i": 38,
+   "beat": "b04",
+   "text": "it's",
+   "spoken": "it's",
+   "start": 10.1639,
+   "end": 10.2912,
+   "emph": false
+  },
+  {
+   "i": 39,
+   "beat": "b04",
+   "text": "his",
+   "spoken": "his",
+   "start": 10.3027,
+   "end": 10.4879,
+   "emph": false
+  },
+  {
+   "i": 40,
+   "beat": "b04",
+   "text": "favorite",
+   "spoken": "favorite",
+   "start": 10.4995,
+   "end": 10.9278,
+   "emph": true
+  },
+  {
+   "i": 41,
+   "beat": "b04",
+   "text": "thing",
+   "spoken": "thing",
+   "start": 10.9393,
+   "end": 11.0782,
+   "emph": false
+  },
+  {
+   "i": 42,
+   "beat": "b04",
+   "text": "he",
+   "spoken": "he",
+   "start": 11.0898,
+   "end": 11.2286,
+   "emph": false
+  },
+  {
+   "i": 43,
+   "beat": "b04",
+   "text": "owns.",
+   "spoken": "owns",
+   "start": 11.2402,
+   "end": 11.6916,
+   "emph": false
+  },
+  {
+   "i": 44,
+   "beat": "b05",
+   "text": "He",
+   "spoken": "he",
+   "start": 11.8045,
+   "end": 12.0128,
+   "emph": false
+  },
+  {
+   "i": 45,
+   "beat": "b05",
+   "text": "found",
+   "spoken": "found",
+   "start": 12.0244,
+   "end": 12.2559,
+   "emph": false
+  },
+  {
+   "i": 46,
+   "beat": "b05",
+   "text": "it",
+   "spoken": "it",
+   "start": 12.2675,
+   "end": 12.3485,
+   "emph": false
+  },
+  {
+   "i": 47,
+   "beat": "b05",
+   "text": "secondhand,",
+   "spoken": "secondhand",
+   "start": 12.36,
+   "end": 13.0545,
+   "emph": false
+  },
+  {
+   "i": 48,
+   "beat": "b05",
+   "text": "and",
+   "spoken": "and",
+   "start": 13.2165,
+   "end": 13.4133,
+   "emph": false
+  },
+  {
+   "i": 49,
+   "beat": "b05",
+   "text": "it",
+   "spoken": "it",
+   "start": 13.4249,
+   "end": 13.529,
+   "emph": false
+  },
+  {
+   "i": 50,
+   "beat": "b05",
+   "text": "just",
+   "spoken": "just",
+   "start": 13.5406,
+   "end": 13.8184,
+   "emph": false
+  },
+  {
+   "i": 51,
+   "beat": "b05",
+   "text": "fit.",
+   "spoken": "fit",
+   "start": 13.83,
+   "end": 14.1656,
+   "emph": true
+  },
+  {
+   "i": 52,
+   "beat": "b06",
+   "text": "Do",
+   "spoken": "do",
+   "start": 14.2903,
+   "end": 14.4523,
+   "emph": false
+  },
+  {
+   "i": 53,
+   "beat": "b06",
+   "text": "I",
+   "spoken": "i",
+   "start": 14.4639,
+   "end": 14.5239,
+   "emph": false
+  },
+  {
+   "i": 54,
+   "beat": "b06",
+   "text": "tell",
+   "spoken": "tell",
+   "start": 14.5333,
+   "end": 14.7417,
+   "emph": false
+  },
+  {
+   "i": 55,
+   "beat": "b06",
+   "text": "him?",
+   "spoken": "him",
+   "start": 14.7533,
+   "end": 14.9848,
+   "emph": false
+  },
+  {
+   "i": 56,
+   "beat": "b06",
+   "text": "On",
+   "spoken": "on",
+   "start": 15.3167,
+   "end": 15.5134,
+   "emph": false
+  },
+  {
+   "i": 57,
+   "beat": "b06",
+   "text": "a",
+   "spoken": "a",
+   "start": 15.525,
+   "end": 15.585,
+   "emph": false
+  },
+  {
+   "i": 58,
+   "beat": "b06",
+   "text": "first",
+   "spoken": "first",
+   "start": 15.5945,
+   "end": 15.8491,
+   "emph": true
+  },
+  {
+   "i": 59,
+   "beat": "b06",
+   "text": "date?",
+   "spoken": "date",
+   "start": 15.8607,
+   "end": 16.1269,
+   "emph": false
+  },
+  {
+   "i": 60,
+   "beat": "b07",
+   "text": "Then",
+   "spoken": "then",
+   "start": 16.1006,
+   "end": 16.3668,
+   "emph": false
+  },
+  {
+   "i": 61,
+   "beat": "b07",
+   "text": "he",
+   "spoken": "he",
+   "start": 16.3784,
+   "end": 16.5288,
+   "emph": false
+  },
+  {
+   "i": 62,
+   "beat": "b07",
+   "text": "spills",
+   "spoken": "spills",
+   "start": 16.5404,
+   "end": 16.8876,
+   "emph": false
+  },
+  {
+   "i": 63,
+   "beat": "b07",
+   "text": "his",
+   "spoken": "his",
+   "start": 16.8992,
+   "end": 17.015,
+   "emph": false
+  },
+  {
+   "i": 64,
+   "beat": "b07",
+   "text": "coffee.",
+   "spoken": "coffee",
+   "start": 17.0265,
+   "end": 17.5011,
+   "emph": false
+  },
+  {
+   "i": 65,
+   "beat": "b07",
+   "text": "On",
+   "spoken": "on",
+   "start": 17.833,
+   "end": 18.0066,
+   "emph": false
+  },
+  {
+   "i": 66,
+   "beat": "b07",
+   "text": "the",
+   "spoken": "the",
+   "start": 18.0182,
+   "end": 18.0876,
+   "emph": false
+  },
+  {
+   "i": 67,
+   "beat": "b07",
+   "text": "same",
+   "spoken": "same",
+   "start": 18.0992,
+   "end": 18.4001,
+   "emph": true
+  },
+  {
+   "i": 68,
+   "beat": "b07",
+   "text": "sleeve.",
+   "spoken": "sleeve",
+   "start": 18.4117,
+   "end": 18.9094,
+   "emph": false
+  },
+  {
+   "i": 69,
+   "beat": "b08",
+   "text": "So",
+   "spoken": "so",
+   "start": 18.8203,
+   "end": 19.1212,
+   "emph": false
+  },
+  {
+   "i": 70,
+   "beat": "b08",
+   "text": "I",
+   "spoken": "i",
+   "start": 19.1328,
+   "end": 19.2023,
+   "emph": false
+  },
+  {
+   "i": 71,
+   "beat": "b08",
+   "text": "told",
+   "spoken": "told",
+   "start": 19.2138,
+   "end": 19.48,
+   "emph": false
+  },
+  {
+   "i": 72,
+   "beat": "b08",
+   "text": "him.",
+   "spoken": "him",
+   "start": 19.4916,
+   "end": 19.7462,
+   "emph": false
+  },
+  {
+   "i": 73,
+   "beat": "b08",
+   "text": "He",
+   "spoken": "he",
+   "start": 20.0782,
+   "end": 20.2749,
+   "emph": false
+  },
+  {
+   "i": 74,
+   "beat": "b08",
+   "text": "laughed",
+   "spoken": "laughed",
+   "start": 20.2865,
+   "end": 20.7495,
+   "emph": false
+  },
+  {
+   "i": 75,
+   "beat": "b08",
+   "text": "so",
+   "spoken": "so",
+   "start": 20.7611,
+   "end": 21.0273,
+   "emph": false
+  },
+  {
+   "i": 76,
+   "beat": "b08",
+   "text": "hard",
+   "spoken": "hard",
+   "start": 21.0388,
+   "end": 21.3513,
+   "emph": false
+  },
+  {
+   "i": 77,
+   "beat": "b08",
+   "text": "he",
+   "spoken": "he",
+   "start": 21.3629,
+   "end": 21.467,
+   "emph": false
+  },
+  {
+   "i": 78,
+   "beat": "b08",
+   "text": "cried.",
+   "spoken": "cried",
+   "start": 21.4786,
+   "end": 21.9532,
+   "emph": true
+  },
+  {
+   "i": 79,
+   "beat": "b09",
+   "text": "Second",
+   "spoken": "second",
+   "start": 21.796,
+   "end": 22.2242,
+   "emph": false
+  },
+  {
+   "i": 80,
+   "beat": "b09",
+   "text": "date's",
+   "spoken": "date's",
+   "start": 22.2358,
+   "end": 22.4789,
+   "emph": false
+  },
+  {
+   "i": 81,
+   "beat": "b09",
+   "text": "Friday.",
+   "spoken": "friday",
+   "start": 22.4905,
+   "end": 22.965,
+   "emph": false
+  },
+  {
+   "i": 82,
+   "beat": "b09",
+   "text": "He's",
+   "spoken": "he's",
+   "start": 23.2969,
+   "end": 23.5747,
+   "emph": false
+  },
+  {
+   "i": 83,
+   "beat": "b09",
+   "text": "wearing",
+   "spoken": "wearing",
+   "start": 23.5863,
+   "end": 23.9335,
+   "emph": false
+  },
+  {
+   "i": 84,
+   "beat": "b09",
+   "text": "it",
+   "spoken": "it",
+   "start": 23.9451,
+   "end": 24.0145,
+   "emph": false
+  },
+  {
+   "i": 85,
+   "beat": "b09",
+   "text": "again.",
+   "spoken": "again",
+   "start": 24.0261,
+   "end": 24.489,
+   "emph": true
+  },
+  {
+   "i": 86,
+   "beat": "b10",
+   "text": "Your",
+   "spoken": "your",
+   "start": 24.3661,
+   "end": 24.586,
+   "emph": false
+  },
+  {
+   "i": 87,
+   "beat": "b10",
+   "text": "pile",
+   "spoken": "pile",
+   "start": 24.5976,
+   "end": 25.0143,
+   "emph": false
+  },
+  {
+   "i": 88,
+   "beat": "b10",
+   "text": "could",
+   "spoken": "could",
+   "start": 25.0258,
+   "end": 25.1763,
+   "emph": false
+  },
+  {
+   "i": 89,
+   "beat": "b10",
+   "text": "be",
+   "spoken": "be",
+   "start": 25.1878,
+   "end": 25.3267,
+   "emph": false
+  },
+  {
+   "i": 90,
+   "beat": "b10",
+   "text": "someone's",
+   "spoken": "someone's",
+   "start": 25.3383,
+   "end": 25.8128,
+   "emph": false
+  },
+  {
+   "i": 91,
+   "beat": "b10",
+   "text": "favorite",
+   "spoken": "favorite",
+   "start": 25.8244,
+   "end": 26.1716,
+   "emph": false
+  },
+  {
+   "i": 92,
+   "beat": "b10",
+   "text": "thing.",
+   "spoken": "thing",
+   "start": 26.1832,
+   "end": 26.5073,
+   "emph": false
+  },
+  {
+   "i": 93,
+   "beat": "b10",
+   "text": "I",
+   "spoken": "i",
+   "start": 26.8393,
+   "end": 27.0939,
+   "emph": false
+  },
+  {
+   "i": 94,
+   "beat": "b10",
+   "text": "list",
+   "spoken": "list",
+   "start": 27.1054,
+   "end": 27.3716,
+   "emph": false
+  },
+  {
+   "i": 95,
+   "beat": "b10",
+   "text": "mine",
+   "spoken": "mine",
+   "start": 27.3832,
+   "end": 27.6031,
+   "emph": false
+  },
+  {
+   "i": 96,
+   "beat": "b10",
+   "text": "with",
+   "spoken": "with",
+   "start": 27.6147,
+   "end": 27.7536,
+   "emph": false
+  },
+  {
+   "i": 97,
+   "beat": "b10",
+   "text": "pileGo.",
+   "spoken": "pile go",
+   "start": 27.7652,
+   "end": 28.3554,
+   "emph": true
+  }
+ ]
+}

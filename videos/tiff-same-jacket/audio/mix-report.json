@@ -1,0 +1,10 @@
+{
+ "lufs": -14.01,
+ "truePeak": -1.5,
+ "mood": "drama",
+ "sfxPerMinute": 8.4,
+ "musicVsVoiceDb": -25.9,
+ "masked": [
+  "minute.@29.88s (2.7 dB)"
+ ]
+}

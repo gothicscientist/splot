@@ -1,0 +1,191 @@
+{
+ "slug": "tiff-no-labels",
+ "title": "My situationship sold the sweater I knitted him",
+ "mode": "case-file",
+ "style": "stickworld",
+ "language": "en",
+ "fps": 30,
+ "voice": {
+  "provider": "elevenlabs-take",
+  "voice": "oqZQnEg1WK3eXtOOW4x8",
+  "name": "Kitty",
+  "model": "eleven_v4",
+  "settings": {
+   "stability": 0.5
+  },
+  "direction": "sultry, smirking, brisk TikTok storytelling pace"
+ },
+ "music": {
+  "mood": "comedy"
+ },
+ "captions": {
+  "preset": "boxed"
+ },
+ "pronounce": {
+  "pileGo": "pile go"
+ },
+ "series": {
+  "name": "Tiff",
+  "episode": 9
+ },
+ "plug": {
+  "pattern": "punchline",
+  "beats": [
+   "b09"
+  ]
+ },
+ "hooks": [
+  {
+   "text": "My situationship said he doesn't do labels.",
+   "family": "D in-medias-res + trend (situationship)",
+   "score": 85,
+   "chosen": true
+  },
+  {
+   "text": "I bought back the sweater I knitted him for $8.",
+   "family": "B shock-number",
+   "score": 83
+  },
+  {
+   "text": "He resold my hand-knit sweater with no attachment.",
+   "family": "O mystery",
+   "score": 76
+  }
+ ],
+ "hookVariants": [
+  {
+   "id": "v1",
+   "visual": "Tiff and Leo on a couch, he shrugs; a 'LABEL' tag on his sweater gets torn off. Text hook: 'I DON'T DO LABELS'."
+  },
+  {
+   "id": "v2",
+   "visual": "Same line and text hook; frame 0 is a tight close-up of the key prop or screen, then a fast pull-back to Tiff."
+  },
+  {
+   "id": "v3",
+   "visual": "Same line and text hook; frame 0 is Tiff's face mid-reaction (eyes wide), then a whip to the key prop."
+  }
+ ],
+ "defaultTransition": "whip-left",
+ "endCard": {
+  "brand": "pileGo!",
+  "url": "pilego.app",
+  "seconds": 1.5
+ },
+ "beats": [
+  {
+   "shot": "s01",
+   "text": "My situationship said he doesn't do *labels*.",
+   "visual": "Tiff and Leo on a couch, he shrugs; a 'LABEL' tag on his sweater gets torn off. Text hook: 'I DON'T DO LABELS'.",
+   "sfx": [
+    {
+     "at": "labels",
+     "sound": "impact",
+     "gain": -12
+    }
+   ],
+   "role": "hook",
+   "id": "b01"
+  },
+  {
+   "shot": "s02",
+   "text": "Six months. No title. But he wore the sweater I *knitted* him everywhere.",
+   "visual": "Montage: Leo in a chunky lilac sweater at a cafe, a party, a bus stop.",
+   "sfx": [],
+   "transition": "whip-left",
+   "id": "b02"
+  },
+  {
+   "shot": "s03",
+   "text": "Then I found it for sale online. Hand-knit, *barely worn*.",
+   "visual": "Laptop: the sweater's listing photo, on his bedroom floor.",
+   "sfx": [
+    {
+     "at": "found",
+     "sound": "notify",
+     "gain": -19
+    }
+   ],
+   "transition": "push",
+   "id": "b03"
+  },
+  {
+   "shot": "s03",
+   "text": "Listed for eight dollars. Eight. It took me *three weeks*.",
+   "visual": "Price tag '$8' slams; calendar with three weeks crossed off.",
+   "sfx": [],
+   "id": "b04",
+   "direction": "soft, mock-sad"
+  },
+  {
+   "shot": "s04",
+   "text": "The description said: no *attachment*.",
+   "visual": "Listing text zooms; Tiff's eye twitches.",
+   "sfx": [],
+   "transition": "push",
+   "id": "b05"
+  },
+  {
+   "shot": "s04",
+   "text": "So I bought it back. Eight dollars. *Anonymously*.",
+   "visual": "Tiff in a hoodie and sunglasses at her laptop, clicks BUY.",
+   "sfx": [
+    {
+     "at": "bought",
+     "sound": "click",
+     "gain": -19
+    }
+   ],
+   "id": "b06",
+   "direction": "low, teasing"
+  },
+  {
+   "shot": "s05",
+   "text": "Then I relisted it, with a *new* description.",
+   "visual": "Tiff typing furiously; new listing card builds.",
+   "sfx": [],
+   "transition": "whip-right",
+   "id": "b07"
+  },
+  {
+   "shot": "s05",
+   "text": "Hand-knit by someone who *actually* committed.",
+   "visual": "Listing headline glows.",
+   "sfx": [],
+   "id": "b08"
+  },
+  {
+   "shot": "s06",
+   "text": "I priced it off real sold listings with *pileGo*: $65.",
+   "visual": "pileGo board: price suggestion counts up to $65.",
+   "sfx": [],
+   "transition": "slide-up",
+   "id": "b09",
+   "direction": "playful"
+  },
+  {
+   "shot": "s06",
+   "text": "It sold in *nine minutes*.",
+   "visual": "SOLD stamp; Tiff spins in her chair.",
+   "sfx": [
+    {
+     "at": "sold",
+     "sound": "cash",
+     "gain": -16
+    }
+   ],
+   "id": "b10",
+   "direction": "amused"
+  },
+  {
+   "shot": "s07",
+   "text": "Now *that's* a label.",
+   "visual": "Tiff holds up the shipping label to camera, smug.",
+   "sfx": [],
+   "transition": "zoom-out",
+   "role": "kicker",
+   "id": "b11",
+   "direction": "low, teasing"
+  }
+ ]
+}

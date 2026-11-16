@@ -1,0 +1,169 @@
+{
+ "slug": "tiff-date-jacket",
+ "title": "My date showed up wearing my jacket",
+ "mode": "case-file",
+ "style": "stickworld",
+ "language": "en",
+ "fps": 30,
+ "voice": {
+  "provider": "edge",
+  "voice": "en-US-AvaNeural",
+  "wpm": 190
+ },
+ "music": {
+  "mood": "comedy"
+ },
+ "captions": {
+  "preset": "boxed"
+ },
+ "pronounce": {
+  "pileGo": "pile go"
+ },
+ "hooks": [
+  {
+   "text": "My date showed up wearing my jacket.",
+   "family": "story-in-medias-res",
+   "score": 90,
+   "chosen": true
+  },
+  {
+   "text": "I recognized the coffee stain before I recognized him.",
+   "family": "curiosity-detail",
+   "score": 80
+  },
+  {
+   "text": "First date, and he was wearing something I sold.",
+   "family": "contradiction",
+   "score": 78
+  }
+ ],
+ "hookVariants": [],
+ "defaultTransition": "whip-left",
+ "beats": [
+  {
+   "id": "b01",
+   "shot": "s01",
+   "text": "My date showed up wearing *my* jacket.",
+   "visual": "Cafe terrace. Tiff at a table; a guy in an olive jacket walks up; Tiff freezes.",
+   "sfx": [
+    {
+     "at": "my",
+     "sound": "record_scratch",
+     "gain": -14
+    }
+   ],
+   "role": "hook"
+  },
+  {
+   "id": "b02",
+   "shot": "s02",
+   "text": "Not one like mine. *Mine*. The olive one with the coffee stain on the sleeve.",
+   "visual": "Close on the jacket sleeve: a brown stain; Tiff squints, magnifier.",
+   "sfx": [
+    {
+     "at": "Mine",
+     "sound": "impact",
+     "gain": -16
+    }
+   ],
+   "transition": "push"
+  },
+  {
+   "id": "b03",
+   "shot": "s03",
+   "text": "I sold it online in March, to clear out my *chair*.",
+   "visual": "Flashback: Tiff's bedroom, the clothes chair; she folds the jacket into a box.",
+   "sfx": [
+    {
+     "at": "chair",
+     "sound": "whoosh",
+     "gain": -20
+    }
+   ],
+   "transition": "dissolve"
+  },
+  {
+   "id": "b04",
+   "shot": "s04",
+   "text": "And now he's telling me it's his *favorite* thing he owns.",
+   "visual": "Back at the cafe. The guy beams, hand on his chest; Tiff smiles stiffly.",
+   "sfx": [
+    {
+     "at": "favorite",
+     "sound": "sparkle",
+     "gain": -18
+    }
+   ],
+   "transition": "dissolve"
+  },
+  {
+   "id": "b05",
+   "shot": "s04",
+   "text": "He found it secondhand, and it just *fit*.",
+   "visual": "He does a little spin; hearts pop.",
+   "sfx": []
+  },
+  {
+   "id": "b06",
+   "shot": "s05",
+   "text": "Do I tell him? On a *first* date?",
+   "visual": "Tiff close-up, sweating, thinking.",
+   "sfx": [
+    {
+     "at": "first",
+     "sound": "tick",
+     "gain": -18
+    }
+   ],
+   "transition": "push"
+  },
+  {
+   "id": "b07",
+   "shot": "s06",
+   "text": "Then he spills his coffee. On the *same* sleeve.",
+   "visual": "The cup tips; SPLASH on the same sleeve; Tiff covers her mouth.",
+   "sfx": [
+    {
+     "at": "spills",
+     "sound": "boing",
+     "gain": -16
+    },
+    {
+     "at": "same",
+     "sound": "impact",
+     "gain": -14
+    }
+   ],
+   "transition": "whip-right"
+  },
+  {
+   "id": "b08",
+   "shot": "s07",
+   "text": "So I told him. He laughed so hard he *cried*.",
+   "visual": "Both laughing at the table; tears of laughter.",
+   "sfx": [],
+   "transition": "push"
+  },
+  {
+   "id": "b09",
+   "shot": "s07",
+   "text": "Second date's Friday. He's wearing it *again*.",
+   "visual": "He waves goodbye in the jacket; Tiff waves back, blushing.",
+   "sfx": []
+  },
+  {
+   "id": "b10",
+   "shot": "s08",
+   "text": "Your pile could be someone's favorite thing. I list mine with *pileGo*.",
+   "visual": "Quick plug: Tiff at home next to her chair, a pileGo! sign pops up, marketplace boards light up.",
+   "sfx": [
+    {
+     "at": "pileGo",
+     "sound": "success",
+     "gain": -14
+    }
+   ],
+   "transition": "whip-left"
+  }
+ ]
+}

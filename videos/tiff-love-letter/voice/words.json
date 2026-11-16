@@ -1,0 +1,941 @@
+{
+ "version": 2,
+ "sampleRate": 48000,
+ "duration": 31.83,
+ "lead": 0.06,
+ "provider": "edge",
+ "voice": "en-US-AvaNeural",
+ "tempo": 1.0238,
+ "wpm": 179.7,
+ "beats": [
+  {
+   "id": "b01",
+   "shot": "s01",
+   "start": 0.06,
+   "speechEnd": 4.1195,
+   "end": 4.3395,
+   "say": "I almost sold a love letter for twelve dollars. It was thirty-seven years late.",
+   "tightenedSec": 0.249
+  },
+  {
+   "id": "b02",
+   "shot": "s02",
+   "start": 4.3395,
+   "speechEnd": 7.6539,
+   "end": 7.7739,
+   "say": "I was clearing my clothes chair, snapping everything to list.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b03",
+   "shot": "s02",
+   "start": 7.7739,
+   "speechEnd": 10.993,
+   "end": 11.153,
+   "say": "When I snapped a thrifted jacket, something crinkled in the pocket.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b04",
+   "shot": "s03",
+   "start": 11.153,
+   "speechEnd": 14.2123,
+   "end": 14.3323,
+   "say": "A letter. Dated nineteen eighty-seven. Never sent.",
+   "tightenedSec": 0.494
+  },
+  {
+   "id": "b05",
+   "shot": "s03",
+   "start": 14.3323,
+   "speechEnd": 16.8956,
+   "end": 17.0156,
+   "say": "It said: June, I should have asked you to stay.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b06",
+   "shot": "s03",
+   "start": 17.0156,
+   "speechEnd": 18.1918,
+   "end": 18.3518,
+   "say": "Signed: Robert.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b07",
+   "shot": "s04",
+   "start": 18.3518,
+   "speechEnd": 20.1202,
+   "end": 20.2802,
+   "say": "June... is my grandma's name.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b08",
+   "shot": "s05",
+   "start": 20.2802,
+   "speechEnd": 24.6728,
+   "end": 24.7928,
+   "say": "I showed her. She went quiet. Then she said: he wore that jacket every day.",
+   "tightenedSec": 0.788
+  },
+  {
+   "id": "b09",
+   "shot": "s05",
+   "start": 24.7928,
+   "speechEnd": 27.5833,
+   "end": 27.7433,
+   "say": "She waited thirty-seven years to read that sentence.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b10",
+   "shot": "s06",
+   "start": 27.7433,
+   "speechEnd": 31.13,
+   "end": 31.13,
+   "say": "Now both me and my grandma are up fifty dollars using pile go.",
+   "tightenedSec": 0.0
+  }
+ ],
+ "words": [
+  {
+   "i": 0,
+   "beat": "b01",
+   "text": "I",
+   "spoken": "i",
+   "start": 0.1577,
+   "end": 0.3629,
+   "emph": false
+  },
+  {
+   "i": 1,
+   "beat": "b01",
+   "text": "almost",
+   "spoken": "almost",
+   "start": 0.3727,
+   "end": 0.6657,
+   "emph": false
+  },
+  {
+   "i": 2,
+   "beat": "b01",
+   "text": "sold",
+   "spoken": "sold",
+   "start": 0.6755,
+   "end": 0.8709,
+   "emph": false
+  },
+  {
+   "i": 3,
+   "beat": "b01",
+   "text": "a",
+   "spoken": "a",
+   "start": 0.9198,
+   "end": 0.9716,
+   "emph": false
+  },
+  {
+   "i": 4,
+   "beat": "b01",
+   "text": "love",
+   "spoken": "love",
+   "start": 0.9784,
+   "end": 1.2226,
+   "emph": false
+  },
+  {
+   "i": 5,
+   "beat": "b01",
+   "text": "letter",
+   "spoken": "letter",
+   "start": 1.2325,
+   "end": 1.4767,
+   "emph": false
+  },
+  {
+   "i": 6,
+   "beat": "b01",
+   "text": "for",
+   "spoken": "for",
+   "start": 1.4865,
+   "end": 1.6037,
+   "emph": false
+  },
+  {
+   "i": 7,
+   "beat": "b01",
+   "text": "twelve",
+   "spoken": "twelve",
+   "start": 1.6135,
+   "end": 1.8383,
+   "emph": true
+  },
+  {
+   "i": 8,
+   "beat": "b01",
+   "text": "dollars.",
+   "spoken": "dollars",
+   "start": 1.8481,
+   "end": 2.278,
+   "emph": true
+  },
+  {
+   "i": 9,
+   "beat": "b01",
+   "text": "It",
+   "spoken": "it",
+   "start": 2.5581,
+   "end": 2.6851,
+   "emph": false
+  },
+  {
+   "i": 10,
+   "beat": "b01",
+   "text": "was",
+   "spoken": "was",
+   "start": 2.6949,
+   "end": 2.822,
+   "emph": false
+  },
+  {
+   "i": 11,
+   "beat": "b01",
+   "text": "thirty-seven",
+   "spoken": "thirty seven",
+   "start": 2.861,
+   "end": 3.6426,
+   "emph": false
+  },
+  {
+   "i": 12,
+   "beat": "b01",
+   "text": "years",
+   "spoken": "years",
+   "start": 3.6525,
+   "end": 3.9163,
+   "emph": false
+  },
+  {
+   "i": 13,
+   "beat": "b01",
+   "text": "late.",
+   "spoken": "late",
+   "start": 3.9163,
+   "end": 4.02,
+   "emph": false
+  },
+  {
+   "i": 14,
+   "beat": "b02",
+   "text": "I",
+   "spoken": "i",
+   "start": 4.4372,
+   "end": 4.6284,
+   "emph": false
+  },
+  {
+   "i": 15,
+   "beat": "b02",
+   "text": "was",
+   "spoken": "was",
+   "start": 4.639,
+   "end": 4.7982,
+   "emph": false
+  },
+  {
+   "i": 16,
+   "beat": "b02",
+   "text": "clearing",
+   "spoken": "clearing",
+   "start": 4.8088,
+   "end": 5.1912,
+   "emph": false
+  },
+  {
+   "i": 17,
+   "beat": "b02",
+   "text": "my",
+   "spoken": "my",
+   "start": 5.2018,
+   "end": 5.3292,
+   "emph": false
+  },
+  {
+   "i": 18,
+   "beat": "b02",
+   "text": "clothes",
+   "spoken": "clothes",
+   "start": 5.3398,
+   "end": 5.7115,
+   "emph": false
+  },
+  {
+   "i": 19,
+   "beat": "b02",
+   "text": "chair,",
+   "spoken": "chair",
+   "start": 5.7221,
+   "end": 6.0195,
+   "emph": false
+  },
+  {
+   "i": 20,
+   "beat": "b02",
+   "text": "snapping",
+   "spoken": "snapping",
+   "start": 6.062,
+   "end": 6.5611,
+   "emph": false
+  },
+  {
+   "i": 21,
+   "beat": "b02",
+   "text": "everything",
+   "spoken": "everything",
+   "start": 6.6036,
+   "end": 7.0284,
+   "emph": false
+  },
+  {
+   "i": 22,
+   "beat": "b02",
+   "text": "to",
+   "spoken": "to",
+   "start": 7.039,
+   "end": 7.1346,
+   "emph": false
+  },
+  {
+   "i": 23,
+   "beat": "b02",
+   "text": "list.",
+   "spoken": "list",
+   "start": 7.1452,
+   "end": 7.57,
+   "emph": true
+  },
+  {
+   "i": 24,
+   "beat": "b03",
+   "text": "When",
+   "spoken": "when",
+   "start": 7.8716,
+   "end": 8.0456,
+   "emph": false
+  },
+  {
+   "i": 25,
+   "beat": "b03",
+   "text": "I",
+   "spoken": "i",
+   "start": 8.0559,
+   "end": 8.1275,
+   "emph": false
+  },
+  {
+   "i": 26,
+   "beat": "b03",
+   "text": "snapped",
+   "spoken": "snapped",
+   "start": 8.1378,
+   "end": 8.4551,
+   "emph": false
+  },
+  {
+   "i": 27,
+   "beat": "b03",
+   "text": "a",
+   "spoken": "a",
+   "start": 8.4653,
+   "end": 8.5197,
+   "emph": false
+  },
+  {
+   "i": 28,
+   "beat": "b03",
+   "text": "thrifted",
+   "spoken": "thrifted",
+   "start": 8.5166,
+   "end": 8.8953,
+   "emph": false
+  },
+  {
+   "i": 29,
+   "beat": "b03",
+   "text": "jacket,",
+   "spoken": "jacket",
+   "start": 8.9055,
+   "end": 9.3151,
+   "emph": false
+  },
+  {
+   "i": 30,
+   "beat": "b03",
+   "text": "something",
+   "spoken": "something",
+   "start": 9.53,
+   "end": 9.8371,
+   "emph": false
+  },
+  {
+   "i": 31,
+   "beat": "b03",
+   "text": "crinkled",
+   "spoken": "crinkled",
+   "start": 9.8474,
+   "end": 10.2467,
+   "emph": true
+  },
+  {
+   "i": 32,
+   "beat": "b03",
+   "text": "in",
+   "spoken": "in",
+   "start": 10.2569,
+   "end": 10.3112,
+   "emph": false
+  },
+  {
+   "i": 33,
+   "beat": "b03",
+   "text": "the",
+   "spoken": "the",
+   "start": 10.3183,
+   "end": 10.3798,
+   "emph": false
+  },
+  {
+   "i": 34,
+   "beat": "b03",
+   "text": "pocket.",
+   "spoken": "pocket",
+   "start": 10.39,
+   "end": 10.82,
+   "emph": false
+  },
+  {
+   "i": 35,
+   "beat": "b04",
+   "text": "A",
+   "spoken": "a",
+   "start": 11.2507,
+   "end": 11.3829,
+   "emph": false
+  },
+  {
+   "i": 36,
+   "beat": "b04",
+   "text": "letter.",
+   "spoken": "letter",
+   "start": 11.3917,
+   "end": 11.709,
+   "emph": false
+  },
+  {
+   "i": 37,
+   "beat": "b04",
+   "text": "Dated",
+   "spoken": "dated",
+   "start": 11.9617,
+   "end": 12.2349,
+   "emph": false
+  },
+  {
+   "i": 38,
+   "beat": "b04",
+   "text": "1987.",
+   "spoken": "nineteen eighty seven",
+   "start": 12.2438,
+   "end": 13.52,
+   "emph": true
+  },
+  {
+   "i": 39,
+   "beat": "b04",
+   "text": "Never",
+   "spoken": "never",
+   "start": 13.54,
+   "end": 13.74,
+   "emph": false
+  },
+  {
+   "i": 40,
+   "beat": "b04",
+   "text": "sent.",
+   "spoken": "sent",
+   "start": 13.75,
+   "end": 13.96,
+   "emph": false
+  },
+  {
+   "i": 41,
+   "beat": "b05",
+   "text": "It",
+   "spoken": "it",
+   "start": 14.43,
+   "end": 14.6221,
+   "emph": false
+  },
+  {
+   "i": 42,
+   "beat": "b05",
+   "text": "said:",
+   "spoken": "said",
+   "start": 14.6327,
+   "end": 14.9421,
+   "emph": false
+  },
+  {
+   "i": 43,
+   "beat": "b05",
+   "text": "June,",
+   "spoken": "june",
+   "start": 15.1662,
+   "end": 15.5289,
+   "emph": false
+  },
+  {
+   "i": 44,
+   "beat": "b05",
+   "text": "I",
+   "spoken": "i",
+   "start": 15.6357,
+   "end": 15.6923,
+   "emph": false
+  },
+  {
+   "i": 45,
+   "beat": "b05",
+   "text": "should",
+   "spoken": "should",
+   "start": 15.689,
+   "end": 15.8384,
+   "emph": false
+  },
+  {
+   "i": 46,
+   "beat": "b05",
+   "text": "have",
+   "spoken": "have",
+   "start": 15.849,
+   "end": 15.9451,
+   "emph": false
+  },
+  {
+   "i": 47,
+   "beat": "b05",
+   "text": "asked",
+   "spoken": "asked",
+   "start": 15.9771,
+   "end": 16.2865,
+   "emph": false
+  },
+  {
+   "i": 48,
+   "beat": "b05",
+   "text": "you",
+   "spoken": "you",
+   "start": 16.2972,
+   "end": 16.3612,
+   "emph": false
+  },
+  {
+   "i": 49,
+   "beat": "b05",
+   "text": "to",
+   "spoken": "to",
+   "start": 16.3719,
+   "end": 16.4359,
+   "emph": false
+  },
+  {
+   "i": 50,
+   "beat": "b05",
+   "text": "stay.",
+   "spoken": "stay",
+   "start": 16.4465,
+   "end": 16.82,
+   "emph": true
+  },
+  {
+   "i": 51,
+   "beat": "b06",
+   "text": "Signed:",
+   "spoken": "signed",
+   "start": 17.1133,
+   "end": 17.5505,
+   "emph": false
+  },
+  {
+   "i": 52,
+   "beat": "b06",
+   "text": "Robert.",
+   "spoken": "robert",
+   "start": 17.7273,
+   "end": 18.09,
+   "emph": true
+  },
+  {
+   "i": 53,
+   "beat": "b07",
+   "text": "June...",
+   "spoken": "june",
+   "start": 18.4495,
+   "end": 18.8522,
+   "emph": false
+  },
+  {
+   "i": 54,
+   "beat": "b07",
+   "text": "is",
+   "spoken": "is",
+   "start": 18.9453,
+   "end": 19.0588,
+   "emph": false
+  },
+  {
+   "i": 55,
+   "beat": "b07",
+   "text": "my",
+   "spoken": "my",
+   "start": 19.0692,
+   "end": 19.2447,
+   "emph": false
+  },
+  {
+   "i": 56,
+   "beat": "b07",
+   "text": "grandma's",
+   "spoken": "grandma's",
+   "start": 19.2551,
+   "end": 19.6786,
+   "emph": true
+  },
+  {
+   "i": 57,
+   "beat": "b07",
+   "text": "name.",
+   "spoken": "name",
+   "start": 19.6889,
+   "end": 20.04,
+   "emph": false
+  },
+  {
+   "i": 58,
+   "beat": "b08",
+   "text": "I",
+   "spoken": "i",
+   "start": 20.3779,
+   "end": 20.5708,
+   "emph": false
+  },
+  {
+   "i": 59,
+   "beat": "b08",
+   "text": "showed",
+   "spoken": "showed",
+   "start": 20.5799,
+   "end": 20.8279,
+   "emph": false
+  },
+  {
+   "i": 60,
+   "beat": "b08",
+   "text": "her.",
+   "spoken": "her",
+   "start": 20.837,
+   "end": 21.0574,
+   "emph": false
+  },
+  {
+   "i": 61,
+   "beat": "b08",
+   "text": "She",
+   "spoken": "she",
+   "start": 21.3208,
+   "end": 21.5045,
+   "emph": false
+  },
+  {
+   "i": 62,
+   "beat": "b08",
+   "text": "went",
+   "spoken": "went",
+   "start": 21.5136,
+   "end": 21.6606,
+   "emph": false
+  },
+  {
+   "i": 63,
+   "beat": "b08",
+   "text": "quiet.",
+   "spoken": "quiet",
+   "start": 21.6698,
+   "end": 22.0463,
+   "emph": false
+  },
+  {
+   "i": 64,
+   "beat": "b08",
+   "text": "Then",
+   "spoken": "then",
+   "start": 22.3126,
+   "end": 22.5054,
+   "emph": false
+  },
+  {
+   "i": 65,
+   "beat": "b08",
+   "text": "she",
+   "spoken": "she",
+   "start": 22.5146,
+   "end": 22.6524,
+   "emph": false
+  },
+  {
+   "i": 66,
+   "beat": "b08",
+   "text": "said:",
+   "spoken": "said",
+   "start": 22.6616,
+   "end": 22.937,
+   "emph": false
+  },
+  {
+   "i": 67,
+   "beat": "b08",
+   "text": "he",
+   "spoken": "he",
+   "start": 23.286,
+   "end": 23.3871,
+   "emph": false
+  },
+  {
+   "i": 68,
+   "beat": "b08",
+   "text": "wore",
+   "spoken": "wore",
+   "start": 23.3962,
+   "end": 23.589,
+   "emph": false
+  },
+  {
+   "i": 69,
+   "beat": "b08",
+   "text": "that",
+   "spoken": "that",
+   "start": 23.5982,
+   "end": 23.7268,
+   "emph": false
+  },
+  {
+   "i": 70,
+   "beat": "b08",
+   "text": "jacket",
+   "spoken": "jacket",
+   "start": 23.736,
+   "end": 24.0391,
+   "emph": false
+  },
+  {
+   "i": 71,
+   "beat": "b08",
+   "text": "every",
+   "spoken": "every",
+   "start": 24.0941,
+   "end": 24.2869,
+   "emph": true
+  },
+  {
+   "i": 72,
+   "beat": "b08",
+   "text": "day.",
+   "spoken": "day",
+   "start": 24.2962,
+   "end": 24.59,
+   "emph": true
+  },
+  {
+   "i": 73,
+   "beat": "b09",
+   "text": "She",
+   "spoken": "she",
+   "start": 24.8905,
+   "end": 25.1226,
+   "emph": false
+  },
+  {
+   "i": 74,
+   "beat": "b09",
+   "text": "waited",
+   "spoken": "waited",
+   "start": 25.1327,
+   "end": 25.395,
+   "emph": false
+  },
+  {
+   "i": 75,
+   "beat": "b09",
+   "text": "thirty-seven",
+   "spoken": "thirty seven",
+   "start": 25.4051,
+   "end": 26.3536,
+   "emph": false
+  },
+  {
+   "i": 76,
+   "beat": "b09",
+   "text": "years",
+   "spoken": "years",
+   "start": 26.3636,
+   "end": 26.4848,
+   "emph": false
+  },
+  {
+   "i": 77,
+   "beat": "b09",
+   "text": "to",
+   "spoken": "to",
+   "start": 26.5049,
+   "end": 26.7168,
+   "emph": false
+  },
+  {
+   "i": 78,
+   "beat": "b09",
+   "text": "read",
+   "spoken": "read",
+   "start": 26.7269,
+   "end": 26.848,
+   "emph": false
+  },
+  {
+   "i": 79,
+   "beat": "b09",
+   "text": "that",
+   "spoken": "that",
+   "start": 26.8581,
+   "end": 27.3929,
+   "emph": false
+  },
+  {
+   "i": 80,
+   "beat": "b09",
+   "text": "sentence.",
+   "spoken": "sentence",
+   "start": 27.3929,
+   "end": 27.5,
+   "emph": true
+  },
+  {
+   "i": 81,
+   "beat": "b10",
+   "text": "Now",
+   "spoken": "now",
+   "start": 27.841,
+   "end": 28.1102,
+   "emph": false
+  },
+  {
+   "i": 82,
+   "beat": "b10",
+   "text": "both",
+   "spoken": "both",
+   "start": 28.121,
+   "end": 28.3686,
+   "emph": false
+  },
+  {
+   "i": 83,
+   "beat": "b10",
+   "text": "me",
+   "spoken": "me",
+   "start": 28.3794,
+   "end": 28.6271,
+   "emph": false
+  },
+  {
+   "i": 84,
+   "beat": "b10",
+   "text": "and",
+   "spoken": "and",
+   "start": 28.6378,
+   "end": 28.7563,
+   "emph": false
+  },
+  {
+   "i": 85,
+   "beat": "b10",
+   "text": "my",
+   "spoken": "my",
+   "start": 28.7671,
+   "end": 28.9178,
+   "emph": false
+  },
+  {
+   "i": 86,
+   "beat": "b10",
+   "text": "grandma",
+   "spoken": "grandma",
+   "start": 28.9286,
+   "end": 29.2732,
+   "emph": false
+  },
+  {
+   "i": 87,
+   "beat": "b10",
+   "text": "are",
+   "spoken": "are",
+   "start": 29.2948,
+   "end": 29.467,
+   "emph": false
+  },
+  {
+   "i": 88,
+   "beat": "b10",
+   "text": "up",
+   "spoken": "up",
+   "start": 29.4777,
+   "end": 29.5855,
+   "emph": false
+  },
+  {
+   "i": 89,
+   "beat": "b10",
+   "text": "fifty",
+   "spoken": "fifty",
+   "start": 29.5962,
+   "end": 29.8439,
+   "emph": true
+  },
+  {
+   "i": 90,
+   "beat": "b10",
+   "text": "dollars",
+   "spoken": "dollars",
+   "start": 29.8547,
+   "end": 30.2424,
+   "emph": true
+  },
+  {
+   "i": 91,
+   "beat": "b10",
+   "text": "using",
+   "spoken": "using",
+   "start": 30.2532,
+   "end": 30.5116,
+   "emph": false
+  },
+  {
+   "i": 92,
+   "beat": "b10",
+   "text": "pileGo.",
+   "spoken": "pile go",
+   "start": 30.5224,
+   "end": 31.05,
+   "emph": false
+  }
+ ]
+}

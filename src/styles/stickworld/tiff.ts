@@ -35,14 +35,32 @@ export const TIFF = {
   shadow: "rgba(150,70,110,0.30)",
 };
 
+/** Options for the shaped anime figure (Tiff is the default; side cast override pieces). */
+export type AnimeLook = {
+  build: "curvy" | "slim" | "male";
+  hair: "long" | "bob" | "short";
+  hairLine: string;
+  iris: [string, string];
+  top: "tank" | "tee";
+  bottom: "shorts" | "jeans";
+  shoes: "boots" | "sneakers";
+  choker: boolean;
+  lashes: boolean;
+};
+export const TIFF_LOOK: AnimeLook = {
+  build: "curvy", hair: "long", hairLine: "#5e5a8c", iris: ["#24407e", "#8fd4ff"], top: "tank", bottom: "shorts",
+  shoes: "boots", choker: true, lashes: true,
+};
+
 // leg / arm lengths and half-width profiles (u = 0 at the hip/shoulder, 1 at the ankle/wrist)
 const THIGH = 186;
 const SHIN = 180;
-const ANKLE_LIFT = 25; // boot heels: ankle sits 25 units above the soles
+const ANKLE_LIFT = 25; // boot heels: ankle sits 25 units above the soles (sneakers: 14)
 const UPPER = 118;
 const FORE = 112;
+const LEG_W_MALE: V[] = [[0, 27], [0.3, 25], [0.5, 22], [0.7, 21], [0.86, 20], [1, 19]];
 const LEG_W: V[] = [[0, 36], [0.12, 33.5], [0.3, 26], [0.43, 18], [0.5, 13.4], [0.56, 15.4], [0.64, 17.2], [0.7, 17], [0.86, 10], [1, 6.5]];
-const ARM_W: V[] = [[0, 17.5], [0.25, 15], [0.5, 10.8], [0.62, 11.6], [1, 7.2]];
+const ARM_W: V[] = [[0, 13], [0.12, 14.5], [0.3, 13], [0.5, 10.8], [0.62, 11.6], [1, 7.2]];
 const prof = (p: V[], u: number) => {
   for (let i = 0; i + 1 < p.length; i++) if (u <= p[i + 1][0]) {
     const t = (u - p[i][0]) / (p[i + 1][0] - p[i][0]);
@@ -105,6 +123,35 @@ function limbPath(g: Ctx, pts: V[], hw: number[]) {
   g.closePath();
   return { L, R, ns };
 }
+/** Path2D versions of smoothClosed / limbPath (for clip masks built from several shapes) */
+function smoothClosed2D(p: V[]): Path2D {
+  const P = new Path2D();
+  const n = p.length;
+  const mid = (a: V, b: V): V => [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+  P.moveTo(...mid(p[n - 1], p[0]));
+  for (let i = 0; i < n; i++) {
+    const m = mid(p[i], p[(i + 1) % n]);
+    P.quadraticCurveTo(p[i][0], p[i][1], m[0], m[1]);
+  }
+  P.closePath();
+  return P;
+}
+function limbPath2D(pts: V[], hw: number[]): Path2D {
+  const ns = normals(pts);
+  const L = pts.map((p, i): V => [p[0] + ns[i][0] * hw[i], p[1] + ns[i][1] * hw[i]]);
+  const R = pts.map((p, i): V => [p[0] - ns[i][0] * hw[i], p[1] - ns[i][1] * hw[i]]);
+  const last = pts.length - 1;
+  const aEnd = Math.atan2(ns[last][1], ns[last][0]);
+  const a0 = Math.atan2(ns[0][1], ns[0][0]);
+  const P = new Path2D();
+  P.moveTo(...L[0]);
+  for (let i = 1; i <= last; i++) P.lineTo(...L[i]);
+  P.arc(pts[last][0], pts[last][1], hw[last], aEnd, aEnd - Math.PI, true);
+  for (let i = last; i >= 0; i--) P.lineTo(...R[i]);
+  P.arc(pts[0][0], pts[0][1], hw[0], a0 + Math.PI, a0, true);
+  P.closePath();
+  return P;
+}
 /** closed smooth curve through points (midpoint quadratic smoothing) */
 function smoothClosed(g: Ctx, p: V[]) {
   const n = p.length;
@@ -121,10 +168,26 @@ const mirror = (right: V[]): V[] => [...right, ...[...right].reverse().map(([x, 
 
 // torso silhouette, right half, top to bottom: [half-width, dy from the hip line]
 const TORSO_R: V[] = [
-  [12, -226], [32, -218], [50, -212], [56, -200], [51, -186], [50, -176], [58, -171], [65, -163], [68.5, -154], [66.5, -145], [59, -139.5],
+  [12, -226], [32, -218], [50, -212], [56, -200], [51, -186], [50, -176], [56, -171], [61, -163], [63.5, -154], [62, -145], [56.5, -139.5],
   [47, -136.5], [39, -135], [35.5, -125], [34, -114], [35, -104], [38.5, -92], [44, -78], [55, -56], [65, -34], [73, -12], [74, 6], [66, 18],
   [30, 24], [0, 25],
 ];
+
+const TORSO_SLIM: V[] = [
+  [12, -226], [32, -218], [48, -212], [54, -200], [50, -186], [49, -176], [52, -170], [55, -162], [56.5, -154], [55, -145],
+  [51, -139], [44, -135], [38, -130], [35, -120], [34.5, -110], [36, -98], [40, -84], [47, -64], [56, -42], [63, -20],
+  [66, 0], [62, 14], [30, 22], [0, 24],
+];
+const TORSO_MALE: V[] = [
+  [16, -226], [42, -221], [64, -214], [74, -202], [72, -186], [67, -165], [61, -142], [56, -118], [52, -95], [51, -72],
+  [51, -48], [51, -24], [51, -4], [50, 10], [42, 20], [22, 25], [0, 26],
+];
+// per build: torso, leg spacing, shoulder joint, arm thickness, shorts/jeans waist + hip half-widths
+const BUILD = {
+  curvy: { torso: TORSO_R, hipX: 37, shX: 47, armK: 1, waist: 56.5, hip: 74.5, leg: LEG_W, legK: 1 },
+  slim: { torso: TORSO_SLIM, hipX: 34, shX: 46, armK: 0.95, waist: 50, hip: 66, leg: LEG_W, legK: 0.9 },
+  male: { torso: TORSO_MALE, hipX: 26, shX: 63, armK: 1.4, waist: 50, hip: 52, leg: LEG_W_MALE, legK: 1 },
+};
 
 /** Front-facing walk (the card always faces the camera): legs stay under the hips and never cross; each foot
  *  lifts in turn (foreshortened leg, knee eases out), hips sway, opposite arm swings, head stays level. */
@@ -156,6 +219,8 @@ export function drawTiff(g: Ctx, w: number, h: number, spec: StickSpec, pose: Po
   const gold = spec.accent ?? TIFF.gold;
   const shoes = spec.shoes ?? TIFF.boots;
   const hair = spec.hairColor ?? TIFF.hair;
+  const look: AnimeLook = { ...TIFF_LOOK, ...(spec.anime ?? {}) };
+  const bd = BUILD[look.build];
   const OL = 3.8; // outline width (fine anime line)
   const k = Math.min(w / 600, h / 1000);
   g.save();
@@ -169,7 +234,7 @@ export function drawTiff(g: Ctx, w: number, h: number, spec: StickSpec, pose: Po
   g.lineCap = "round";
   g.lineJoin = "round";
 
-  const LEG = THIGH + SHIN + ANKLE_LIFT;
+  const LEG = THIGH + SHIN + (look.shoes === "boots" ? ANKLE_LIFT : 14);
   const crouch = (pose.crouch ?? 0) * LEG * 0.45;
   const squash = pose.squash ?? 1;
   const hipY = 975 - LEG - (pose.bob ?? 0) + crouch * 1.2;
@@ -192,7 +257,7 @@ export function drawTiff(g: Ctx, w: number, h: number, spec: StickSpec, pose: Po
     fn();
     g.restore();
   };
-  inHead(() => drawBackHair(g, hair, ink, OL, headTilt));
+  inHead(() => drawBackHair(g, hair, look, OL, headTilt));
 
   // ---- legs (bare + boots)
   const legs: Record<"L" | "R", { pts: V[]; L: V[]; R: V[]; us: number[] }> = {} as never;
@@ -200,7 +265,7 @@ export function drawTiff(g: Ctx, w: number, h: number, spec: StickSpec, pose: Po
     const lift = (side < 0 ? pose.liftL : pose.liftR) ?? 0;
     const thighL = THIGH * (1 - 0.11 * lift);
     const shinL = SHIN * (1 - 0.08 * lift);
-    const hip: V = [cx + side * 37, hipY];
+    const hip: V = [cx + side * bd.hipX, hipY];
     // the stick poses splay the legs (fine for stick figures, too wide for Tiff): damp outward hip swing hard and
     // allow almost no inward swing, so her legs stay together in every pose
     const raw = ang[0];
@@ -213,11 +278,12 @@ export function drawTiff(g: Ctx, w: number, h: number, spec: StickSpec, pose: Po
     const sp = spine(hip, knee, ankle, 16);
     const pts = smoothV(sp.pts, 4);
     const us = sp.us;
-    const hw = smoothN(us.map((u) => prof(LEG_W, u)), 4);
+    const hw = smoothN(us.map((u) => (look.bottom === "jeans" ? Math.max(prof(bd.leg, u) * bd.legK, u > 0.5 ? 15.5 : 0) : prof(bd.leg, u) * bd.legK)), 4);
+    const legCol = look.bottom === "jeans" ? denim : skin;
     const sk = g.createLinearGradient(hip[0] - 40, 0, hip[0] + 40, 0);
-    sk.addColorStop(0, hexMul(skin, 0.9));
-    sk.addColorStop(0.45, skin);
-    sk.addColorStop(1, hexMul(skin, 0.86));
+    sk.addColorStop(0, hexMul(legCol, 0.9));
+    sk.addColorStop(0.45, look.bottom === "jeans" ? hexMul(legCol, 1.12) : legCol);
+    sk.addColorStop(1, hexMul(legCol, 0.86));
     const { L, R } = limbPath(g, pts, hw);
     g.fillStyle = sk;
     g.fill();
@@ -225,8 +291,8 @@ export function drawTiff(g: Ctx, w: number, h: number, spec: StickSpec, pose: Po
     g.strokeStyle = ink;
     g.lineWidth = OL * 0.8;
     g.stroke();
-    // knee: soft kneecap curve + a short crease on the outer edge
-    if (Math.cos(a1) > 0.5) {
+    // knee: soft kneecap curve + a short crease on the outer edge (bare legs only)
+    if (look.bottom !== "jeans" && Math.cos(a1) > 0.5) {
       g.strokeStyle = hexMul(skin, 0.74);
       g.lineWidth = 1.7;
       g.beginPath();
@@ -236,6 +302,22 @@ export function drawTiff(g: Ctx, w: number, h: number, spec: StickSpec, pose: Po
       g.moveTo(knee[0] + side * 9, knee[1] - 8);
       g.quadraticCurveTo(knee[0] + side * 6, knee[1] - 1, knee[0] + side * 9, knee[1] + 6);
       g.stroke();
+    }
+    if (look.shoes === "sneakers") {
+      // jeans hem line just above the sneaker
+      if (look.bottom === "jeans") {
+        const k = us.findIndex((u) => u >= 0.95);
+        const n1 = normals(pts)[k];
+        g.strokeStyle = hexMul(denim, 0.6);
+        g.lineWidth = 1.8;
+        g.beginPath();
+        g.moveTo(pts[k][0] + n1[0] * hw[k], pts[k][1] + n1[1] * hw[k]);
+        g.lineTo(pts[k][0] - n1[0] * hw[k], pts[k][1] - n1[1] * hw[k]);
+        g.stroke();
+      }
+      drawSneaker(g, ankle, shoes, ink, OL, side);
+      legs[side < 0 ? "L" : "R"] = { pts, L, R, us };
+      return;
     }
     // boot: shaft from mid-calf down + heeled foot
     const i0 = us.findIndex((u) => u >= 0.68);
@@ -267,9 +349,79 @@ export function drawTiff(g: Ctx, w: number, h: number, spec: StickSpec, pose: Po
   drawLeg(-1, pose.legL);
   drawLeg(1, pose.legR);
 
+  // ---- arms. The whole arm is drawn here, BEHIND the torso: the torso's shoulder/deltoid outline then flows into
+  // the arm instead of a separate limb sitting on top of the shoulder. The forearm + hand are drawn again in front
+  // after the torso (drawFore), so hands on hips, crossed arms etc. still read.
+  const armGeo = (side: -1 | 1, ang: [number, number]) => {
+    const sh = rot(side * bd.shX, -203);
+    // hanging arms (the stick poses splay them out ~16-30 deg): keep Tiff's close to her body, inner arm behind
+    // her hair; raised / bent-in arms (wave, point, hands on hips, crossed...) are left as posed
+    const hang = Math.abs(ang[0]) < 40 && ang[1] >= -20;
+    const a1 = rad(hang ? ang[0] * 0.45 : ang[0]);
+    const el: V = [sh[0] + side * Math.sin(a1) * UPPER, sh[1] + Math.cos(a1) * UPPER];
+    const a2 = a1 + rad(hang ? ang[1] * 0.45 : ang[1]);
+    const wr: V = [el[0] + side * Math.sin(a2) * FORE, el[1] + Math.cos(a2) * FORE];
+    const sa = spine(sh, el, wr, 12);
+    const pts = smoothV(sa.pts, 6);
+    const hw = smoothN(sa.us.map((u) => prof(ARM_W, u) * bd.armK), 8);
+    return { pts, hw, us: sa.us, el, wr };
+  };
+  const armL = armGeo(-1, pose.armL);
+  const armR = armGeo(1, pose.armR);
+  for (const arm of [armL, armR]) {
+    limbPath(g, arm.pts, arm.hw);
+    g.fillStyle = skin;
+    g.fill();
+    g.strokeStyle = ink;
+    g.lineWidth = OL * 0.75;
+    g.stroke();
+
+  }
+  const drawFore = (arm: ReturnType<typeof armGeo>): V => {
+    const i0 = Math.max(1, arm.us.findIndex((u) => u >= 0.5));
+    const pts = arm.pts.slice(i0);
+    const hw = arm.hw.slice(i0);
+    const { L, R, ns } = limbPath(g, pts, hw);
+    g.fillStyle = skin;
+    g.fill();
+    // edges + wrist end only: no outline across the elbow, so the arm stays one continuous limb
+    const last = pts.length - 1;
+    const aEnd = Math.atan2(ns[last][1], ns[last][0]);
+    g.beginPath();
+    g.moveTo(...L[0]);
+    for (let i = 1; i <= last; i++) g.lineTo(...L[i]);
+    g.arc(pts[last][0], pts[last][1], hw[last], aEnd, aEnd - Math.PI, true);
+    for (let i = last; i >= 0; i--) g.lineTo(...R[i]);
+    g.strokeStyle = ink;
+    g.lineWidth = OL * 0.75;
+    g.stroke();
+    // hand: soft mitten along the forearm direction, pink nails
+    const { el, wr } = arm;
+    const dir = Math.atan2(wr[1] - el[1], wr[0] - el[0]);
+    const hd: V = [wr[0] + Math.cos(dir) * 8, wr[1] + Math.sin(dir) * 8];
+    g.save();
+    g.translate(hd[0], hd[1]);
+    g.rotate(dir);
+    g.fillStyle = skin;
+    g.beginPath();
+    g.ellipse(-1, 0, 12, 8.6, 0, 0, Math.PI * 2);
+    g.fill();
+    g.strokeStyle = ink;
+    g.lineWidth = OL * 0.6;
+    g.stroke();
+    g.fillStyle = "#f4a3b4";
+    g.beginPath();
+    g.ellipse(8, 0, 2.2, 3.6, 0, 0, Math.PI * 2);
+    g.fill();
+    g.restore();
+    return hd;
+  };
+
   // ---- torso (skin), then the tank top clipped to it
-  const torsoPts = mirror(TORSO_R).map(([x, dy]) => rot(x, dy));
+  const torsoPts = mirror(bd.torso).map(([x, dy]) => rot(x, dy));
   const torso = () => smoothClosed(g, torsoPts);
+  // with a tee, the shirt shape IS the upper-body silhouette (the skin torso under it would peek out)
+  if (look.top !== "tee") {
   torso();
   g.fillStyle = skin;
   g.fill();
@@ -302,16 +454,18 @@ export function drawTiff(g: Ctx, w: number, h: number, spec: StickSpec, pose: Po
   g.strokeStyle = ink;
   g.lineWidth = OL * 0.6;
   g.beginPath();
-  g.moveTo(...rot(-53, -186));
-  g.lineTo(...rot(-49, -218));
-  g.moveTo(...rot(-33, -220));
-  g.quadraticCurveTo(...rot(-30, -176), ...rot(0, -166));
-  g.quadraticCurveTo(...rot(30, -176), ...rot(33, -220));
-  g.moveTo(...rot(49, -218));
-  g.lineTo(...rot(53, -186));
+  if (look.top === "tank") {
+    g.moveTo(...rot(-53, -186));
+    g.lineTo(...rot(-49, -218));
+    g.moveTo(...rot(-33, -220));
+    g.quadraticCurveTo(...rot(-30, -176), ...rot(0, -166));
+    g.quadraticCurveTo(...rot(30, -176), ...rot(33, -220));
+    g.moveTo(...rot(49, -218));
+    g.lineTo(...rot(53, -186));
+  }
   g.stroke();
-  // form: soft highlights and under-curves
-  for (const s of [-1, 1]) {
+  // form: soft highlights and under-curves (female builds)
+  for (const s of look.build === "male" ? [] : [-1, 1]) {
     const c = rot(s * 36, -155);
     const hl = g.createRadialGradient(c[0] - 6, c[1] - 6, 2, c[0], c[1], 30);
     hl.addColorStop(0, "rgba(255,255,255,0.16)");
@@ -321,15 +475,18 @@ export function drawTiff(g: Ctx, w: number, h: number, spec: StickSpec, pose: Po
     g.arc(c[0], c[1], 30, 0, Math.PI * 2);
     g.fill();
     // breast line: from the centre out to the side, under the hair
-    g.strokeStyle = "rgba(0,0,0,0.55)";
-    g.lineWidth = 2.6;
+    g.strokeStyle = look.top === "tank" ? "rgba(0,0,0,0.55)" : hexMul(top, 0.8);
+    g.lineWidth = look.top === "tank" ? 2.6 : 1.6;
     g.beginPath();
-    g.moveTo(...rot(s * 8, -143));
-    g.quadraticCurveTo(...rot(s * 28, -124), ...rot(s * 46, -136));
-    g.stroke();
+    if (look.top === "tank") {
+      g.moveTo(...rot(s * 8, -143));
+      g.quadraticCurveTo(...rot(s * 28, -124), ...rot(s * 46, -136));
+      g.stroke();
+    }
   }
 
-  // cleavage line (skin only, ends above the neckline)
+  // cleavage line + collarbones: only where the neckline shows skin (tank)
+  if (look.top === "tank") {
   g.strokeStyle = hexMul(skin, 0.72);
   g.lineWidth = 1.8;
   g.beginPath();
@@ -345,11 +502,111 @@ export function drawTiff(g: Ctx, w: number, h: number, spec: StickSpec, pose: Po
     g.quadraticCurveTo(...rot(s * 18, -210), ...rot(s * 26, -207));
     g.stroke();
   }
+  }
   g.restore();
   torso();
   g.strokeStyle = ink;
   g.lineWidth = OL;
   g.stroke();
+  }
+  if (look.top === "tee") {
+    // a regular T-shirt: clean straight lines from the shoulder over the chest and straight down to the hem
+    // (no waist curve, no folds); men taper slightly (V shape)
+    const TEE: Record<AnimeLook["build"], V[]> = {
+      // fitted tee on the hourglass build: round bust, nipped waist, out to the waistband (Tiff's figure)
+      curvy: [[16, -226], [40, -220], [52, -211], [55, -200], [54, -188], [53.6, -178], [53.6, -168], [53.9, -154.8], [56.0, -150.8], [56.9, -146.5], [56.7, -142.0], [55.4, -137.8], [53.0, -134.1], [49.8, -131.1], [45.8, -129.0], [41.5, -128.1], [37.0, -128.3], [32.8, -129.6], [34.5, -122], [34.5, -114], [35.5, -100], [39.5, -86], [45.5, -72], [52, -59], [56.5, -50], [56.5, -46]],
+      // bust stays round under the tee; below it the shirt falls straight to the hem
+      slim: [[16, -226], [40, -220], [52, -210], [54, -192], [55, -180], [57, -170], [59, -161], [60, -154], [59.6, -148], [58.4, -142], [56.8, -137], [55.6, -132], [55.2, -125], [55.2, -50], [54.8, -46]],
+      male: [[16, -226], [46, -221], [68, -213], [75, -198], [72, -170], [64, -120], [58, -50], [57.5, -46]],
+    };
+    const half = TEE[look.build];
+    const pts = [...half, ...[...half].reverse().map(([x, dy]): V => [-x, dy])].map(([x, dy]) => rot(x, dy));
+    // shirt body + short sleeves filled first, then ONE outline around the union (no seam between sleeve and body)
+    const teeBody = () => smoothClosed(g, pts);
+    const male = look.build === "male";
+    const sleeves = [armL, armR].map((arm) => {
+      const n = Math.max(2, arm.us.findIndex((u) => u >= (male ? 0.17 : 0.12)));
+      return { sp: arm.pts.slice(0, n + 1), sw: arm.hw.slice(0, n + 1).map((x) => x + 0.8) };
+    });
+    if (male) {
+      // Jake's approved tee: sleeves sit behind the body with their own outline
+      for (const { sp, sw } of sleeves) {
+        limbPath(g, sp, sw);
+        g.fillStyle = hexMul(top, 0.95);
+        g.fill();
+        g.strokeStyle = ink;
+        g.lineWidth = OL * 0.7;
+        g.stroke();
+      }
+    }
+    teeBody();
+    const tg2 = g.createLinearGradient(...rot(-70, 0), ...rot(70, 0));
+    tg2.addColorStop(0, hexMul(top, 0.88));
+    tg2.addColorStop(0.4, hexMul(top, 1.04));
+    tg2.addColorStop(1, hexMul(top, 0.84));
+    g.fillStyle = tg2;
+    g.fill();
+    for (const { sp, sw } of male ? [] : sleeves) {
+      limbPath(g, sp, sw);
+      g.fillStyle = tg2;
+      g.fill();
+    }
+    if (look.build !== "male") {
+      for (const sd of [-1, 1]) {
+        const c = rot(sd * 38, -149);
+        const hl = g.createRadialGradient(c[0] - 6, c[1] - 6, 2, c[0], c[1], 22);
+        hl.addColorStop(0, "rgba(255,255,255,0.22)");
+        hl.addColorStop(1, "rgba(255,255,255,0)");
+        g.fillStyle = hl;
+        g.beginPath();
+        g.arc(c[0], c[1], 28, 0, Math.PI * 2);
+        g.fill();
+        g.strokeStyle = hexMul(top, 0.62);
+        g.lineWidth = 2.2;
+        g.beginPath();
+        g.moveTo(...rot(sd * 12, -137));
+        g.quadraticCurveTo(...rot(sd * 25, -125), ...rot(sd * 40, -128.5));
+        g.stroke();
+      }
+    }
+    g.strokeStyle = ink;
+    const body2 = smoothClosed2D(pts);
+    const sleeve2 = male ? [] : sleeves.map(({ sp, sw }) => limbPath2D(sp, sw));
+    // body outline, except where a sleeve covers it
+    g.save();
+    const m1 = new Path2D();
+    m1.rect(-2000, -2000, 5000, 5000);
+    for (const sl of sleeve2) m1.addPath(sl);
+    g.clip(m1, "evenodd");
+    g.lineWidth = OL * 0.85;
+    g.stroke(body2);
+    g.restore();
+    // sleeve outlines, except inside the body (and not inside the other sleeve)
+    g.save();
+    const m2 = new Path2D();
+    m2.rect(-2000, -2000, 5000, 5000);
+    m2.addPath(body2);
+    g.clip(m2, "evenodd");
+    g.lineWidth = OL * 0.7;
+    for (const sl of sleeve2) g.stroke(sl);
+    g.restore();
+    // crew neckline
+    const nl = rot(-17, -224);
+    g.fillStyle = skin;
+    g.beginPath();
+    g.moveTo(...nl);
+    g.quadraticCurveTo(...rot(0, -206), ...rot(17, -224));
+    g.lineTo(...rot(14, -228));
+    g.lineTo(...rot(-14, -228));
+    g.closePath();
+    g.fill();
+    g.beginPath();
+    g.moveTo(...nl);
+    g.quadraticCurveTo(...rot(0, -206), ...rot(17, -224));
+    g.strokeStyle = ink;
+    g.lineWidth = OL * 0.6;
+    g.stroke();
+  }
 
   // ---- jean shorts: high waist at the hips, short legs over the thighs, frayed hems
   {
@@ -374,17 +631,20 @@ export function drawTiff(g: Ctx, w: number, h: number, spec: StickSpec, pose: Po
     const li: V = [Math.min(li0[0], mid - 5), li0[1]];
     const ri: V = [Math.max(ri0[0], mid + 5), ri0[1]];
     const ro = at(legs.R, HEM, true, false);
-    const w0 = rot(-56.5, -52);
-    const w1 = rot(56.5, -52);
-    const h0 = rot(-74.5, -2);
-    const h1 = rot(74.5, -2);
+    const w0 = rot(-bd.waist, -52);
+    const w1 = rot(bd.waist, -52);
+    const h0 = rot(-bd.hip, -2);
+    const h1 = rot(bd.hip, -2);
     const crotch: V = [mid, Math.max(li[1], ri[1]) + 2];
     const crossed = sL[0] > sR[0];
     const shorts = () => {
       g.beginPath();
       g.moveTo(...w0);
-      g.quadraticCurveTo(...rot(-74.5, -30), ...h0);
-      g.quadraticCurveTo(h0[0], (h0[1] + lo[1]) / 2, lo[0], lo[1]);
+      if (look.build === "male") g.lineTo(...lo);
+      else {
+        g.quadraticCurveTo(...rot(-bd.hip, -30), ...h0);
+        g.quadraticCurveTo(h0[0], (h0[1] + lo[1]) / 2, lo[0], lo[1]);
+      }
       if (crossed) {
         // legs cross mid-stride: one continuous hem, no crotch notch
         g.quadraticCurveTo((lo[0] + ro[0]) / 2, Math.max(lo[1], ro[1]) + 6, ro[0], ro[1]);
@@ -392,8 +652,11 @@ export function drawTiff(g: Ctx, w: number, h: number, spec: StickSpec, pose: Po
         g.quadraticCurveTo((lo[0] + crotch[0]) / 2, lo[1] + 5, crotch[0], crotch[1]);
         g.quadraticCurveTo((crotch[0] + ro[0]) / 2, ro[1] + 5, ro[0], ro[1]);
       }
-      g.quadraticCurveTo(h1[0], (h1[1] + ro[1]) / 2, h1[0], h1[1]);
-      g.quadraticCurveTo(...rot(74.5, -30), ...w1);
+      if (look.build === "male") g.lineTo(...w1);
+      else {
+        g.quadraticCurveTo(h1[0], (h1[1] + ro[1]) / 2, h1[0], h1[1]);
+        g.quadraticCurveTo(...rot(bd.hip, -30), ...w1);
+      }
       g.closePath();
     };
     shorts();
@@ -483,7 +746,24 @@ export function drawTiff(g: Ctx, w: number, h: number, spec: StickSpec, pose: Po
       g.lineTo(crotch[0], crotch[1] - 16);
       g.stroke();
     }
-    shorts();
+    if (look.bottom === "jeans") {
+      // only the waist + hip sides get an outline; the legs continue in denim below
+      g.beginPath();
+      g.moveTo(...w0);
+      if (look.build === "male") g.lineTo(...lo);
+      else {
+        g.quadraticCurveTo(...rot(-bd.hip, -30), ...h0);
+        g.quadraticCurveTo(h0[0], (h0[1] + lo[1]) / 2, lo[0], lo[1]);
+      }
+      g.moveTo(...w1);
+      if (look.build === "male") g.lineTo(...ro);
+      else {
+        g.quadraticCurveTo(...rot(bd.hip, -30), ...h1);
+        g.quadraticCurveTo(h1[0], (h1[1] + ro[1]) / 2, ro[0], ro[1]);
+      }
+      g.moveTo(...w0);
+      g.lineTo(...w1);
+    } else shorts();
     g.strokeStyle = ink;
     g.lineWidth = OL * 0.85;
     g.stroke();
@@ -504,7 +784,7 @@ export function drawTiff(g: Ctx, w: number, h: number, spec: StickSpec, pose: Po
     };
     const loIn = inset(lo, crossed ? ro : crotch, 7);
     const roIn = inset(ro, crossed ? lo : crotch, 7);
-    for (const [a, c] of (crossed ? [[loIn, roIn]] : [[loIn, crotch], [crotch, roIn]]) as [V, V][]) {
+    for (const [a, c] of (look.bottom === "jeans" ? [] : crossed ? [[loIn, roIn]] : [[loIn, crotch], [crotch, roIn]]) as [V, V][]) {
       const n = Math.max(6, Math.round(Math.hypot(c[0] - a[0], c[1] - a[1]) / 2.4));
       g.strokeStyle = hexMul(denim, 1.45);
       g.lineWidth = 4.6;
@@ -528,65 +808,34 @@ export function drawTiff(g: Ctx, w: number, h: number, spec: StickSpec, pose: Po
     }
   }
 
-  // ---- arms (in front, like the stick cast) + hands
-  const drawArm = (side: -1 | 1, ang: [number, number]): V => {
-    const sh = rot(side * 52, -204);
-    const a1 = rad(ang[0]);
-    const el: V = [sh[0] + side * Math.sin(a1) * UPPER, sh[1] + Math.cos(a1) * UPPER];
-    const a2 = a1 + rad(ang[1]);
-    const wr: V = [el[0] + side * Math.sin(a2) * FORE, el[1] + Math.cos(a2) * FORE];
-    const sa = spine(sh, el, wr, 12);
-    const pts = smoothV(sa.pts, 6);
-    limbPath(g, pts, smoothN(sa.us.map((u) => prof(ARM_W, u)), 8));
-    g.fillStyle = skin;
-    g.fill();
-    g.strokeStyle = ink;
-    g.lineWidth = OL * 0.75;
-    g.stroke();
-    // hand: soft mitten along the forearm direction, berry nails
-    const dir = Math.atan2(wr[1] - el[1], wr[0] - el[0]);
-    const hd: V = [wr[0] + Math.cos(dir) * 8, wr[1] + Math.sin(dir) * 8];
-    g.save();
-    g.translate(hd[0], hd[1]);
-    g.rotate(dir);
-    g.fillStyle = skin;
-    g.beginPath();
-    g.ellipse(-1, 0, 12, 8.6, 0, 0, Math.PI * 2);
-    g.fill();
-    g.strokeStyle = ink;
-    g.lineWidth = OL * 0.6;
-    g.stroke();
-    g.fillStyle = "#f4a3b4";
-    g.beginPath();
-    g.ellipse(8, 0, 2.2, 3.6, 0, 0, Math.PI * 2);
-    g.fill();
-    g.restore();
-    return hd;
-  };
-  const handL = drawArm(-1, pose.armL);
-  const handR = drawArm(1, pose.armR);
+  // ---- forearms + hands in front (the upper arms were drawn behind the torso, see armGeo above)
+  const handL = drawFore(armL);
+  const handR = drawFore(armR);
   if (o.item) drawItem(g, o.item, o.item.hand === "L" ? handL : handR, 104, ink, OL);
 
   // ---- neck (+ choker), head, face, front hair
   {
     const tip: V = [hc[0] - Math.sin(headTilt) * 40, hc[1] + Math.cos(headTilt) * 40];
+    const nk = look.build === "male" ? 18 : 13;
+    const nk2 = look.build === "male" ? 16 : 11;
     g.fillStyle = skin;
     g.beginPath();
-    g.moveTo(nb[0] - 13, nb[1] + 8);
-    g.lineTo(tip[0] - 11, tip[1]);
-    g.lineTo(tip[0] + 11, tip[1]);
-    g.lineTo(nb[0] + 13, nb[1] + 8);
+    g.moveTo(nb[0] - nk, nb[1] + 8);
+    g.lineTo(tip[0] - nk2, tip[1]);
+    g.lineTo(tip[0] + nk2, tip[1]);
+    g.lineTo(nb[0] + nk, nb[1] + 8);
     g.closePath();
     g.fill();
     g.strokeStyle = ink;
     g.lineWidth = OL * 0.7;
     g.beginPath();
-    g.moveTo(nb[0] - 13, nb[1] + 4);
-    g.lineTo(tip[0] - 11, tip[1]);
-    g.moveTo(nb[0] + 13, nb[1] + 4);
-    g.lineTo(tip[0] + 11, tip[1]);
+    g.moveTo(nb[0] - nk, nb[1] + 4);
+    g.lineTo(tip[0] - nk2, tip[1]);
+    g.moveTo(nb[0] + nk, nb[1] + 4);
+    g.lineTo(tip[0] + nk2, tip[1]);
     g.stroke();
     // black choker with a small silver ring
+    if (look.choker) {
     const cc: V = [nb[0] + (tip[0] - nb[0]) * 0.3, nb[1] + (tip[1] - nb[1]) * 0.3];
     g.save();
     g.translate(cc[0], cc[1]);
@@ -601,6 +850,7 @@ export function drawTiff(g: Ctx, w: number, h: number, spec: StickSpec, pose: Po
     g.arc(0, 7, 3.4, 0, Math.PI * 2);
     g.stroke();
     g.restore();
+    }
   }
   inHead(() => {
     // shadow the hair casts on the neck
@@ -609,7 +859,9 @@ export function drawTiff(g: Ctx, w: number, h: number, spec: StickSpec, pose: Po
     g.ellipse(0, 60, 12, 6, 0, 0, Math.PI * 2);
     g.fill();
     // anime face: soft cranium, cheek, small pointed chin
-    const fr: V[] = [[0, -66], [34, -58], [48, -30], [48, -4], [44, 20], [32, 41], [13, 57], [0, 62]];
+    const fr: V[] = look.build === "male"
+      ? [[0, -66], [38, -58], [52, -30], [52, -2], [51, 22], [45, 44], [24, 57], [0, 59]]
+      : [[0, -66], [34, -58], [48, -30], [48, -4], [44, 20], [32, 41], [13, 57], [0, 62]];
     const fp: V[] = [...fr, ...[...fr].reverse().slice(1, -1).map(([x, y]): V => [-x, y])];
     smoothClosed(g, fp);
     g.fillStyle = skin;
@@ -617,9 +869,42 @@ export function drawTiff(g: Ctx, w: number, h: number, spec: StickSpec, pose: Po
     g.strokeStyle = ink;
     g.lineWidth = OL * 0.8;
     g.stroke();
-    drawTiffFace(g, face, o, ink, hair);
-    drawFrontHair(g, hair, OL, headTilt);
+    drawTiffFace(g, face, o, ink, look, skin);
   });
+  // side locks: the top hangs from the head, the lower part is anchored to the body, so the locks always cover
+  // the outer edges of the bust (max half-width ~62) whatever the head tilt or body lean
+  const H = (x: number, y: number): V => [hc[0] + x * Math.cos(headTilt) - y * Math.sin(headTilt), hc[1] + x * Math.sin(headTilt) + y * Math.cos(headTilt)];
+  const B = (x: number, dy: number): V => rot(x, dy);
+  for (const sd of look.hair === "long" ? [-1, 1] : []) {
+    g.beginPath();
+    g.moveTo(...H(sd * 46, -24));
+    g.bezierCurveTo(...H(sd * 58, 12), ...B(sd * 67, -196), ...B(sd * 67, -152));
+    g.lineTo(...B(sd * 67, -128));
+    g.lineTo(...B(sd * 61, -104));
+    g.lineTo(...B(sd * 56, -124));
+    g.lineTo(...B(sd * 50, -108));
+    g.lineTo(...B(sd * 46, -130));
+    g.bezierCurveTo(...B(sd * 43, -175), ...H(sd * 43, 40), ...H(sd * 42, 10));
+    g.closePath();
+    const top = H(0, -20);
+    const bot = B(0, -104);
+    const lg = g.createLinearGradient(top[0], top[1], bot[0], bot[1]);
+    lg.addColorStop(0, hexMul(hair, 0.78));
+    lg.addColorStop(0.3, hair);
+    lg.addColorStop(1, hexMul(hair, 0.82));
+    g.fillStyle = lg;
+    g.fill();
+    g.strokeStyle = look.hairLine;
+    g.lineWidth = OL * 0.65;
+    g.stroke();
+    g.strokeStyle = hexMul(hair, 0.7);
+    g.lineWidth = 1.4;
+    g.beginPath();
+    g.moveTo(...H(sd * 50, 30));
+    g.quadraticCurveTo(...B(sd * 57, -180), ...B(sd * 57, -130));
+    g.stroke();
+  }
+  inHead(() => drawFrontHair(g, hair, look, OL));
   g.restore();
 }
 
@@ -650,10 +935,51 @@ function drawBoot(g: Ctx, a: V, col: string, ink: string, OL: number, side: -1 |
   g.stroke();
 }
 
+function drawSneaker(g: Ctx, a: V, col: string, ink: string, OL: number, side: -1 | 1) {
+  // front view: white sneaker, coloured side stripe, rubber sole
+  const [x, y] = a;
+  g.strokeStyle = ink;
+  g.lineWidth = OL * 0.6;
+  g.fillStyle = "#f5f5f2";
+  g.beginPath();
+  g.moveTo(x - 15, y - 4);
+  g.quadraticCurveTo(x - 21, y + 5, x - 20 + side * 4, y + 10);
+  g.quadraticCurveTo(x + side * 4, y + 19, x + 20 + side * 4, y + 10);
+  g.quadraticCurveTo(x + 21, y + 5, x + 15, y - 4);
+  g.closePath();
+  g.fill();
+  g.stroke();
+  g.strokeStyle = col;
+  g.lineWidth = 3;
+  g.beginPath();
+  g.moveTo(x - 13 * side, y);
+  g.quadraticCurveTo(x - 8 * side, y + 6, x - 17 * side, y + 8);
+  g.stroke();
+  g.strokeStyle = "#c9c4b8";
+  g.lineWidth = 2;
+  g.beginPath();
+  g.moveTo(x - 18 + side * 4, y + 11);
+  g.quadraticCurveTo(x + side * 4, y + 16, x + 18 + side * 4, y + 11);
+  g.stroke();
+}
+
 const hairShade = (hair: string) => hexMul(hair, 0.78);
 
-function drawBackHair(g: Ctx, hair: string, ink: string, OL: number, tilt = 0) {
-  void ink;
+function drawBackHair(g: Ctx, hair: string, lk: AnimeLook, OL: number, tilt = 0) {
+  if (lk.hair !== "long") {
+    // bob: hangs to the jaw; short: just the back of the head
+    const r: V[] = lk.hair === "bob"
+      ? [[0, -86], [42, -82], [64, -60], [72, -16], [72, 40], [66, 74], [52, 66], [40, 78], [0, 80]]
+      : [[0, -88], [44, -84], [62, -62], [64, -22], [58, 8], [0, 14]];
+    const pts: V[] = [...r, ...[...r].reverse().slice(1, -1).map(([x, y]): V => [-x, y])];
+    smoothClosed(g, pts);
+    g.fillStyle = hairShade(hair);
+    g.fill();
+    g.strokeStyle = lk.hairLine;
+    g.lineWidth = OL * 0.7;
+    g.stroke();
+    return;
+  }
   g.save();
   g.translate(0, -60);
   g.rotate(-tilt * 0.8);
@@ -673,7 +999,7 @@ function drawBackHair(g: Ctx, hair: string, ink: string, OL: number, tilt = 0) {
   hg.addColorStop(1, hexMul(hair, 0.7));
   g.fillStyle = hg;
   g.fill();
-  g.strokeStyle = TIFF.hairLine;
+  g.strokeStyle = lk.hairLine;
   g.lineWidth = OL * 0.7;
   g.stroke();
   // strands
@@ -690,44 +1016,32 @@ function drawBackHair(g: Ctx, hair: string, ink: string, OL: number, tilt = 0) {
   g.restore();
 }
 
-function drawFrontHair(g: Ctx, hair: string, OL: number, tilt = 0) {
-  const line = TIFF.hairLine;
-  // side locks in front of the shoulders, down to the chest
-  for (const s of [-1, 1]) {
-    g.save();
-    g.translate(s * 46, -24);
-    g.rotate(-tilt * 0.8);
-    g.translate(-s * 46, 24);
-    g.beginPath();
-    g.moveTo(s * 46, -24);
-    g.bezierCurveTo(s * 60, 20, s * 62, 90, s * 64, 150);
-    g.lineTo(s * 56, 196);
-    g.lineTo(s * 52, 160);
-    g.lineTo(s * 46, 186);
-    g.bezierCurveTo(s * 44, 120, s * 44, 60, s * 42, 10);
-    g.closePath();
-    const lg = g.createLinearGradient(0, -20, 0, 196);
-    lg.addColorStop(0, hairShade(hair));
-    lg.addColorStop(0.3, hair);
-    lg.addColorStop(1, hexMul(hair, 0.82));
-    g.fillStyle = lg;
-    g.fill();
-    g.strokeStyle = line;
-    g.lineWidth = OL * 0.65;
-    g.stroke();
-    g.strokeStyle = hexMul(hair, 0.7);
-    g.lineWidth = 1.4;
-    g.beginPath();
-    g.moveTo(s * 50, 30);
-    g.quadraticCurveTo(s * 54, 110, s * 53, 170);
-    g.stroke();
-    g.restore();
+function drawFrontHair(g: Ctx, hair: string, lk: AnimeLook, OL: number) {
+  const line = lk.hairLine;
+  if (lk.hair === "bob") {
+    // jaw-length side pieces framing the face
+    for (const s of [-1, 1]) {
+      g.beginPath();
+      g.moveTo(s * 50, -24);
+      g.bezierCurveTo(s * 60, 10, s * 62, 50, s * 58, 72);
+      g.lineTo(s * 50, 60);
+      g.lineTo(s * 45, 70);
+      g.bezierCurveTo(s * 44, 40, s * 44, 10, s * 42, -10);
+      g.closePath();
+      g.fillStyle = hair;
+      g.fill();
+      g.strokeStyle = line;
+      g.lineWidth = OL * 0.65;
+      g.stroke();
+    }
   }
-  // crown + jagged bangs
-  const bangs: V[] = [
-    [54, -6], [46, 4], [40, -16], [32, -13], [24, -22], [15, -15], [7, -24], [0, 0], [-7, -24], [-15, -15],
-    [-24, -22], [-32, -13], [-40, -16], [-46, 4], [-54, -6],
-  ];
+  // crown + bangs (jagged for long/bob, short spiky fringe for short hair)
+  const bangs: V[] = lk.hair === "short"
+    ? [[54, -6], [50, -10], [42, -28], [34, -18], [24, -34], [14, -22], [4, -36], [-6, -22], [-16, -36], [-26, -22], [-36, -32], [-44, -14], [-52, -10], [-54, -6]]
+    : [
+      [54, -6], [46, 4], [40, -16], [32, -13], [24, -22], [15, -15], [7, -24], [0, 0], [-7, -24], [-15, -15],
+      [-24, -22], [-32, -13], [-40, -16], [-46, 4], [-54, -6],
+    ];
   g.beginPath();
   g.moveTo(-55, -6);
   g.bezierCurveTo(-62, -52, -34, -90, 0, -90);
@@ -762,8 +1076,7 @@ function drawFrontHair(g: Ctx, hair: string, OL: number, tilt = 0) {
   }
 }
 
-function drawTiffFace(g: Ctx, face: Face, o: DrawOpts, ink: string, hair: string) {
-  void hair;
+function drawTiffFace(g: Ctx, face: Face, o: DrawOpts, ink: string, lk: AnimeLook, skinCol: string) {
   const look = face.look ?? [0, 0];
   const lx = look[0] * 4;
   const ly = look[1] * 3;
@@ -772,8 +1085,8 @@ function drawTiffFace(g: Ctx, face: Face, o: DrawOpts, ink: string, hair: string
   const EX = 21;
   const EY = 8;
 
-  // blush with hatch lines
-  for (const s of [-1, 1]) {
+  // blush with hatch lines (always for the female looks, only on "blush" for male)
+  for (const s of lk.build === "male" && !extras.includes("blush") ? [] : [-1, 1]) {
     g.fillStyle = extras.includes("blush") ? "rgba(255,120,140,0.55)" : "rgba(255,130,150,0.28)";
     g.beginPath();
     g.ellipse(s * 28, 27, 10, 5, 0, 0, Math.PI * 2);
@@ -813,13 +1126,13 @@ function drawTiffFace(g: Ctx, face: Face, o: DrawOpts, ink: string, hair: string
     const ix = x0 + lx + s * 1;
     const iy = EY + ly + 2;
     const ir = g.createLinearGradient(0, iy - 12, 0, iy + 12);
-    ir.addColorStop(0, TIFF.irisTop);
-    ir.addColorStop(1, TIFF.irisBot);
+    ir.addColorStop(0, lk.iris[0]);
+    ir.addColorStop(1, lk.iris[1]);
     g.fillStyle = ir;
     g.beginPath();
     g.ellipse(ix, iy, 10, 13 * lid.big, 0, 0, Math.PI * 2);
     g.fill();
-    g.strokeStyle = hexMul(TIFF.irisTop, 0.6);
+    g.strokeStyle = hexMul(lk.iris[0], 0.6);
     g.lineWidth = 1.2;
     g.stroke();
     g.fillStyle = "#14203f";
@@ -840,7 +1153,7 @@ function drawTiffFace(g: Ctx, face: Face, o: DrawOpts, ink: string, hair: string
     const pOut: V = [outer[0], outer[1] + lid.aOut];
     const cY = top - 4 + lid.drop;
     if (lid.drop > 0 || lid.aIn > 0 || lid.aOut > 0) {
-      g.fillStyle = hexMul(TIFF.skin, 0.92);
+      g.fillStyle = hexMul(skinCol, 0.92);
       g.beginPath();
       g.moveTo(...pIn);
       g.quadraticCurveTo(x0, cY, ...pOut);
@@ -856,10 +1169,10 @@ function drawTiffFace(g: Ctx, face: Face, o: DrawOpts, ink: string, hair: string
     g.beginPath();
     g.moveTo(...pIn);
     g.quadraticCurveTo(x0, cY, ...pOut);
-    g.lineTo(pOut[0] + s * 4, pOut[1] + 5);
+    if (lk.lashes) g.lineTo(pOut[0] + s * 4, pOut[1] + 5);
     g.stroke();
     g.lineWidth = 2;
-    for (const [dx, dy] of [[5, -4], [7, 0]]) {
+    for (const [dx, dy] of lk.lashes ? [[5, -4], [7, 0]] : []) {
       g.beginPath();
       g.moveTo(pOut[0] - s * 2, pOut[1]);
       g.lineTo(pOut[0] + s * dx, pOut[1] + dy);
@@ -908,7 +1221,7 @@ function drawTiffFace(g: Ctx, face: Face, o: DrawOpts, ink: string, hair: string
     g.lineWidth = 1.2;
     g.stroke();
   };
-  const N: Lid = { drop: 0, aIn: 0, aOut: 0, big: 1 };
+  const N: Lid = lk.build === "male" ? { drop: 4, aIn: 3, aOut: 0, big: 0.68 } : { drop: 0, aIn: 0, aOut: 0, big: 1 };
   const kind = blinkOn && !["x", "spiral", "hearts", "stars", "happy", "closed"].includes(face.eyes) ? "closed" : face.eyes;
   for (const s of [-1, 1]) {
     switch (kind) {
@@ -969,10 +1282,10 @@ function drawTiffFace(g: Ctx, face: Face, o: DrawOpts, ink: string, hair: string
 
   // thin high brows (bangs overlap them)
   if (face.brows !== "none") {
-    g.strokeStyle = hexMul(TIFF.hairLine, 0.9);
-    g.lineWidth = 2;
+    g.strokeStyle = hexMul(lk.hairLine, 0.9);
+    g.lineWidth = lk.build === "male" ? 5 : 2;
     for (const s of [-1, 1]) {
-      let dIn = 0;
+      let dIn = lk.build === "male" ? 5 : 0;
       let dOut = 0;
       if (face.brows === "raised") dIn = dOut = -4;
       if (face.brows === "angry") (dIn = 5), (dOut = -2);
@@ -986,7 +1299,7 @@ function drawTiffFace(g: Ctx, face: Face, o: DrawOpts, ink: string, hair: string
   }
 
   // tiny nose
-  g.strokeStyle = hexMul(TIFF.skin, 0.72);
+  g.strokeStyle = hexMul(skinCol, 0.72);
   g.lineWidth = 1.6;
   g.beginPath();
   g.moveTo(1, 25);

@@ -1,0 +1,199 @@
+{
+ "slug": "tiff-sold-twice",
+ "title": "I sold the same jacket to two people",
+ "mode": "problem-solution",
+ "style": "stickworld",
+ "language": "en",
+ "fps": 30,
+ "voice": {
+  "provider": "edge",
+  "voice": "en-US-AvaNeural",
+  "wpm": 190
+ },
+ "music": {
+  "mood": "drama"
+ },
+ "captions": {
+  "preset": "boxed"
+ },
+ "pronounce": {
+  "pileGo": "pile go",
+  "Vinted": "Vin-ted"
+ },
+ "hooks": [
+  {
+   "text": "I sold the same jacket... to two people.",
+   "family": "story-in-medias-res",
+   "score": 88,
+   "chosen": true
+  },
+  {
+   "text": "Crosslisting almost got me banned from Depop.",
+   "family": "stakes",
+   "score": 74
+  },
+  {
+   "text": "The fastest way to sell clothes is also the riskiest.",
+   "family": "paradox",
+   "score": 76
+  }
+ ],
+ "hookVariants": [],
+ "defaultTransition": "whip-right",
+ "beats": [
+  {
+   "id": "b01",
+   "shot": "s01",
+   "text": "I sold the same jacket... to *two* people.",
+   "visual": "Tiff holds up a jacket, two phones buzzing on the bed beside her, both say SOLD.",
+   "sfx": [
+    {
+     "at": "jacket",
+     "sound": "swoosh_up",
+     "gain": -20
+    },
+    {
+     "at": "two",
+     "sound": "impact",
+     "gain": -12
+    }
+   ],
+   "role": "hook"
+  },
+  {
+   "id": "b02",
+   "shot": "s02",
+   "text": "It was on Depop and Vinted, because more apps means more *buyers*.",
+   "visual": "Two app boards with the same jacket listing; little buyer heads pop in.",
+   "sfx": [
+    {
+     "at": "buyers",
+     "sound": "pop",
+     "gain": -16
+    }
+   ],
+   "transition": "push"
+  },
+  {
+   "id": "b03",
+   "shot": "s02",
+   "text": "Both sold in the *same hour*.",
+   "visual": "A clock spins; both boards flip to SOLD.",
+   "sfx": [
+    {
+     "at": "same",
+     "sound": "ding",
+     "gain": -16
+    }
+   ]
+  },
+  {
+   "id": "b04",
+   "shot": "s03",
+   "text": "One buyer got the jacket. The other got a refund and a *one-star* review.",
+   "visual": "Two buyers: one happy with the jacket, one angry with a 1-star sign; Tiff sweats.",
+   "sfx": [
+    {
+     "at": "refund",
+     "sound": "stamp",
+     "gain": -14
+    }
+   ],
+   "transition": "whip-left"
+  },
+  {
+   "id": "b05",
+   "shot": "s04",
+   "text": "Crosslisting isn't the problem. *Delisting* is.",
+   "visual": "Tiff at her laptop; a big DELIST button.",
+   "sfx": [
+    {
+     "at": "Delisting",
+     "sound": "impact",
+     "gain": -14
+    }
+   ],
+   "transition": "push"
+  },
+  {
+   "id": "b06",
+   "shot": "s04",
+   "text": "Every sale means racing through five other apps to take it *down*.",
+   "visual": "Tiff frantically typing, five boards flashing, timer ticking.",
+   "sfx": [
+    {
+     "at": "racing",
+     "sound": "typewriter",
+     "gain": -20
+    }
+   ]
+  },
+  {
+   "id": "b07",
+   "shot": "s05",
+   "text": "And my prices? Pure *guessing*.",
+   "visual": "Tiff shrugs with a price tag and a question mark.",
+   "sfx": [
+    {
+     "at": "guessing",
+     "sound": "boing",
+     "gain": -16
+    }
+   ],
+   "transition": "whip-right"
+  },
+  {
+   "id": "b08",
+   "shot": "s06",
+   "text": "Now I snap it once, and *pileGo* lists it on six apps.",
+   "visual": "Tiff snaps the jacket with her phone; a pileGo! board appears; six app boards light up.",
+   "sfx": [
+    {
+     "at": "snap",
+     "sound": "shutter",
+     "gain": -16
+    },
+    {
+     "at": "pileGo",
+     "sound": "success",
+     "gain": -14
+    }
+   ],
+   "transition": "flash"
+  },
+  {
+   "id": "b09",
+   "shot": "s06",
+   "text": "Prices come from what things *actually sold* for on eBay.",
+   "visual": "A price tag fills in with a suggested price.",
+   "sfx": [
+    {
+     "at": "actually",
+     "sound": "cash",
+     "gain": -16
+    }
+   ]
+  },
+  {
+   "id": "b10",
+   "shot": "s06",
+   "text": "When it sells, it comes down *everywhere* else.",
+   "visual": "One board flips SOLD, the rest drop away together.",
+   "sfx": [
+    {
+     "at": "everywhere",
+     "sound": "whoosh",
+     "gain": -18
+    }
+   ]
+  },
+  {
+   "id": "b11",
+   "shot": "s07",
+   "text": "Same jacket. One buyer. *Zero* apologies.",
+   "visual": "Tiff hands the jacket to one happy buyer, smug wink. pileGo! end card.",
+   "sfx": [],
+   "transition": "push"
+  }
+ ]
+}

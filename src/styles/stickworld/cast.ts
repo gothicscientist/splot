@@ -5,6 +5,14 @@ import type { StickSpec } from "./draw";
 export const CAST: Record<string, StickSpec> = {
   // Tiff: the recurring lead (23): anime-style curvy figure, silver-lavender hair, black tank, jean shorts, black boots (tiff.ts)
   tiff: { figure: "tiff", body: "#1d1b22", legColor: "#4a78b5", shoes: "#17151a", accent: "#e2b23c", hairColor: "#d9d8ef", head: "#fbe3d6", seed: 23 },
+  // Tiff's side cast (same anime figure kit, different build / hair / outfit)
+  jake: { figure: "tiff", anime: { build: "male", hair: "short", hairLine: "#0f0c0b", iris: ["#2a1a10", "#7a5232"], top: "tee", bottom: "jeans", shoes: "sneakers", choker: false, lashes: false }, body: "#7a1f24", legColor: "#2f3f5f", shoes: "#1b1b1f", accent: "#c9a46a", hairColor: "#1f1a18", head: "#efc9b0", seed: 31 },
+  mia: { figure: "tiff", anime: { build: "curvy", hair: "bob", hairLine: "#4a2a1a", iris: ["#2f6b3a", "#9ad48a"], top: "tee", bottom: "jeans", shoes: "sneakers", choker: false, lashes: true }, body: "#f2c94c", legColor: "#5b7fb8", shoes: "#a8c68a", accent: "#c9a46a", hairColor: "#8a5a3c", head: "#f6d6c4", seed: 47 },
+  // one-off side characters for the Tiff reels (same anime kit)
+  sasha: { figure: "tiff", anime: { build: "curvy", hair: "long", hairLine: "#1a1010", iris: ["#4a2a18", "#b07a4a"], top: "tank", bottom: "jeans", shoes: "boots", choker: false, lashes: true }, body: "#3f8f5a", legColor: "#26242c", shoes: "#17151a", accent: "#c9a46a", hairColor: "#3a2420", head: "#e9c2a6", seed: 57 },
+  leo: { figure: "tiff", anime: { build: "male", hair: "short", hairLine: "#2a1a10", iris: ["#3a4a2a", "#8aa86a"], top: "tee", bottom: "jeans", shoes: "sneakers", choker: false, lashes: false }, body: "#b9a3d9", legColor: "#3a3f4f", shoes: "#f3f0e8", accent: "#c9a46a", hairColor: "#6b4a2e", head: "#f2cdb4", seed: 63 },
+  friendA: { figure: "tiff", anime: { build: "curvy", hair: "bob", hairLine: "#5a1e10", iris: ["#2a3f6b", "#8fb4e6"], top: "tee", bottom: "jeans", shoes: "sneakers", choker: false, lashes: true }, body: "#e98aa6", legColor: "#4a6fa5", shoes: "#ffffff", accent: "#c9a46a", hairColor: "#b0442a", head: "#f6d6c4", seed: 71 },
+  friendB: { figure: "tiff", anime: { build: "male", hair: "short", hairLine: "#0f0c0b", iris: ["#2a1a10", "#6a4a2a"], top: "tee", bottom: "jeans", shoes: "sneakers", choker: false, lashes: false }, body: "#3f6fb5", legColor: "#2a2f3a", shoes: "#1b1b1f", accent: "#c9a46a", hairColor: "#2a1a10", head: "#c99a78", seed: 73 },
   // the lead: brown side-part hair, round glasses, teal tee (the reference's everyman)
   lead: { body: "#1fa38a", hair: "side", hairColor: "#8a5a32", glasses: "round", seed: 3 },
   leadF: { body: "#e8578c", hair: "bun", hairColor: "#c8502c", seed: 11 },

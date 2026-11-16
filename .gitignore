@@ -10,3 +10,6 @@ out/
 videos/*/audio/stems/
 videos/*/voice/*.16k.wav
 public/v/
+
+# macOS Finder metadata
+.DS_Store

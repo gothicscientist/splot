@@ -1,0 +1,150 @@
+{
+ "slug": "tiff-love-letter",
+ "title": "I almost sold a love letter for 12 dollars",
+ "mode": "case-file",
+ "style": "stickworld",
+ "language": "en",
+ "fps": 30,
+ "voice": {
+  "provider": "edge",
+  "voice": "en-US-AvaNeural",
+  "wpm": 180
+ },
+ "music": {
+  "mood": "wonder"
+ },
+ "captions": {
+  "preset": "boxed"
+ },
+ "pronounce": {
+  "pileGo": "pile go"
+ },
+ "hooks": [
+  {
+   "text": "I almost sold a love letter for twelve dollars. It was thirty-seven years late.",
+   "family": "stakes + mystery",
+   "score": 90,
+   "chosen": true
+  }
+ ],
+ "hookVariants": [],
+ "defaultTransition": "push",
+ "beats": [
+  {
+   "id": "b01",
+   "shot": "s01",
+   "text": "I almost sold a love letter for *twelve dollars*. It was thirty-seven years late.",
+   "visual": "Tiff with an old envelope; $12 tag slams on.",
+   "sfx": [
+    {
+     "at": "twelve",
+     "sound": "stamp",
+     "gain": -14
+    }
+   ],
+   "role": "hook"
+  },
+  {
+   "id": "b02",
+   "shot": "s02",
+   "text": "I was clearing my clothes chair, snapping everything to *list*.",
+   "visual": "Bedroom, clothes chair pile; phone snaps.",
+   "sfx": [
+    {
+     "at": "snapping",
+     "sound": "shutter",
+     "gain": -18
+    }
+   ],
+   "transition": "whip-left"
+  },
+  {
+   "id": "b03",
+   "shot": "s02",
+   "text": "When I snapped a thrifted jacket, something *crinkled* in the pocket.",
+   "visual": "Jacket close-up; pocket zoom.",
+   "sfx": [
+    {
+     "at": "crinkled",
+     "sound": "blanket_rustle",
+     "gain": -20,
+     "args": {
+      "dur": 0.5,
+      "intensity": 0.7
+     }
+    }
+   ]
+  },
+  {
+   "id": "b04",
+   "shot": "s03",
+   "text": "A letter. Dated *1987*. Never sent.",
+   "visual": "Yellowed envelope, 1987 stamp.",
+   "sfx": [
+    {
+     "at": "Dated",
+     "sound": "stamp",
+     "gain": -16
+    }
+   ],
+   "transition": "push"
+  },
+  {
+   "id": "b05",
+   "shot": "s03",
+   "text": "It said: June, I should have asked you to *stay*.",
+   "visual": "Handwriting writes on.",
+   "sfx": []
+  },
+  {
+   "id": "b06",
+   "shot": "s03",
+   "text": "Signed: *Robert*.",
+   "visual": "Inked signature.",
+   "sfx": []
+  },
+  {
+   "id": "b07",
+   "shot": "s04",
+   "text": "June... is my *grandma's* name.",
+   "visual": "Tiff frozen; record scratch; push-in.",
+   "sfx": [
+    {
+     "at": "name",
+     "sound": "record_scratch",
+     "gain": -12
+    }
+   ],
+   "transition": "flash"
+  },
+  {
+   "id": "b08",
+   "shot": "s05",
+   "text": "I showed her. She went quiet. Then she said: he wore that jacket *every day*.",
+   "visual": "Grandma's vintage living room; old photo frame.",
+   "sfx": [],
+   "transition": "dissolve"
+  },
+  {
+   "id": "b09",
+   "shot": "s05",
+   "text": "She waited thirty-seven years to read that *sentence*.",
+   "visual": "Letter, slow push-in.",
+   "sfx": []
+  },
+  {
+   "id": "b10",
+   "shot": "s06",
+   "text": "Now both me and my grandma are up *fifty dollars* using pileGo.",
+   "visual": "Jacket listed and SOLD; +$50 counters for Tiff and Grandma; pileGo! card.",
+   "sfx": [
+    {
+     "at": "fifty",
+     "sound": "cash",
+     "gain": -14
+    }
+   ],
+   "transition": "whip-right"
+  }
+ ]
+}

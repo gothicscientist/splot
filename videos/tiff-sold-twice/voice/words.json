@@ -1,0 +1,1004 @@
+{
+ "version": 2,
+ "sampleRate": 48000,
+ "duration": 32.0844,
+ "lead": 0.06,
+ "provider": "edge",
+ "voice": "en-US-AvaNeural",
+ "tempo": 1.037,
+ "wpm": 186.5,
+ "beats": [
+  {
+   "id": "b01",
+   "shot": "s01",
+   "start": 0.06,
+   "speechEnd": 2.3494,
+   "end": 2.5694,
+   "say": "I sold the same jacket... to two people.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b02",
+   "shot": "s02",
+   "start": 2.5694,
+   "speechEnd": 5.9538,
+   "end": 6.0738,
+   "say": "It was on Depop and Vin-ted, because more apps means more buyers.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b03",
+   "shot": "s02",
+   "start": 6.0738,
+   "speechEnd": 7.6262,
+   "end": 7.7862,
+   "say": "Both sold in the same hour.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b04",
+   "shot": "s03",
+   "start": 7.7862,
+   "speechEnd": 11.5633,
+   "end": 11.7233,
+   "say": "One buyer got the jacket. The other got a refund and a one-star review.",
+   "tightenedSec": 0.296
+  },
+  {
+   "id": "b05",
+   "shot": "s04",
+   "start": 11.7233,
+   "speechEnd": 14.2811,
+   "end": 14.4011,
+   "say": "Crosslisting isn't the problem. Delisting is.",
+   "tightenedSec": 0.23
+  },
+  {
+   "id": "b06",
+   "shot": "s04",
+   "start": 14.4011,
+   "speechEnd": 17.7256,
+   "end": 17.8856,
+   "say": "Every sale means racing through five other apps to take it down.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b07",
+   "shot": "s05",
+   "start": 17.8856,
+   "speechEnd": 19.5961,
+   "end": 19.7561,
+   "say": "And my prices? Pure guessing.",
+   "tightenedSec": 0.281
+  },
+  {
+   "id": "b08",
+   "shot": "s06",
+   "start": 19.7561,
+   "speechEnd": 22.8411,
+   "end": 22.9611,
+   "say": "Now I snap it once, and pile go lists it on six apps.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b09",
+   "shot": "s06",
+   "start": 22.9611,
+   "speechEnd": 25.5834,
+   "end": 25.7034,
+   "say": "Prices come from what things actually sold for on eBay.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b10",
+   "shot": "s06",
+   "start": 25.7034,
+   "speechEnd": 28.424,
+   "end": 28.584,
+   "say": "When it sells, it comes down everywhere else.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b11",
+   "shot": "s07",
+   "start": 28.584,
+   "speechEnd": 31.3844,
+   "end": 31.3844,
+   "say": "Same jacket. One buyer. Zero apologies.",
+   "tightenedSec": 0.506
+  }
+ ],
+ "words": [
+  {
+   "i": 0,
+   "beat": "b01",
+   "text": "I",
+   "spoken": "i",
+   "start": 0.1564,
+   "end": 0.3685,
+   "emph": false
+  },
+  {
+   "i": 1,
+   "beat": "b01",
+   "text": "sold",
+   "spoken": "sold",
+   "start": 0.3797,
+   "end": 0.6699,
+   "emph": false
+  },
+  {
+   "i": 2,
+   "beat": "b01",
+   "text": "the",
+   "spoken": "the",
+   "start": 0.681,
+   "end": 0.7591,
+   "emph": false
+  },
+  {
+   "i": 3,
+   "beat": "b01",
+   "text": "same",
+   "spoken": "same",
+   "start": 0.7703,
+   "end": 1.0493,
+   "emph": false
+  },
+  {
+   "i": 4,
+   "beat": "b01",
+   "text": "jacket...",
+   "spoken": "jacket",
+   "start": 1.0605,
+   "end": 1.4847,
+   "emph": false
+  },
+  {
+   "i": 5,
+   "beat": "b01",
+   "text": "to",
+   "spoken": "to",
+   "start": 1.6409,
+   "end": 1.7302,
+   "emph": false
+  },
+  {
+   "i": 6,
+   "beat": "b01",
+   "text": "two",
+   "spoken": "two",
+   "start": 1.7525,
+   "end": 1.9534,
+   "emph": true
+  },
+  {
+   "i": 7,
+   "beat": "b01",
+   "text": "people.",
+   "spoken": "people",
+   "start": 1.9646,
+   "end": 2.4668,
+   "emph": false
+  },
+  {
+   "i": 8,
+   "beat": "b02",
+   "text": "It",
+   "spoken": "it",
+   "start": 2.6658,
+   "end": 2.7998,
+   "emph": false
+  },
+  {
+   "i": 9,
+   "beat": "b02",
+   "text": "was",
+   "spoken": "was",
+   "start": 2.8109,
+   "end": 2.9002,
+   "emph": false
+  },
+  {
+   "i": 10,
+   "beat": "b02",
+   "text": "on",
+   "spoken": "on",
+   "start": 2.9114,
+   "end": 3.0342,
+   "emph": false
+  },
+  {
+   "i": 11,
+   "beat": "b02",
+   "text": "Depop",
+   "spoken": "depop",
+   "start": 3.0453,
+   "end": 3.4359,
+   "emph": false
+  },
+  {
+   "i": 12,
+   "beat": "b02",
+   "text": "and",
+   "spoken": "and",
+   "start": 3.4695,
+   "end": 3.5587,
+   "emph": false
+  },
+  {
+   "i": 13,
+   "beat": "b02",
+   "text": "Vinted,",
+   "spoken": "vin ted",
+   "start": 3.5699,
+   "end": 4.5856,
+   "emph": false
+  },
+  {
+   "i": 14,
+   "beat": "b02",
+   "text": "because",
+   "spoken": "because",
+   "start": 4.5968,
+   "end": 4.7865,
+   "emph": false
+  },
+  {
+   "i": 15,
+   "beat": "b02",
+   "text": "more",
+   "spoken": "more",
+   "start": 4.7977,
+   "end": 5.0432,
+   "emph": false
+  },
+  {
+   "i": 16,
+   "beat": "b02",
+   "text": "apps",
+   "spoken": "apps",
+   "start": 5.0544,
+   "end": 5.2999,
+   "emph": false
+  },
+  {
+   "i": 17,
+   "beat": "b02",
+   "text": "means",
+   "spoken": "means",
+   "start": 5.3111,
+   "end": 5.5454,
+   "emph": false
+  },
+  {
+   "i": 18,
+   "beat": "b02",
+   "text": "more",
+   "spoken": "more",
+   "start": 5.5566,
+   "end": 6.0365,
+   "emph": false
+  },
+  {
+   "i": 19,
+   "beat": "b02",
+   "text": "buyers.",
+   "spoken": "buyers",
+   "start": 6.0365,
+   "end": 6.1565,
+   "emph": true
+  },
+  {
+   "i": 20,
+   "beat": "b03",
+   "text": "Both",
+   "spoken": "both",
+   "start": 6.1702,
+   "end": 6.4381,
+   "emph": false
+  },
+  {
+   "i": 21,
+   "beat": "b03",
+   "text": "sold",
+   "spoken": "sold",
+   "start": 6.4493,
+   "end": 6.8064,
+   "emph": false
+  },
+  {
+   "i": 22,
+   "beat": "b03",
+   "text": "in",
+   "spoken": "in",
+   "start": 6.8176,
+   "end": 6.9069,
+   "emph": false
+  },
+  {
+   "i": 23,
+   "beat": "b03",
+   "text": "the",
+   "spoken": "the",
+   "start": 6.918,
+   "end": 6.985,
+   "emph": false
+  },
+  {
+   "i": 24,
+   "beat": "b03",
+   "text": "same",
+   "spoken": "same",
+   "start": 6.9962,
+   "end": 7.3087,
+   "emph": true
+  },
+  {
+   "i": 25,
+   "beat": "b03",
+   "text": "hour.",
+   "spoken": "hour",
+   "start": 7.3199,
+   "end": 7.7105,
+   "emph": true
+  },
+  {
+   "i": 26,
+   "beat": "b04",
+   "text": "One",
+   "spoken": "one",
+   "start": 7.8826,
+   "end": 8.1505,
+   "emph": false
+  },
+  {
+   "i": 27,
+   "beat": "b04",
+   "text": "buyer",
+   "spoken": "buyer",
+   "start": 8.1617,
+   "end": 8.4518,
+   "emph": false
+  },
+  {
+   "i": 28,
+   "beat": "b04",
+   "text": "got",
+   "spoken": "got",
+   "start": 8.463,
+   "end": 8.6304,
+   "emph": false
+  },
+  {
+   "i": 29,
+   "beat": "b04",
+   "text": "the",
+   "spoken": "the",
+   "start": 8.6416,
+   "end": 8.7086,
+   "emph": false
+  },
+  {
+   "i": 30,
+   "beat": "b04",
+   "text": "jacket.",
+   "spoken": "jacket",
+   "start": 8.7197,
+   "end": 9.2108,
+   "emph": false
+  },
+  {
+   "i": 31,
+   "beat": "b04",
+   "text": "The",
+   "spoken": "the",
+   "start": 9.5309,
+   "end": 9.7095,
+   "emph": false
+  },
+  {
+   "i": 32,
+   "beat": "b04",
+   "text": "other",
+   "spoken": "other",
+   "start": 9.7207,
+   "end": 9.955,
+   "emph": false
+  },
+  {
+   "i": 33,
+   "beat": "b04",
+   "text": "got",
+   "spoken": "got",
+   "start": 9.9663,
+   "end": 10.1114,
+   "emph": false
+  },
+  {
+   "i": 34,
+   "beat": "b04",
+   "text": "a",
+   "spoken": "a",
+   "start": 10.1225,
+   "end": 10.1825,
+   "emph": false
+  },
+  {
+   "i": 35,
+   "beat": "b04",
+   "text": "refund",
+   "spoken": "refund",
+   "start": 10.1895,
+   "end": 10.7587,
+   "emph": false
+  },
+  {
+   "i": 36,
+   "beat": "b04",
+   "text": "and",
+   "spoken": "and",
+   "start": 10.781,
+   "end": 10.9261,
+   "emph": false
+  },
+  {
+   "i": 37,
+   "beat": "b04",
+   "text": "a",
+   "spoken": "a",
+   "start": 10.9373,
+   "end": 11.0043,
+   "emph": false
+  },
+  {
+   "i": 38,
+   "beat": "b04",
+   "text": "one-star",
+   "spoken": "one star",
+   "start": 11.0154,
+   "end": 11.9195,
+   "emph": true
+  },
+  {
+   "i": 39,
+   "beat": "b04",
+   "text": "review.",
+   "spoken": "review",
+   "start": 11.9195,
+   "end": 12.0395,
+   "emph": false
+  },
+  {
+   "i": 40,
+   "beat": "b05",
+   "text": "Crosslisting",
+   "spoken": "crosslisting",
+   "start": 11.8196,
+   "end": 12.5675,
+   "emph": false
+  },
+  {
+   "i": 41,
+   "beat": "b05",
+   "text": "isn't",
+   "spoken": "isn't",
+   "start": 12.5899,
+   "end": 12.7907,
+   "emph": false
+  },
+  {
+   "i": 42,
+   "beat": "b05",
+   "text": "the",
+   "spoken": "the",
+   "start": 12.8018,
+   "end": 12.88,
+   "emph": false
+  },
+  {
+   "i": 43,
+   "beat": "b05",
+   "text": "problem.",
+   "spoken": "problem",
+   "start": 12.8911,
+   "end": 13.3934,
+   "emph": false
+  },
+  {
+   "i": 44,
+   "beat": "b05",
+   "text": "Delisting",
+   "spoken": "delisting",
+   "start": 13.7135,
+   "end": 14.2717,
+   "emph": true
+  },
+  {
+   "i": 45,
+   "beat": "b05",
+   "text": "is.",
+   "spoken": "is",
+   "start": 14.2828,
+   "end": 14.5953,
+   "emph": false
+  },
+  {
+   "i": 46,
+   "beat": "b06",
+   "text": "Every",
+   "spoken": "every",
+   "start": 14.4975,
+   "end": 14.8435,
+   "emph": false
+  },
+  {
+   "i": 47,
+   "beat": "b06",
+   "text": "sale",
+   "spoken": "sale",
+   "start": 14.8547,
+   "end": 15.223,
+   "emph": false
+  },
+  {
+   "i": 48,
+   "beat": "b06",
+   "text": "means",
+   "spoken": "means",
+   "start": 15.2342,
+   "end": 15.5132,
+   "emph": false
+  },
+  {
+   "i": 49,
+   "beat": "b06",
+   "text": "racing",
+   "spoken": "racing",
+   "start": 15.5244,
+   "end": 15.9262,
+   "emph": false
+  },
+  {
+   "i": 50,
+   "beat": "b06",
+   "text": "through",
+   "spoken": "through",
+   "start": 15.9373,
+   "end": 16.1829,
+   "emph": false
+  },
+  {
+   "i": 51,
+   "beat": "b06",
+   "text": "five",
+   "spoken": "five",
+   "start": 16.1941,
+   "end": 16.5735,
+   "emph": false
+  },
+  {
+   "i": 52,
+   "beat": "b06",
+   "text": "other",
+   "spoken": "other",
+   "start": 16.5847,
+   "end": 16.7744,
+   "emph": false
+  },
+  {
+   "i": 53,
+   "beat": "b06",
+   "text": "apps",
+   "spoken": "apps",
+   "start": 16.7856,
+   "end": 17.0311,
+   "emph": false
+  },
+  {
+   "i": 54,
+   "beat": "b06",
+   "text": "to",
+   "spoken": "to",
+   "start": 17.0423,
+   "end": 17.1204,
+   "emph": false
+  },
+  {
+   "i": 55,
+   "beat": "b06",
+   "text": "take",
+   "spoken": "take",
+   "start": 17.1316,
+   "end": 17.3102,
+   "emph": false
+  },
+  {
+   "i": 56,
+   "beat": "b06",
+   "text": "it",
+   "spoken": "it",
+   "start": 17.3214,
+   "end": 17.4218,
+   "emph": false
+  },
+  {
+   "i": 57,
+   "beat": "b06",
+   "text": "down.",
+   "spoken": "down",
+   "start": 17.433,
+   "end": 17.8236,
+   "emph": true
+  },
+  {
+   "i": 58,
+   "beat": "b07",
+   "text": "And",
+   "spoken": "and",
+   "start": 17.982,
+   "end": 18.1383,
+   "emph": false
+  },
+  {
+   "i": 59,
+   "beat": "b07",
+   "text": "my",
+   "spoken": "my",
+   "start": 18.1495,
+   "end": 18.2499,
+   "emph": false
+  },
+  {
+   "i": 60,
+   "beat": "b07",
+   "text": "prices?",
+   "spoken": "prices",
+   "start": 18.2611,
+   "end": 18.8191,
+   "emph": false
+  },
+  {
+   "i": 61,
+   "beat": "b07",
+   "text": "Pure",
+   "spoken": "pure",
+   "start": 19.1392,
+   "end": 19.4183,
+   "emph": false
+  },
+  {
+   "i": 62,
+   "beat": "b07",
+   "text": "guessing.",
+   "spoken": "guessing",
+   "start": 19.4294,
+   "end": 19.9205,
+   "emph": true
+  },
+  {
+   "i": 63,
+   "beat": "b08",
+   "text": "Now",
+   "spoken": "now",
+   "start": 19.8525,
+   "end": 20.0981,
+   "emph": false
+  },
+  {
+   "i": 64,
+   "beat": "b08",
+   "text": "I",
+   "spoken": "i",
+   "start": 20.1093,
+   "end": 20.1985,
+   "emph": false
+  },
+  {
+   "i": 65,
+   "beat": "b08",
+   "text": "snap",
+   "spoken": "snap",
+   "start": 20.2097,
+   "end": 20.4776,
+   "emph": false
+  },
+  {
+   "i": 66,
+   "beat": "b08",
+   "text": "it",
+   "spoken": "it",
+   "start": 20.4887,
+   "end": 20.578,
+   "emph": false
+  },
+  {
+   "i": 67,
+   "beat": "b08",
+   "text": "once,",
+   "spoken": "once",
+   "start": 20.5892,
+   "end": 20.9575,
+   "emph": false
+  },
+  {
+   "i": 68,
+   "beat": "b08",
+   "text": "and",
+   "spoken": "and",
+   "start": 20.9799,
+   "end": 21.1919,
+   "emph": false
+  },
+  {
+   "i": 69,
+   "beat": "b08",
+   "text": "pileGo",
+   "spoken": "pile go",
+   "start": 21.2031,
+   "end": 21.5826,
+   "emph": true
+  },
+  {
+   "i": 70,
+   "beat": "b08",
+   "text": "lists",
+   "spoken": "lists",
+   "start": 21.5937,
+   "end": 21.9062,
+   "emph": false
+  },
+  {
+   "i": 71,
+   "beat": "b08",
+   "text": "it",
+   "spoken": "it",
+   "start": 21.9174,
+   "end": 22.0178,
+   "emph": false
+  },
+  {
+   "i": 72,
+   "beat": "b08",
+   "text": "on",
+   "spoken": "on",
+   "start": 22.029,
+   "end": 22.2188,
+   "emph": false
+  },
+  {
+   "i": 73,
+   "beat": "b08",
+   "text": "six",
+   "spoken": "six",
+   "start": 22.2299,
+   "end": 22.4866,
+   "emph": false
+  },
+  {
+   "i": 74,
+   "beat": "b08",
+   "text": "apps.",
+   "spoken": "apps",
+   "start": 22.4978,
+   "end": 22.9108,
+   "emph": false
+  },
+  {
+   "i": 75,
+   "beat": "b09",
+   "text": "Prices",
+   "spoken": "prices",
+   "start": 23.0575,
+   "end": 23.4705,
+   "emph": false
+  },
+  {
+   "i": 76,
+   "beat": "b09",
+   "text": "come",
+   "spoken": "come",
+   "start": 23.4817,
+   "end": 23.6938,
+   "emph": false
+  },
+  {
+   "i": 77,
+   "beat": "b09",
+   "text": "from",
+   "spoken": "from",
+   "start": 23.7049,
+   "end": 23.8612,
+   "emph": false
+  },
+  {
+   "i": 78,
+   "beat": "b09",
+   "text": "what",
+   "spoken": "what",
+   "start": 23.8723,
+   "end": 24.0062,
+   "emph": false
+  },
+  {
+   "i": 79,
+   "beat": "b09",
+   "text": "things",
+   "spoken": "things",
+   "start": 24.0174,
+   "end": 24.2518,
+   "emph": false
+  },
+  {
+   "i": 80,
+   "beat": "b09",
+   "text": "actually",
+   "spoken": "actually",
+   "start": 24.2853,
+   "end": 24.7095,
+   "emph": true
+  },
+  {
+   "i": 81,
+   "beat": "b09",
+   "text": "sold",
+   "spoken": "sold",
+   "start": 24.7206,
+   "end": 24.9996,
+   "emph": true
+  },
+  {
+   "i": 82,
+   "beat": "b09",
+   "text": "for",
+   "spoken": "for",
+   "start": 25.0108,
+   "end": 25.1224,
+   "emph": false
+  },
+  {
+   "i": 83,
+   "beat": "b09",
+   "text": "on",
+   "spoken": "on",
+   "start": 25.1336,
+   "end": 25.2564,
+   "emph": false
+  },
+  {
+   "i": 84,
+   "beat": "b09",
+   "text": "eBay.",
+   "spoken": "ebay",
+   "start": 25.2675,
+   "end": 25.647,
+   "emph": false
+  },
+  {
+   "i": 85,
+   "beat": "b10",
+   "text": "When",
+   "spoken": "when",
+   "start": 25.7998,
+   "end": 25.9896,
+   "emph": false
+  },
+  {
+   "i": 86,
+   "beat": "b10",
+   "text": "it",
+   "spoken": "it",
+   "start": 26.0007,
+   "end": 26.09,
+   "emph": false
+  },
+  {
+   "i": 87,
+   "beat": "b10",
+   "text": "sells,",
+   "spoken": "sells",
+   "start": 26.1012,
+   "end": 26.5365,
+   "emph": false
+  },
+  {
+   "i": 88,
+   "beat": "b10",
+   "text": "it",
+   "spoken": "it",
+   "start": 26.8044,
+   "end": 26.8936,
+   "emph": false
+  },
+  {
+   "i": 89,
+   "beat": "b10",
+   "text": "comes",
+   "spoken": "comes",
+   "start": 26.9048,
+   "end": 27.1838,
+   "emph": false
+  },
+  {
+   "i": 90,
+   "beat": "b10",
+   "text": "down",
+   "spoken": "down",
+   "start": 27.195,
+   "end": 27.4852,
+   "emph": false
+  },
+  {
+   "i": 91,
+   "beat": "b10",
+   "text": "everywhere",
+   "spoken": "everywhere",
+   "start": 27.6861,
+   "end": 28.1325,
+   "emph": true
+  },
+  {
+   "i": 92,
+   "beat": "b10",
+   "text": "else.",
+   "spoken": "else",
+   "start": 28.1437,
+   "end": 28.5455,
+   "emph": false
+  },
+  {
+   "i": 93,
+   "beat": "b11",
+   "text": "Same",
+   "spoken": "same",
+   "start": 28.71,
+   "end": 29.0232,
+   "emph": false
+  },
+  {
+   "i": 94,
+   "beat": "b11",
+   "text": "jacket.",
+   "spoken": "jacket",
+   "start": 29.0319,
+   "end": 29.3886,
+   "emph": false
+  },
+  {
+   "i": 95,
+   "beat": "b11",
+   "text": "One",
+   "spoken": "one",
+   "start": 29.6382,
+   "end": 29.8296,
+   "emph": false
+  },
+  {
+   "i": 96,
+   "beat": "b11",
+   "text": "buyer.",
+   "spoken": "buyer",
+   "start": 29.8383,
+   "end": 30.1602,
+   "emph": false
+  },
+  {
+   "i": 97,
+   "beat": "b11",
+   "text": "Zero",
+   "spoken": "zero",
+   "start": 30.4125,
+   "end": 30.7518,
+   "emph": true
+  },
+  {
+   "i": 98,
+   "beat": "b11",
+   "text": "apologies.",
+   "spoken": "apologies",
+   "start": 30.7606,
+   "end": 31.3,
+   "emph": false
+  }
+ ]
+}

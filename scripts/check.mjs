@@ -195,7 +195,12 @@ if (!fs.existsSync(facts)) W("no research.md with sources next to the script");
 // ---------------------------------------------------------------- 5. contact sheets for the critic
 if (args.includes("--sheets") || true) {
   const every = 1.0;
-  ff(["-i", file, "-vf", `fps=${1 / every},scale=216:-1,drawtext=fontfile='C\\:/Windows/Fonts/arialbd.ttf':text='%{pts\\:hms}':x=6:y=6:fontsize=18:fontcolor=yellow:box=1:boxcolor=black@0.7,tile=6x3:padding=4:color=gray`, "-q:v", "3", path.join(qaDir, "sheet_%02d.jpg")]);
+  try {
+    ff(["-i", file, "-vf", `fps=${1 / every},scale=216:-1,drawtext=fontfile='C\\:/Windows/Fonts/arialbd.ttf':text='%{pts\\:hms}':x=6:y=6:fontsize=18:fontcolor=yellow:box=1:boxcolor=black@0.7,tile=6x3:padding=4:color=gray`, "-q:v", "3", path.join(qaDir, "sheet_%02d.jpg")]);
+  } catch {
+    // ffmpeg without drawtext (or without that Windows font): same sheets, no timestamps
+    ff(["-i", file, "-vf", `fps=${1 / every},scale=216:-1,tile=6x3:padding=4:color=gray`, "-q:v", "3", path.join(qaDir, "sheet_%02d.jpg")]);
+  }
 }
 
 // ---------------------------------------------------------------- report

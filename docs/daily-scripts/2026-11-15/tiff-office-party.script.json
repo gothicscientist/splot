@@ -1,0 +1,204 @@
+{
+ "slug": "tiff-office-party",
+ "title": "My boss wore my old dress to the office party",
+ "mode": "case-file",
+ "style": "stickworld",
+ "language": "en",
+ "fps": 30,
+ "voice": {
+  "provider": "elevenlabs-take",
+  "voice": "oqZQnEg1WK3eXtOOW4x8",
+  "name": "Kitty",
+  "model": "eleven_v4",
+  "settings": {
+   "stability": 0.5
+  },
+  "direction": "sultry, smirking, brisk TikTok storytelling pace"
+ },
+ "music": {
+  "mood": "drama"
+ },
+ "captions": {
+  "preset": "boxed"
+ },
+ "pronounce": {
+  "pileGo": "pile go"
+ },
+ "series": {
+  "name": "Tiff",
+  "episode": 12
+ },
+ "plug": {
+  "pattern": "punchline",
+  "beats": [
+   "b09"
+  ]
+ },
+ "hooks": [
+  {
+   "text": "My boss wore my old dress to the office party. So did I.",
+   "family": "T twist-first + P stakes",
+   "score": 89,
+   "chosen": true
+  },
+  {
+   "text": "My boss fired a girl for sneakers. I matched her dress.",
+   "family": "P stakes",
+   "score": 84
+  },
+  {
+   "text": "My boss bought her party dress from my closet.",
+   "family": "T twist-first",
+   "score": 80
+  }
+ ],
+ "hookVariants": [
+  {
+   "id": "v1",
+   "visual": "Office party: spotlight snaps onto Tiff and her boss in the same red dress, face to face. Text hook: SAME DRESS. MY BOSS."
+  },
+  {
+   "id": "v2",
+   "visual": "Same line and text hook; frame 0 is a tight close-up of the key prop or screen, then a fast pull-back to Tiff."
+  },
+  {
+   "id": "v3",
+   "visual": "Same line and text hook; frame 0 is Tiff's face mid-reaction (eyes wide), then a whip to the key prop."
+  }
+ ],
+ "defaultTransition": "whip-left",
+ "endCard": {
+  "brand": "pileGo!",
+  "url": "pilego.app",
+  "seconds": 1.5
+ },
+ "beats": [
+  {
+   "shot": "s01",
+   "text": "My boss wore my old dress to the office party. So did *I*.",
+   "visual": "Office party: spotlight snaps onto Tiff and her boss in the same red dress, face to face. Text hook: SAME DRESS. MY BOSS.",
+   "sfx": [
+    {
+     "at": "did",
+     "sound": "record_scratch",
+     "gain": -14
+    }
+   ],
+   "role": "hook",
+   "id": "b01"
+  },
+  {
+   "shot": "s02",
+   "text": "Same red dress. Same *bow* on the back.",
+   "visual": "Both turn: identical bows.",
+   "sfx": [],
+   "transition": "whip-left",
+   "id": "b02"
+  },
+  {
+   "shot": "s02",
+   "text": "This is the woman who sent Kayla home for wearing *sneakers*.",
+   "visual": "Flash insert: a coworker in sneakers walking out with a box; boss pointing at the door.",
+   "sfx": [
+    {
+     "at": "sneakers",
+     "sound": "stamp",
+     "gain": -19
+    }
+   ],
+   "id": "b03"
+  },
+  {
+   "shot": "s03",
+   "text": "The whole office went *silent*.",
+   "visual": "Coworkers freeze mid-sip; the music drops out.",
+   "sfx": [
+    {
+     "at": "silent",
+     "sound": "pressure_drop",
+     "gain": -14
+    }
+   ],
+   "transition": "push",
+   "id": "b04"
+  },
+  {
+   "shot": "s03",
+   "text": "She walked straight up to me. Not *smiling*.",
+   "visual": "Boss crosses the room, slow; Tiff grips her cup.",
+   "sfx": [
+    {
+     "at": "walked",
+     "sound": "footstep",
+     "gain": -20
+    }
+   ],
+   "id": "b05"
+  },
+  {
+   "shot": "s04",
+   "text": "Then she leaned in and said: I know. I bought it from *you*.",
+   "visual": "Boss close-up, then a wink.",
+   "sfx": [
+    {
+     "at": "you",
+     "sound": "impact",
+     "gain": -12
+    }
+   ],
+   "transition": "whip-right",
+   "id": "b06"
+  },
+  {
+   "shot": "s05",
+   "text": "My old listing. Off my clothes *chair*.",
+   "visual": "Flashback: Tiff snapping the red dress off her chair pile.",
+   "sfx": [],
+   "transition": "dissolve",
+   "id": "b07"
+  },
+  {
+   "shot": "s05",
+   "text": "Then she asked what else I was *selling*.",
+   "visual": "Boss leaning in, phone out.",
+   "sfx": [],
+   "id": "b08"
+  },
+  {
+   "shot": "s06",
+   "text": "So I sent her everything I'd listed with *pileGo*.",
+   "visual": "Tiff sends a long list; boss scrolling, eyes wide.",
+   "sfx": [
+    {
+     "at": "sent",
+     "sound": "swoosh_up",
+     "gain": -19
+    }
+   ],
+   "transition": "whip-left",
+   "id": "b09"
+  },
+  {
+   "shot": "s06",
+   "text": "She bought *four* things before dessert.",
+   "visual": "Four SOLD cards pop one by one.",
+   "sfx": [
+    {
+     "at": "four",
+     "sound": "cash",
+     "gain": -16
+    }
+   ],
+   "id": "b10"
+  },
+  {
+   "shot": "s07",
+   "text": "Still no raise. But now she calls me her *stylist*.",
+   "visual": "Tiff at her desk, boss walks by in another of Tiff's old outfits, thumbs up.",
+   "sfx": [],
+   "transition": "zoom-out",
+   "role": "kicker",
+   "id": "b11"
+  }
+ ]
+}

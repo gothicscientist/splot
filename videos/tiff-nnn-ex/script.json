@@ -1,0 +1,180 @@
+{
+ "slug": "tiff-nnn-ex",
+ "title": "My ex said he was doing No Nut November",
+ "mode": "case-file",
+ "style": "stickworld",
+ "language": "en",
+ "fps": 30,
+ "voice": {
+  "provider": "edge",
+  "voice": "en-US-AvaNeural",
+  "wpm": 190
+ },
+ "music": {
+  "mood": "drama"
+ },
+ "captions": {
+  "preset": "boxed"
+ },
+ "pronounce": {
+  "pileGo": "pile go"
+ },
+ "hooks": [
+  {
+   "text": "My ex told me he was doing No Nut November.",
+   "family": "trend-hijack + story-in-medias-res",
+   "score": 90,
+   "chosen": true
+  },
+  {
+   "text": "Why would I deceive you? - my ex, three days before I found out.",
+   "family": "meme-hijack",
+   "score": 82
+  },
+  {
+   "text": "My best friend bought my ex's hoodie from me.",
+   "family": "twist-first",
+   "score": 80
+  }
+ ],
+ "hookVariants": [],
+ "defaultTransition": "whip-left",
+ "beats": [
+  {
+   "id": "b01",
+   "shot": "s01",
+   "text": "My ex told me he was doing *No Nut November*.",
+   "visual": "Tiff deadpan; Jake behind her, hand on heart, saintly.",
+   "sfx": [
+    {
+     "at": "November",
+     "sound": "impact",
+     "gain": -14
+    }
+   ],
+   "role": "hook"
+  },
+  {
+   "id": "b02",
+   "shot": "s01",
+   "text": "Day three, I found out he was failing it... with my *best friend*.",
+   "visual": "DAY 3 tag; Mia slides in next to Jake; Tiff shocked.",
+   "sfx": [
+    {
+     "at": "found",
+     "sound": "record_scratch",
+     "gain": -16
+    }
+   ]
+  },
+  {
+   "id": "b03",
+   "shot": "s02",
+   "text": "I asked him straight up. He goes: why would I *deceive* you?",
+   "visual": "Jake close-up, smug innocent face, hand on chest.",
+   "sfx": [
+    {
+     "at": "deceive",
+     "sound": "boing",
+     "gain": -16
+    }
+   ],
+   "transition": "push"
+  },
+  {
+   "id": "b04",
+   "shot": "s03",
+   "text": "Then Mia posts a story. In his hoodie. In his *bed*.",
+   "visual": "Jake's room: Mia in his grey hoodie on his bed, peace sign; story frame overlay.",
+   "sfx": [
+    {
+     "at": "story",
+     "sound": "notify",
+     "gain": -16
+    },
+    {
+     "at": "bed",
+     "sound": "impact",
+     "gain": -12
+    }
+   ],
+   "transition": "whip-right"
+  },
+  {
+   "id": "b05",
+   "shot": "s04",
+   "text": "I cried into my clothes pile for two days. The only thing in my room that still *hugged* me.",
+   "visual": "Night, Tiff crying slumped by her chair pile.",
+   "sfx": [],
+   "transition": "dissolve"
+  },
+  {
+   "id": "b06",
+   "shot": "s05",
+   "text": "Then he texts me: you were never worth the *effort*. And the group chat *laughed*.",
+   "visual": "Phone message pops; laughing emoji tags; Tiff devastated.",
+   "sfx": [
+    {
+     "at": "texts",
+     "sound": "notify",
+     "gain": -16
+    },
+    {
+     "at": "laughed",
+     "sound": "glitch",
+     "gain": -16
+    }
+   ],
+   "transition": "push"
+  },
+  {
+   "id": "b07",
+   "shot": "s06",
+   "text": "So I sold *everything* he ever gave me.",
+   "visual": "Morning: Tiff determined, snaps the pile; listing boards pop.",
+   "sfx": [
+    {
+     "at": "everything",
+     "sound": "impact",
+     "gain": -14
+    }
+   ],
+   "transition": "whip-left"
+  },
+  {
+   "id": "b08",
+   "shot": "s07",
+   "text": "The hoodie sold in ten minutes. The buyer? *Mia*.",
+   "visual": "SOLD tag; buyer name MIA; Tiff's jaw drops then smirks.",
+   "sfx": [
+    {
+     "at": "Mia",
+     "sound": "record_scratch",
+     "gain": -12
+    }
+   ],
+   "transition": "push"
+  },
+  {
+   "id": "b09",
+   "shot": "s07",
+   "text": "She paid full price to wear it for a guy who already left her *too*.",
+   "visual": "Tiff smug wink.",
+   "sfx": []
+  },
+  {
+   "id": "b10",
+   "shot": "s08",
+   "text": "His stuff? Gone. My chair? Back. Listed everywhere with *pileGo*.",
+   "visual": "Plug: empty chair, pileGo! sign, marketplace boards.",
+   "sfx": [
+    {
+     "at": "pileGo",
+     "sound": "success",
+     "gain": -14
+    }
+   ],
+   "transition": "whip-right"
+  }
+ ]
+}

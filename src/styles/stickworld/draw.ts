@@ -13,6 +13,8 @@ export type Build = "adult" | "kid" | "tall" | "stout";
 export type StickSpec = {
   /** "tiff" draws the shaped lead figure (tiff.ts) instead of a stick figure */
   figure?: "stick" | "tiff";
+  /** shaped-figure look overrides (build, hair, outfit, eyes); defaults are Tiff's */
+  anime?: Partial<import("./tiff").AnimeLook>;
   /** torso colour (the bean) */
   body: string;
   head?: string;

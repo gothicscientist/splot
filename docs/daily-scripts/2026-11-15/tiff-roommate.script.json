@@ -1,0 +1,208 @@
+{
+ "slug": "tiff-roommate",
+ "title": "My roommate was secretly selling my clothes",
+ "mode": "case-file",
+ "style": "stickworld",
+ "language": "en",
+ "fps": 30,
+ "voice": {
+  "provider": "elevenlabs-take",
+  "voice": "oqZQnEg1WK3eXtOOW4x8",
+  "name": "Kitty",
+  "model": "eleven_v4",
+  "settings": {
+   "stability": 0.5
+  },
+  "direction": "sultry, smirking, brisk TikTok storytelling pace"
+ },
+ "music": {
+  "mood": "mystery"
+ },
+ "captions": {
+  "preset": "boxed"
+ },
+ "pronounce": {
+  "pileGo": "pile go"
+ },
+ "series": {
+  "name": "Tiff",
+  "episode": 11
+ },
+ "plug": {
+  "pattern": "ad-beat",
+  "beats": [
+   "b10",
+   "b11"
+  ]
+ },
+ "hooks": [
+  {
+   "text": "My roommate was selling my clothes while I was at work.",
+   "family": "D in-medias-res",
+   "score": 89,
+   "chosen": true
+  },
+  {
+   "text": "41 of my clothes disappeared. My roommate made $900.",
+   "family": "B shock-number",
+   "score": 85
+  },
+  {
+   "text": "I found my own jacket on my roommate's profile.",
+   "family": "O mystery",
+   "score": 82
+  }
+ ],
+ "hookVariants": [
+  {
+   "id": "v1",
+   "visual": "Tiff's closet, half empty, hangers swinging; a figure ducks out the door. Text hook: SHE SOLD MY CLOSET."
+  },
+  {
+   "id": "v2",
+   "visual": "Same line and text hook; frame 0 is a tight close-up of the key prop or screen, then a fast pull-back to Tiff."
+  },
+  {
+   "id": "v3",
+   "visual": "Same line and text hook; frame 0 is Tiff's face mid-reaction (eyes wide), then a whip to the key prop."
+  }
+ ],
+ "defaultTransition": "whip-left",
+ "endCard": {
+  "brand": "pileGo!",
+  "url": "pilego.app",
+  "seconds": 1.5
+ },
+ "beats": [
+  {
+   "shot": "s01",
+   "text": "My roommate was selling my clothes while I was at *work*.",
+   "visual": "Tiff's closet, half empty, hangers swinging; a figure ducks out the door. Text hook: SHE SOLD MY CLOSET.",
+   "sfx": [
+    {
+     "at": "work",
+     "sound": "sub_drop",
+     "gain": -12
+    }
+   ],
+   "role": "hook",
+   "id": "b01"
+  },
+  {
+   "shot": "s02",
+   "text": "I thought I was just losing things: a top, a belt, my *jeans*.",
+   "visual": "Tiff searching drawers, items blink out of a checklist one by one.",
+   "sfx": [],
+   "transition": "whip-left",
+   "id": "b02"
+  },
+  {
+   "shot": "s03",
+   "text": "Then I saw my own jacket on someone else's *profile*.",
+   "visual": "Phone: a listing of Tiff's olive jacket, photographed on Tiff's bed.",
+   "sfx": [
+    {
+     "at": "profile",
+     "sound": "impact",
+     "gain": -14
+    }
+   ],
+   "transition": "push",
+   "id": "b03"
+  },
+  {
+   "shot": "s03",
+   "text": "Listed by *Brooke*. Photographed on my bed.",
+   "visual": "Profile header: Brooke, smiling selfie.",
+   "sfx": [],
+   "id": "b04"
+  },
+  {
+   "shot": "s04",
+   "text": "41 items. All *mine*.",
+   "visual": "Grid of listings fills the screen, counter ticks to 41.",
+   "sfx": [
+    {
+     "at": "items",
+     "sound": "tick_roll",
+     "gain": -20
+    }
+   ],
+   "transition": "push",
+   "id": "b05"
+  },
+  {
+   "shot": "s04",
+   "text": "She'd made $900 off my *closet*.",
+   "visual": "Earnings card counts up to $900.",
+   "sfx": [
+    {
+     "at": "closet",
+     "sound": "cash",
+     "gain": -16
+    }
+   ],
+   "id": "b06"
+  },
+  {
+   "shot": "s05",
+   "text": "I didn't scream. I just bought my jacket *back*. From her.",
+   "visual": "Tiff calmly clicks BUY on Brooke's listing.",
+   "sfx": [
+    {
+     "at": "bought",
+     "sound": "click",
+     "gain": -19
+    }
+   ],
+   "transition": "whip-right",
+   "id": "b07"
+  },
+  {
+   "shot": "s06",
+   "text": "Shipped to our address. She opened the box right in *front* of me.",
+   "visual": "Kitchen: Brooke opens a parcel, Tiff leaning on the counter.",
+   "sfx": [],
+   "transition": "push",
+   "id": "b08"
+  },
+  {
+   "shot": "s06",
+   "text": "We just stared. Her face went *white*.",
+   "visual": "Two-shot, frozen; fridge hum.",
+   "sfx": [
+    {
+     "at": "stared",
+     "sound": "heartbeat",
+     "gain": -18
+    }
+   ],
+   "pause": 0.7,
+   "id": "b09"
+  },
+  {
+   "shot": "s07",
+   "text": "Now my stuff's on pileGo, under *my* name.",
+   "visual": "Tiff's room: she snaps her clothes, listings fly to app tiles with her name.",
+   "sfx": [],
+   "transition": "dip",
+   "id": "b10"
+  },
+  {
+   "shot": "s07",
+   "text": "When it sells, it comes down everywhere, so nobody sells it *twice*.",
+   "visual": "One SOLD card; the same item vanishes from five other apps.",
+   "sfx": [],
+   "id": "b11"
+  },
+  {
+   "shot": "s08",
+   "text": "Brooke moved out Friday. She left her *mattress*. It's listed.",
+   "visual": "Empty room, a lone mattress with a SOLD sticker.",
+   "sfx": [],
+   "transition": "zoom-out",
+   "role": "kicker",
+   "id": "b12"
+  }
+ ]
+}

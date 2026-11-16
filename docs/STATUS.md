@@ -17,6 +17,25 @@ Update it at the end of every session.
   size); not yet seen inside a 3D scene or a video; no storyline written yet.
 - `drawItem` in `draw.ts` is now exported (Tiff reuses the hand items).
 
+## Tiff reels batch 1 (2026-11-15, branch `feat/tiff-character`, uncommitted)
+- Anime kit (`tiff.ts`, `AnimeLook`) now drives the whole side cast: `jake`, `mia`, plus one-offs `sasha`, `leo`,
+  `friendA`, `friendB` in `cast.ts`.
+- Shared Tiff world `src/videos/_tiff/set.tsx`: TiffRoom, ExRoom, CafeSet, `DinnerSet` (table optional), `CouchRoom`,
+  recolourable `JacketStand`. Phone UI and the pileGo! `EndCard` (pilego.app) live in `src/videos/_tiff/ui.tsx`.
+  Every Tiff reel ends on the EndCard over a 2 s voice tail (`voice.py --tail 2.0`).
+- Daily script batches: `docs/daily-scripts/<date>.md` + draft `script.json`s. The scheduled task
+  `tiff-daily-scripts` writes six each morning, Nov 16-18 at 08:30.
+- **Tiff's voice:** the owner's ElevenLabs voice "Kitty" with the sultry v4 recipe (`docs/characters/tiff/voice.md`):
+  `eleven_v4`, stability 0.5, one continuous take, opening tag `[sultry, smirking, brisk TikTok storytelling pace]`.
+  Voice with `scripts/voice-take.py` (not voice.py). The recipe was recovered from the owner's ElevenLabs history.
+  Per-line v2 sounded wrong, and v2 at low stability drifted into a French accent.
+- Built with that voice, QA PASS: `tiff-soft-launch` (43.4 s), `tiff-same-jacket` (43.1 s; soft masking warning on
+  "minute"), `tiff-no-labels` (40.7 s).
+- Gotchas found:
+  - `s.hit("sold")` hits the first "sold" in the shot; pass nth.
+  - Hooks must run before any early return: the EndCard crashed renders with React #310, and stills don't catch it.
+  - Hand items (signs) clip at the card's 600x1000 canvas when the arm is extended.
+
 ## In progress (session of 2026-11-14 late, stopped by a usage limit; branch `studio/full-implementation`)
 Read this block first: it is newer than everything below it.
 - **Voice is now ElevenLabs (connector), all four videos.** New `take` provider in `scripts/voice.py`: one full

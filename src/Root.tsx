@@ -6,6 +6,10 @@ import { CastSheet } from "./lab/CastSheet";
 import { TiffSheet } from "./lab/TiffSheet";
 import { TiffHero } from "./lab/TiffHero";
 import { TiffWalk } from "./lab/TiffWalk";
+import { TiffCast } from "./lab/TiffCast";
+import { TiffAvatar } from "./lab/TiffAvatar";
+import { TiffPuppetSample } from "./lab/TiffPuppetSample";
+import { TiffAnimeSample } from "./lab/TiffAnimeSample";
 import { SkyLab } from "./lab/SkyLab";
 import { MeasureLab } from "./lab/MeasureLab";
 import { BlockLab } from "./lab/BlockLab";
@@ -30,6 +34,10 @@ export const RemotionRoot: React.FC = () => {
       <Composition id="BlockLab" component={BlockLab} durationInFrames={30} fps={30} width={1080} height={1920} />
       <Composition id="MeasureLab" component={MeasureLab} durationInFrames={1} fps={30} width={1080} height={1080} />
       <Composition id="SkyLab" component={SkyLab} durationInFrames={1} fps={30} width={1080} height={1920} defaultProps={{ grade: true, ink: true, sky: true }} />
+      <Composition id="TiffAnimeSample" component={TiffAnimeSample} durationInFrames={240} fps={30} width={1080} height={1920} />
+      <Composition id="TiffPuppetSample" component={TiffPuppetSample} durationInFrames={240} fps={30} width={1080} height={1920} />
+      <Composition id="TiffAvatar" component={TiffAvatar} durationInFrames={1} fps={30} width={1080} height={1080} />
+      <Composition id="TiffCast" component={TiffCast} durationInFrames={1} fps={30} width={1440} height={1800} />
       <Composition id="TiffWalk" component={TiffWalk} durationInFrames={1} fps={30} width={2400} height={500} />
       <Composition id="TiffHero" component={TiffHero} durationInFrames={1} fps={30} width={1080} height={1920} />
       <Composition id="TiffSheet" component={TiffSheet} durationInFrames={1} fps={30} width={1440} height={2560} />

@@ -1,0 +1,150 @@
+{
+ "slug": "tiff-ex-hoodie",
+ "title": "My ex bought his own hoodie back from me",
+ "mode": "case-file",
+ "style": "stickworld",
+ "language": "en",
+ "fps": 30,
+ "voice": {
+  "provider": "edge",
+  "voice": "en-US-AvaNeural",
+  "wpm": 190
+ },
+ "music": {
+  "mood": "comedy"
+ },
+ "captions": {
+  "preset": "boxed"
+ },
+ "pronounce": {
+  "pileGo": "pile go"
+ },
+ "hooks": [
+  {
+   "text": "My ex bought his own hoodie back... from me.",
+   "family": "story-in-medias-res",
+   "score": 90,
+   "chosen": true
+  },
+  {
+   "text": "The buyer's name looked familiar. Too familiar.",
+   "family": "curiosity",
+   "score": 80
+  },
+  {
+   "text": "Never keep your ex's hoodie. Sell it.",
+   "family": "advice-twist",
+   "score": 74
+  }
+ ],
+ "hookVariants": [],
+ "defaultTransition": "whip-right",
+ "beats": [
+  {
+   "id": "b01",
+   "shot": "s01",
+   "text": "My ex bought his own hoodie back... from *me*.",
+   "visual": "Tiff holds a grey hoodie up with a smug look; a phone shows SOLD.",
+   "sfx": [
+    {
+     "at": "me",
+     "sound": "impact",
+     "gain": -14
+    }
+   ],
+   "role": "hook"
+  },
+  {
+   "id": "b02",
+   "shot": "s02",
+   "text": "He left it at my place when we broke up.",
+   "visual": "Bedroom; the grey hoodie on top of the chair pile; Tiff looks at it, sad.",
+   "sfx": [],
+   "transition": "push"
+  },
+  {
+   "id": "b03",
+   "shot": "s02",
+   "text": "For three months, it just lived on my *chair*.",
+   "visual": "Calendar pages flip; the pile grows around the hoodie.",
+   "sfx": [
+    {
+     "at": "chair",
+     "sound": "thud",
+     "gain": -18
+    }
+   ]
+  },
+  {
+   "id": "b04",
+   "shot": "s03",
+   "text": "My best friend said burn it. I said, it's a really *nice* hoodie.",
+   "visual": "Best friend with a torch; Tiff hugs the hoodie protectively.",
+   "sfx": [],
+   "transition": "whip-left"
+  },
+  {
+   "id": "b05",
+   "shot": "s04",
+   "text": "So I listed it. Size large. Smells like *regret*.",
+   "visual": "Tiff snaps a photo; a listing board: GREY HOODIE, L.",
+   "sfx": [
+    {
+     "at": "listed",
+     "sound": "shutter",
+     "gain": -18
+    }
+   ],
+   "transition": "push"
+  },
+  {
+   "id": "b06",
+   "shot": "s05",
+   "text": "A week later, it sells. And the buyer's name looks... *familiar*.",
+   "visual": "Phone dings SOLD; Tiff leans in, eyes go wide.",
+   "sfx": [
+    {
+     "at": "familiar",
+     "sound": "record_scratch",
+     "gain": -14
+    }
+   ],
+   "transition": "whip-right"
+  },
+  {
+   "id": "b07",
+   "shot": "s06",
+   "text": "Then a message: hey, is this *mine*?",
+   "visual": "Whip to the ex's apartment: he is typing on his phone, confused.",
+   "sfx": [
+    {
+     "at": "message",
+     "sound": "notify",
+     "gain": -16
+    }
+   ],
+   "transition": "whip-right"
+  },
+  {
+   "id": "b08",
+   "shot": "s06",
+   "text": "I said: not *anymore*.",
+   "visual": "Whip back: Tiff typing, smug wink.",
+   "sfx": []
+  },
+  {
+   "id": "b09",
+   "shot": "s07",
+   "text": "The rest of my chair? Listed everywhere at once with *pileGo*.",
+   "visual": "Quick plug: the chair, a pileGo! sign pops up, marketplace boards light up, the pile shrinks.",
+   "sfx": [
+    {
+     "at": "pileGo",
+     "sound": "success",
+     "gain": -14
+    }
+   ],
+   "transition": "push"
+  }
+ ]
+}

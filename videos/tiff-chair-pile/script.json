@@ -1,0 +1,178 @@
+{
+ "slug": "tiff-chair-pile",
+ "title": "My chair hasn't been a chair since March",
+ "mode": "problem-solution",
+ "style": "stickworld",
+ "language": "en",
+ "fps": 30,
+ "voice": {
+  "provider": "edge",
+  "voice": "en-US-AvaNeural",
+  "wpm": 190
+ },
+ "music": {
+  "mood": "comedy"
+ },
+ "captions": {
+  "preset": "boxed"
+ },
+ "pronounce": {
+  "pileGo": "pile go",
+  "Vinted": "Vin-ted"
+ },
+ "hooks": [
+  {
+   "text": "My chair hasn't been a chair since March.",
+   "family": "relatable-confession",
+   "score": 86,
+   "chosen": true
+  },
+  {
+   "text": "Everyone has a clothes chair. Here's how I got mine back.",
+   "family": "universal-pain",
+   "score": 80
+  },
+  {
+   "text": "That pile on your chair is money you're sitting on.",
+   "family": "reframe",
+   "score": 78
+  }
+ ],
+ "hookVariants": [],
+ "defaultTransition": "whip-left",
+ "beats": [
+  {
+   "id": "b01",
+   "shot": "s01",
+   "text": "My *chair* hasn't been a chair since March.",
+   "visual": "Tiff's bedroom. A chair buried under a tall clothes pile; Tiff stands next to it, presents it, deadpan.",
+   "sfx": [
+    {
+     "at": "chair",
+     "sound": "thud",
+     "gain": -16
+    }
+   ],
+   "role": "hook"
+  },
+  {
+   "id": "b02",
+   "shot": "s02",
+   "text": "It's a pile of clothes I swear I'm going to *sell*.",
+   "visual": "Close on the pile: jacket, jeans, sneakers; Tiff peeks in, a $ tag pops on 'sell'.",
+   "sfx": [],
+   "transition": "push"
+  },
+  {
+   "id": "b03",
+   "shot": "s02",
+   "text": "But selling one jacket is never just one jacket.",
+   "visual": "Tiff pulls a jacket off the pile and holds it up, unimpressed.",
+   "sfx": []
+  },
+  {
+   "id": "b04",
+   "shot": "s03",
+   "text": "Every app wants its own photos, its own form, its own *everything*.",
+   "visual": "Tiff at her desk/laptop; app forms stack up as boards behind her, one per app.",
+   "sfx": [
+    {
+     "at": "everything",
+     "sound": "impact",
+     "gain": -16
+    }
+   ],
+   "transition": "whip-right"
+  },
+  {
+   "id": "b05",
+   "shot": "s03",
+   "text": "So I list it on one app, and it just *sits* there.",
+   "visual": "One board shows a listing with 0 views; Tiff slumps, sleepy face.",
+   "sfx": []
+  },
+  {
+   "id": "b06",
+   "shot": "s04",
+   "text": "Resellers fix that with *crosslisting*: the same item on every app at once.",
+   "visual": "Six app boards light up around the jacket on a stand; Tiff points.",
+   "sfx": [],
+   "transition": "push"
+  },
+  {
+   "id": "b07",
+   "shot": "s04",
+   "text": "More apps, more people see it.",
+   "visual": "Little viewer counter ticks up; Tiff happy.",
+   "sfx": []
+  },
+  {
+   "id": "b08",
+   "shot": "s05",
+   "text": "But then it sells on Depop... and *again* on Vinted.",
+   "visual": "Two phones ding in Tiff's hands, both SOLD; she panics.",
+   "sfx": [
+    {
+     "at": "again",
+     "sound": "error_buzz",
+     "gain": -16
+    }
+   ],
+   "transition": "flash"
+  },
+  {
+   "id": "b09",
+   "shot": "s05",
+   "text": "Now I'm refunding a stranger at *midnight*.",
+   "visual": "Night window, clock at midnight, Tiff crying at laptop with a REFUND stamp.",
+   "sfx": [
+    {
+     "at": "midnight",
+     "sound": "stamp",
+     "gain": -14
+    }
+   ]
+  },
+  {
+   "id": "b10",
+   "shot": "s06",
+   "text": "So now I snap the pile, and *pileGo* lists it everywhere.",
+   "visual": "Morning. Tiff snaps the pile with her phone; a big pileGo! board appears; the six app boards light green.",
+   "sfx": [
+    {
+     "at": "pileGo",
+     "sound": "success",
+     "gain": -14
+    }
+   ],
+   "transition": "whip-left"
+  },
+  {
+   "id": "b11",
+   "shot": "s06",
+   "text": "When one sells, it comes down everywhere *else*.",
+   "visual": "One board flips SOLD, the other five drop away; the pile shrinks.",
+   "sfx": [
+    {
+     "at": "sells",
+     "sound": "cash",
+     "gain": -16
+    }
+   ]
+  },
+  {
+   "id": "b12",
+   "shot": "s07",
+   "text": "It's free, it's open source, and look: I have a *chair* again.",
+   "visual": "Empty chair, pile gone; Tiff sits on it, happy. pileGo! end card.",
+   "sfx": [
+    {
+     "at": "chair",
+     "sound": "sparkle",
+     "gain": -14
+    }
+   ],
+   "transition": "push"
+  }
+ ]
+}

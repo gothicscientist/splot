@@ -1,0 +1,194 @@
+{
+ "slug": "tiff-black-friday",
+ "title": "I spent $600 on Black Friday to make my ex jealous",
+ "mode": "case-file",
+ "style": "stickworld",
+ "language": "en",
+ "fps": 30,
+ "voice": {
+  "provider": "elevenlabs-take",
+  "voice": "oqZQnEg1WK3eXtOOW4x8",
+  "name": "Kitty",
+  "model": "eleven_v4",
+  "settings": {
+   "stability": 0.5
+  },
+  "direction": "sultry, smirking, brisk TikTok storytelling pace"
+ },
+ "music": {
+  "mood": "drama"
+ },
+ "captions": {
+  "preset": "boxed"
+ },
+ "pronounce": {
+  "pileGo": "pile go"
+ },
+ "series": {
+  "name": "Tiff",
+  "episode": 10
+ },
+ "plug": {
+  "pattern": "punchline",
+  "beats": [
+   "b09"
+  ]
+ },
+ "hooks": [
+  {
+   "text": "Last Black Friday, I spent $600 to make my ex jealous.",
+   "family": "B shock-number + seasonal",
+   "score": 87,
+   "chosen": true
+  },
+  {
+   "text": "My ex rated my revenge haul. One text.",
+   "family": "A curiosity",
+   "score": 79
+  },
+  {
+   "text": "Don't shop to make him jealous. I did.",
+   "family": "F warning",
+   "score": 78
+  }
+ ],
+ "hookVariants": [
+  {
+   "id": "v1",
+   "visual": "Tiff buried in shopping bags on her bed, receipt unrolling to the floor. Text hook: $600 REVENGE HAUL."
+  },
+  {
+   "id": "v2",
+   "visual": "Same line and text hook; frame 0 is a tight close-up of the key prop or screen, then a fast pull-back to Tiff."
+  },
+  {
+   "id": "v3",
+   "visual": "Same line and text hook; frame 0 is Tiff's face mid-reaction (eyes wide), then a whip to the key prop."
+  }
+ ],
+ "defaultTransition": "whip-left",
+ "endCard": {
+  "brand": "pileGo!",
+  "url": "pilego.app",
+  "seconds": 1.5
+ },
+ "beats": [
+  {
+   "shot": "s01",
+   "text": "Last Black Friday, I spent $600 to make my ex *jealous*.",
+   "visual": "Tiff buried in shopping bags on her bed, receipt unrolling to the floor. Text hook: $600 REVENGE HAUL.",
+   "sfx": [
+    {
+     "at": "jealous",
+     "sound": "impact",
+     "gain": -12
+    }
+   ],
+   "role": "hook",
+   "id": "b01"
+  },
+  {
+   "shot": "s02",
+   "text": "New dress. New boots. New bag. New *everything*.",
+   "visual": "Rapid outfit swaps in the mirror, three looks.",
+   "sfx": [
+    {
+     "at": "everything",
+     "sound": "pop",
+     "gain": -19
+    }
+   ],
+   "transition": "whip-left",
+   "id": "b02"
+  },
+  {
+   "shot": "s03",
+   "text": "I posted every outfit. He *viewed* every story.",
+   "visual": "Phone: story viewers list, Jake's name on top every time.",
+   "sfx": [
+    {
+     "at": "viewed",
+     "sound": "notify",
+     "gain": -19
+    }
+   ],
+   "transition": "push",
+   "id": "b03"
+  },
+  {
+   "shot": "s03",
+   "text": "Day three, he finally texted me: *nice* haul.",
+   "visual": "Text bubble from Jake pops.",
+   "sfx": [],
+   "id": "b04"
+  },
+  {
+   "shot": "s04",
+   "text": "Then: shame you still dress for *me*.",
+   "visual": "Second bubble lands; screen cracks.",
+   "sfx": [
+    {
+     "at": "me.",
+     "sound": "glass_crack",
+     "gain": -14
+    }
+   ],
+   "transition": "push",
+   "id": "b05"
+  },
+  {
+   "shot": "s05",
+   "text": "I sat on my bedroom floor in my brand new boots and *cried*.",
+   "visual": "Night, Tiff on the floor among bags, mascara running.",
+   "sfx": [],
+   "transition": "dip",
+   "id": "b06"
+  },
+  {
+   "shot": "s05",
+   "text": "Because he was *right*.",
+   "visual": "Slow creep in on Tiff's face.",
+   "sfx": [],
+   "pause": 0.7,
+   "id": "b07"
+  },
+  {
+   "shot": "s06",
+   "text": "The return window had *closed*. The tags were still on.",
+   "visual": "Close on dangling price tags; a receipt with 'RETURNS: 14 DAYS' crossed out.",
+   "sfx": [],
+   "transition": "dip",
+   "id": "b08"
+  },
+  {
+   "shot": "s07",
+   "text": "So I snapped the whole haul and listed it with *pileGo*.",
+   "visual": "Tiff photographs each piece; listings fly to app tiles.",
+   "sfx": [
+    {
+     "at": "snapped",
+     "sound": "shutter",
+     "gain": -19
+    }
+   ],
+   "transition": "whip-right",
+   "id": "b09"
+  },
+  {
+   "shot": "s07",
+   "text": "Got most of my money back by *Monday*.",
+   "visual": "Sale cards stack up; a counter climbs.",
+   "sfx": [],
+   "id": "b10"
+  },
+  {
+   "shot": "s08",
+   "text": "The only outfit I kept? The one he never *saw*.",
+   "visual": "Tiff in a simple outfit she loves, smiling at the mirror.",
+   "sfx": [],
+   "transition": "zoom-out",
+   "role": "kicker",
+   "id": "b11"
+  }
+ ]
+}

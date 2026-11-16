@@ -1,0 +1,196 @@
+{
+ "slug": "tiff-soft-launch",
+ "title": "My ex soft-launched his new girlfriend in my dress",
+ "mode": "case-file",
+ "style": "stickworld",
+ "language": "en",
+ "fps": 30,
+ "voice": {
+  "provider": "elevenlabs-take",
+  "voice": "oqZQnEg1WK3eXtOOW4x8",
+  "name": "Kitty",
+  "model": "eleven_v4",
+  "settings": {
+   "stability": 0.5
+  },
+  "direction": "sultry, smirking, brisk TikTok storytelling pace"
+ },
+ "music": {
+  "mood": "drama"
+ },
+ "captions": {
+  "preset": "boxed"
+ },
+ "pronounce": {
+  "pileGo": "pile go"
+ },
+ "series": {
+  "name": "Tiff",
+  "episode": 7
+ },
+ "plug": {
+  "pattern": "punchline",
+  "beats": [
+   "b10"
+  ]
+ },
+ "hooks": [
+  {
+   "text": "My ex soft-launched his new girlfriend... in my dress.",
+   "family": "D in-medias-res + trend (soft launch)",
+   "score": 88,
+   "chosen": true
+  },
+  {
+   "text": "I recognized my ex's new girlfriend by her sleeve.",
+   "family": "O mystery",
+   "score": 83
+  },
+  {
+   "text": "His new girlfriend bought her first-date dress from me.",
+   "family": "T twist-first",
+   "score": 80
+  }
+ ],
+ "hookVariants": [
+  {
+   "id": "v1",
+   "visual": "Phone post fills frame: Jake's story, just a shoulder in a green dress. Tiff's face drops behind the phone. Text hook: HE SOFT-LAUNCHED HER."
+  },
+  {
+   "id": "v2",
+   "visual": "Same line and text hook; frame 0 is a tight close-up of the key prop or screen, then a fast pull-back to Tiff."
+  },
+  {
+   "id": "v3",
+   "visual": "Same line and text hook; frame 0 is Tiff's face mid-reaction (eyes wide), then a whip to the key prop."
+  }
+ ],
+ "defaultTransition": "whip-left",
+ "endCard": {
+  "brand": "pileGo!",
+  "url": "pilego.app",
+  "seconds": 1.5
+ },
+ "beats": [
+  {
+   "shot": "s01",
+   "text": "My ex soft-launched his new girlfriend... in *my* dress.",
+   "visual": "Phone post fills frame: Jake's story, just a shoulder in a green dress. Tiff's face drops behind the phone. Text hook: HE SOFT-LAUNCHED HER.",
+   "sfx": [
+    {
+     "at": "dress",
+     "sound": "impact",
+     "gain": -12
+    }
+   ],
+   "role": "hook",
+   "id": "b01"
+  },
+  {
+   "shot": "s02",
+   "text": "The green one. I sold it last month to clear my *chair*.",
+   "visual": "Tiff's room, flashback: Tiff snaps the green dress off the chair pile.",
+   "sfx": [],
+   "transition": "dissolve",
+   "id": "b02"
+  },
+  {
+   "shot": "s02",
+   "text": "Same slit. Same tiny *burn mark* from my birthday candles.",
+   "visual": "Push in on the phone: a tiny burn mark glows on the sleeve.",
+   "sfx": [],
+   "id": "b03"
+  },
+  {
+   "shot": "s03",
+   "text": "He captioned it: finally, someone with *taste*.",
+   "visual": "Phone: caption pops under the post; Jake smug inset.",
+   "sfx": [
+    {
+     "at": "captioned",
+     "sound": "notify",
+     "gain": -19
+    }
+   ],
+   "transition": "push",
+   "id": "b04"
+  },
+  {
+   "shot": "s03",
+   "text": "The comments were already picking *sides*.",
+   "visual": "Comment bubbles stack up fast, hearts and fire emojis.",
+   "sfx": [],
+   "id": "b05",
+   "direction": "amused"
+  },
+  {
+   "shot": "s04",
+   "text": "So I checked who bought the dress. *Sasha*. Two days before their first date.",
+   "visual": "Laptop: Tiff's sold listing, buyer name Sasha; calendar flips.",
+   "sfx": [
+    {
+     "at": "checked",
+     "sound": "click",
+     "gain": -19
+    }
+   ],
+   "transition": "whip-left",
+   "id": "b06",
+   "direction": "low, teasing"
+  },
+  {
+   "shot": "s04",
+   "text": "Then Sasha messaged me: wait, are you *his* Tiff?",
+   "visual": "Message pops on the laptop; Tiff freezes.",
+   "sfx": [
+    {
+     "at": "messaged",
+     "sound": "notify",
+     "gain": -16
+    }
+   ],
+   "id": "b07"
+  },
+  {
+   "shot": "s05",
+   "text": "I sent her one screenshot. She sent back *twelve*.",
+   "visual": "Split phone screens: one bubble from Tiff, a wall of screenshots back.",
+   "sfx": [],
+   "transition": "whip-right",
+   "id": "b08"
+  },
+  {
+   "shot": "s05",
+   "text": "Turns out he told us both the *same* lines.",
+   "visual": "Two identical texts side by side glow red.",
+   "sfx": [],
+   "id": "b09",
+   "direction": "soft, mock-sad"
+  },
+  {
+   "shot": "s06",
+   "text": "She kept the dress. I listed everything he ever touched on *pileGo*.",
+   "visual": "Tiff's room: she snaps Jake's hoodie, cap and mug; listings fan out to app tiles.",
+   "sfx": [
+    {
+     "at": "listed",
+     "sound": "shutter",
+     "gain": -19
+    }
+   ],
+   "transition": "zoom-out",
+   "id": "b10",
+   "direction": "playful"
+  },
+  {
+   "shot": "s06",
+   "text": "We have a group chat now. He's *not* in it.",
+   "visual": "Tiff on her bed grinning at her phone; group chat header 'EX FILES'.",
+   "sfx": [],
+   "role": "kicker",
+   "id": "b11",
+   "direction": "amused"
+  }
+ ]
+}

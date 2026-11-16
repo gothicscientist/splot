@@ -9,6 +9,24 @@ import { Video as V_eiffel_tower_con } from "./eiffel-tower-con/index";
 import V_eiffel_tower_con_T from "./eiffel-tower-con/timeline.json";
 import { Video as V_noise_cancelling } from "./noise-cancelling/index";
 import V_noise_cancelling_T from "./noise-cancelling/timeline.json";
+import { Video as V_tiff_chair_pile } from "./tiff-chair-pile/index";
+import V_tiff_chair_pile_T from "./tiff-chair-pile/timeline.json";
+import { Video as V_tiff_date_jacket } from "./tiff-date-jacket/index";
+import V_tiff_date_jacket_T from "./tiff-date-jacket/timeline.json";
+import { Video as V_tiff_ex_hoodie } from "./tiff-ex-hoodie/index";
+import V_tiff_ex_hoodie_T from "./tiff-ex-hoodie/timeline.json";
+import { Video as V_tiff_love_letter } from "./tiff-love-letter/index";
+import V_tiff_love_letter_T from "./tiff-love-letter/timeline.json";
+import { Video as V_tiff_nnn_ex } from "./tiff-nnn-ex/index";
+import V_tiff_nnn_ex_T from "./tiff-nnn-ex/timeline.json";
+import { Video as V_tiff_no_labels } from "./tiff-no-labels/index";
+import V_tiff_no_labels_T from "./tiff-no-labels/timeline.json";
+import { Video as V_tiff_same_jacket } from "./tiff-same-jacket/index";
+import V_tiff_same_jacket_T from "./tiff-same-jacket/timeline.json";
+import { Video as V_tiff_soft_launch } from "./tiff-soft-launch/index";
+import V_tiff_soft_launch_T from "./tiff-soft-launch/timeline.json";
+import { Video as V_tiff_sold_twice } from "./tiff-sold-twice/index";
+import V_tiff_sold_twice_T from "./tiff-sold-twice/timeline.json";
 
 export type VideoEntry = { id: string; component: React.FC<{ variant?: number }>; timeline: Timeline };
 export const VIDEOS: VideoEntry[] = [
@@ -16,4 +34,13 @@ export const VIDEOS: VideoEntry[] = [
   { id: "v-deepest-hole", component: V_deepest_hole, timeline: V_deepest_hole_T as unknown as Timeline },
   { id: "v-eiffel-tower-con", component: V_eiffel_tower_con, timeline: V_eiffel_tower_con_T as unknown as Timeline },
   { id: "v-noise-cancelling", component: V_noise_cancelling, timeline: V_noise_cancelling_T as unknown as Timeline },
+  { id: "v-tiff-chair-pile", component: V_tiff_chair_pile, timeline: V_tiff_chair_pile_T as unknown as Timeline },
+  { id: "v-tiff-date-jacket", component: V_tiff_date_jacket, timeline: V_tiff_date_jacket_T as unknown as Timeline },
+  { id: "v-tiff-ex-hoodie", component: V_tiff_ex_hoodie, timeline: V_tiff_ex_hoodie_T as unknown as Timeline },
+  { id: "v-tiff-love-letter", component: V_tiff_love_letter, timeline: V_tiff_love_letter_T as unknown as Timeline },
+  { id: "v-tiff-nnn-ex", component: V_tiff_nnn_ex, timeline: V_tiff_nnn_ex_T as unknown as Timeline },
+  { id: "v-tiff-no-labels", component: V_tiff_no_labels, timeline: V_tiff_no_labels_T as unknown as Timeline },
+  { id: "v-tiff-same-jacket", component: V_tiff_same_jacket, timeline: V_tiff_same_jacket_T as unknown as Timeline },
+  { id: "v-tiff-soft-launch", component: V_tiff_soft_launch, timeline: V_tiff_soft_launch_T as unknown as Timeline },
+  { id: "v-tiff-sold-twice", component: V_tiff_sold_twice, timeline: V_tiff_sold_twice_T as unknown as Timeline },
 ];

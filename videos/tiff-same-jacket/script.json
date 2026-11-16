@@ -1,0 +1,194 @@
+{
+ "slug": "tiff-same-jacket",
+ "title": "My ex gave me and my best friend the same Christmas gift",
+ "mode": "case-file",
+ "style": "stickworld",
+ "language": "en",
+ "fps": 30,
+ "voice": {
+  "provider": "elevenlabs-take",
+  "voice": "oqZQnEg1WK3eXtOOW4x8",
+  "name": "Kitty",
+  "model": "eleven_v4",
+  "settings": {
+   "stability": 0.5
+  },
+  "direction": "sultry, smirking, brisk TikTok storytelling pace"
+ },
+ "music": {
+  "mood": "drama",
+  "gain": -3
+ },
+ "captions": {
+  "preset": "boxed"
+ },
+ "pronounce": {
+  "pileGo": "pile go"
+ },
+ "series": {
+  "name": "Tiff",
+  "episode": 8
+ },
+ "plug": {
+  "pattern": "punchline",
+  "beats": [
+   "b10"
+  ]
+ },
+ "hooks": [
+  {
+   "text": "My ex-best friend showed up to Friendsgiving uninvited.",
+   "family": "D in-medias-res + seasonal",
+   "score": 86,
+   "chosen": true
+  },
+  {
+   "text": "My ex gave me and my best friend the same gift.",
+   "family": "T twist-first",
+   "score": 84
+  },
+  {
+   "text": "One leather jacket ended a friendship. Two ended a man.",
+   "family": "C contrarian",
+   "score": 78
+  }
+ ],
+ "hookVariants": [
+  {
+   "id": "v1",
+   "visual": "Door swings open on a cozy dinner table; Mia in the doorway holding a pie. Text hook: SHE SHOWED UP."
+  },
+  {
+   "id": "v2",
+   "visual": "Same line and text hook; frame 0 is a tight close-up of the key prop or screen, then a fast pull-back to Tiff."
+  },
+  {
+   "id": "v3",
+   "visual": "Same line and text hook; frame 0 is Tiff's face mid-reaction (eyes wide), then a whip to the key prop."
+  }
+ ],
+ "defaultTransition": "whip-left",
+ "endCard": {
+  "brand": "pileGo!",
+  "url": "pilego.app",
+  "seconds": 1.5
+ },
+ "beats": [
+  {
+   "shot": "s01",
+   "text": "My ex-best friend showed up to *Friendsgiving* uninvited.",
+   "visual": "Door swings open on a cozy dinner table; Mia in the doorway holding a pie. Text hook: SHE SHOWED UP.",
+   "sfx": [
+    {
+     "at": "Friendsgiving",
+     "sound": "record_scratch",
+     "gain": -14
+    }
+   ],
+   "role": "hook",
+   "id": "b01"
+  },
+  {
+   "shot": "s02",
+   "text": "Mia. The one who hooked up with my *ex*.",
+   "visual": "Tiff at the table, fork frozen; Jake's photo flickers behind Mia.",
+   "sfx": [],
+   "transition": "push",
+   "id": "b02",
+   "direction": "low, teasing"
+  },
+  {
+   "shot": "s02",
+   "text": "Everyone went quiet. Even the *turkey* looked away.",
+   "visual": "Wide: friends around the table, all eyes on Tiff.",
+   "sfx": [],
+   "id": "b03"
+  },
+  {
+   "shot": "s03",
+   "text": "She said: I'm not here to apologize. I'm here about the *jacket*.",
+   "visual": "Mia close-up, serious; sets the pie down.",
+   "sfx": [],
+   "transition": "whip-left",
+   "id": "b04"
+  },
+  {
+   "shot": "s03",
+   "text": "The leather one Jake gave me for *Christmas*.",
+   "visual": "Insert: Tiff's black leather jacket with a gift tag.",
+   "sfx": [],
+   "id": "b05"
+  },
+  {
+   "shot": "s04",
+   "text": "She pulled out the *exact same* jacket.",
+   "visual": "Mia unzips her bag: an identical leather jacket.",
+   "sfx": [
+    {
+     "at": "jacket",
+     "sound": "impact",
+     "gain": -12
+    }
+   ],
+   "transition": "flash",
+   "id": "b06"
+  },
+  {
+   "shot": "s04",
+   "text": "Same size. Same gift note. Same *Christmas*.",
+   "visual": "Two gift notes side by side: identical handwriting, 'for my favorite girl'.",
+   "sfx": [],
+   "id": "b07"
+  },
+  {
+   "shot": "s05",
+   "text": "He bought *one present* and gave it to us both.",
+   "visual": "Tiff and Mia face to face, jackets in hand.",
+   "sfx": [],
+   "transition": "push",
+   "id": "b08",
+   "direction": "soft, mock-sad"
+  },
+  {
+   "shot": "s05",
+   "text": "We *stared* at each other for a full minute.",
+   "visual": "Slow creep on the two of them; a clock ticks.",
+   "sfx": [],
+   "pause": 0.7,
+   "id": "b09"
+  },
+  {
+   "shot": "s06",
+   "text": "So we listed both jackets on *pileGo* that night.",
+   "visual": "Tiff's room at night: both snap their jackets, listings go out to app tiles.",
+   "sfx": [],
+   "transition": "dip",
+   "id": "b10",
+   "direction": "playful"
+  },
+  {
+   "shot": "s06",
+   "text": "Mine sold for two hundred dollars. Hers was a *knockoff*.",
+   "visual": "Two sale cards: Tiff's 'SOLD $200', Mia's flagged 'NOT AUTHENTIC'.",
+   "sfx": [
+    {
+     "at": "knockoff",
+     "sound": "error_buzz",
+     "gain": -16
+    }
+   ],
+   "id": "b11",
+   "direction": "amused"
+  },
+  {
+   "shot": "s07",
+   "text": "Funny. Now she's finally mad at the right *person*.",
+   "visual": "Mia glaring at her phone with Jake's name on it; Tiff sips cocoa.",
+   "sfx": [],
+   "transition": "whip-right",
+   "role": "kicker",
+   "id": "b12",
+   "direction": "low, teasing"
+  }
+ ]
+}
