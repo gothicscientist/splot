@@ -1,8 +1,9 @@
 // Voxel world: build with plain code, mesh once with hidden-face culling, baked face shading (top 1.0 / N-S 0.8 /
 // E-W 0.6 / bottom 0.5, applied in sRGB) and per-vertex ambient occlusion - the genre's signature look - in a single
 // draw call (+1 for water/glass). Animated blocks (breaking, falling, popping) are separate <Block> meshes.
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import * as THREE from "three";
+import { useFrame } from "@react-three/fiber";
 import { useLocalFrame } from "../../core/timeline";
 import { backOut, clamp, invLerp, rand } from "../../core/anim";
 import { BlockType, EMISSIVE, TRANSPARENT, faceUV, getAtlas } from "./blocks";
@@ -117,7 +118,10 @@ const FACES = [
 const AO = [0.52, 0.68, 0.84, 1.0];
 const toLin = (m: number) => Math.pow(m, 2.2);
 
-function mesh(v: Voxels, wantTransparent: boolean) {
+/** Per-vertex light multiplier (linear), e.g. darker and warmer with depth, or a shaded shaft. Emissive blocks skip it. */
+export type VoxelLight = (x: number, y: number, z: number) => number | [number, number, number];
+
+function mesh(v: Voxels, wantTransparent: boolean, light?: VoxelLight) {
   const pos: number[] = [];
   const uv: number[] = [];
   const col: number[] = [];
@@ -171,7 +175,9 @@ function mesh(v: Voxels, wantTransparent: boolean) {
           ao = s1 && s2 ? 0 : 3 - (s1 + s2 + co);
         }
         const m = toLin(F.shade * AO[ao]) * glowK;
-        col.push(m, m, m);
+        const L = light && !EMISSIVE.has(t) ? light(x + c[0], y + c[1], z + c[2]) : 1;
+        if (typeof L === "number") col.push(m * L, m * L, m * L);
+        else col.push(m * L[0], m * L[1], m * L[2]);
       });
       idx.push(base, base + 1, base + 2, base, base + 2, base + 3);
     }
@@ -185,16 +191,34 @@ function mesh(v: Voxels, wantTransparent: boolean) {
   return g;
 }
 
-export const VoxelWorld: React.FC<{ build: (v: Voxels) => void; deps?: unknown[]; position?: Vec3 }> = ({ build, deps = [], position }) => {
+/** A static voxel world. `light` (optional) shades every vertex; like `build`, it is read once per `deps` change.
+ *  `tint` (optional, linear RGB) multiplies the whole world's colour and may change every frame without a re-mesh
+ *  (e.g. rock that heats up red); emissive blocks are tinted too. */
+export const VoxelWorld: React.FC<{ build: (v: Voxels) => void; deps?: unknown[]; position?: Vec3; light?: VoxelLight; tint?: [number, number, number] }> = ({ build, deps = [], position, light, tint }) => {
   const { opaque, trans, mat, matT } = useMemo(() => {
     const v = new Voxels();
     build(v);
     const atlas = getAtlas();
     const mat = new THREE.MeshBasicMaterial({ map: atlas, vertexColors: true, alphaTest: 0.5, toneMapped: true });
     const matT = new THREE.MeshBasicMaterial({ map: atlas, vertexColors: true, transparent: true, depthWrite: false, toneMapped: true });
-    return { opaque: mesh(v, false), trans: mesh(v, true), mat, matT };
+    return { opaque: mesh(v, false, light), trans: mesh(v, true, light), mat, matT };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps);
+  // a deps change re-meshes the world: free the old GPU buffers (the shared atlas texture stays)
+  useEffect(
+    () => () => {
+      opaque.dispose();
+      trans.dispose();
+      mat.dispose();
+      matT.dispose();
+    },
+    [opaque, trans, mat, matT],
+  );
+  // set synchronously in render (the first frame must already have it)
+  for (const m of [mat, matT]) {
+    if (tint) m.color.setRGB(tint[0], tint[1], tint[2], THREE.LinearSRGBColorSpace);
+    else m.color.setRGB(1, 1, 1);
+  }
   return (
     <group position={position}>
       <mesh geometry={opaque} material={mat} />
@@ -203,8 +227,52 @@ export const VoxelWorld: React.FC<{ build: (v: Voxels) => void; deps?: unknown[]
   );
 };
 
-/** One animated block: pops in at `pop`, cracks and bursts into debris at `breakAt`, or falls from `fallFrom`. */
-export const Block: React.FC<{ type: BlockType; at: Vec3; pop?: number; breakAt?: number; fallFrom?: number; size?: number; wobble?: number }> = ({ type, at, pop, breakAt, fallFrom, size = 1, wobble = 0 }) => {
+// ------------------------------------------------------------------------------------------------ crack overlay
+// Ten stages of an original pixel crack (six arms that grow out from the centre of the face), drawn by us.
+let CRACK_MATS: THREE.MeshBasicMaterial[] | null = null;
+const CRACK_GEO = new THREE.BoxGeometry(1.006, 1.006, 1.006);
+function crackMats() {
+  if (CRACK_MATS) return CRACK_MATS;
+  const px: [number, number, number][] = [];
+  const arm = (dx: number, dy: number, len: number, seed: number) => {
+    let x = 7.5;
+    let y = 7.5;
+    for (let i = 0; i < len; i++) {
+      const r = rand(seed, i);
+      x += dx * (r < 0.55 ? 1 : 0.55);
+      y += dy * (r > 0.45 ? 1 : 0.55);
+      if (r > 0.82) x += dy * 0.8;
+      else if (r < 0.18) y -= dx * 0.8;
+      px.push([Math.floor(x), Math.floor(y), i]);
+    }
+  };
+  arm(1, -1, 9, 11);
+  arm(-1, 1, 9, 12);
+  arm(-1, -0.6, 8, 13);
+  arm(1, 0.7, 8, 14);
+  arm(0.3, 1, 6, 15);
+  arm(-0.25, -1, 6, 16);
+  CRACK_MATS = Array.from({ length: 10 }, (_, s) => {
+    const c = document.createElement("canvas");
+    c.width = c.height = 16;
+    const g = c.getContext("2d")!;
+    g.clearRect(0, 0, 16, 16);
+    g.fillStyle = "rgba(26,18,12,1)";
+    for (const [x, y, st] of px) if (x >= 0 && y >= 0 && x < 16 && y < 16 && st < ((s + 1) / 10) * 9) g.fillRect(x, y, 1, 1);
+    const t = new THREE.CanvasTexture(c);
+    t.colorSpace = THREE.SRGBColorSpace;
+    t.magFilter = THREE.NearestFilter;
+    t.minFilter = THREE.NearestFilter;
+    t.generateMipmaps = false;
+    return new THREE.MeshBasicMaterial({ map: t, alphaTest: 0.5 });
+  });
+  return CRACK_MATS;
+}
+
+/** One animated block: pops in at `pop`, cracks and bursts into debris at `breakAt`, or falls from `fallFrom`.
+ *  `tint` (linear RGB multiplier) matches it to a world shaded with `light`. `cracks` draws the 10-stage pixel crack
+ *  overlay while it cracks (from `crackFrom`, default 18 f before `breakAt`). */
+export const Block: React.FC<{ type: BlockType; at: Vec3; pop?: number; breakAt?: number; fallFrom?: number; size?: number; wobble?: number; tint?: [number, number, number]; cracks?: boolean; crackFrom?: number }> = ({ type, at, pop, breakAt, fallFrom, size = 1, wobble = 0, tint, cracks = false, crackFrom }) => {
   const f = useLocalFrame();
   const geo = useMemo(() => {
     const v = new Voxels();
@@ -214,6 +282,8 @@ export const Block: React.FC<{ type: BlockType; at: Vec3; pop?: number; breakAt?
     return g;
   }, [type]);
   const mat = useMemo(() => new THREE.MeshBasicMaterial({ map: getAtlas(), vertexColors: true, alphaTest: 0.5, transparent: TRANSPARENT.has(type) && type !== "leaves" }), [type]);
+  if (tint && !EMISSIVE.has(type)) mat.color.setRGB(tint[0], tint[1], tint[2], THREE.LinearSRGBColorSpace);
+  else mat.color.setRGB(1, 1, 1);
   if (pop !== undefined && f < pop) return null;
   const s = pop !== undefined ? backOut(invLerp(pop, pop + 6, f), 2.4) : 1;
   let y = at[1] + 0.5;
@@ -233,11 +303,141 @@ export const Block: React.FC<{ type: BlockType; at: Vec3; pop?: number; breakAt?
       </group>
     );
   }
-  const crack = breakAt !== undefined ? clamp(invLerp(breakAt - 18, breakAt, f)) : 0;
+  const crack = breakAt !== undefined ? clamp(invLerp(crackFrom ?? breakAt - 18, breakAt, f)) : 0;
+  const stage = cracks && crack > 0 ? Math.min(9, Math.floor(crack * 10)) : -1;
   // wobble: the block sags and bulges like soft plastic (volume-preserving squash, bottom stays put)
   const w = wobble * Math.sin(f * 0.33 + at[0] * 1.9 + at[1] * 1.3);
   const k = size * s * (1 - crack * 0.06);
   const sy = 1 - Math.abs(wobble) * 0.35 - w * 0.5;
   const sx = 1 + Math.abs(wobble) * 0.18 + w * 0.5;
-  return <mesh geometry={geo} material={mat} position={[at[0] + 0.5 + w * 0.12, y - (1 - sy) * 0.5 * size, at[2] + 0.5]} scale={[k * sx, k * sy, k]} rotation={[0, 0, crack * 0.05 * Math.sin(f * 2) + w * 0.12]} />;
+  return (
+    <group position={[at[0] + 0.5 + w * 0.12, y - (1 - sy) * 0.5 * size, at[2] + 0.5]} scale={[k * sx, k * sy, k]} rotation={[0, 0, crack * 0.05 * Math.sin(f * 2) + w * 0.12]}>
+      <mesh geometry={geo} material={mat} />
+      {stage >= 0 ? <mesh geometry={CRACK_GEO} material={crackMats()[stage]} /> : null}
+    </group>
+  );
+};
+
+// ------------------------------------------------------------------------------------------------ square particles
+const PB_PLANE = new THREE.PlaneGeometry(1, 1);
+const PB_CUBE = new THREE.BoxGeometry(1, 1, 1);
+const PB_SPARK = ["#fff1a8", "#ffd24a", "#ff9a2e", "#ffe680"];
+const PB_CONFETTI = ["#ff4d5e", "#ffe14d", "#4dabf7", "#69db7c", "#ff922b", "#f4f4f4"];
+
+/** Square particles only (the style's rule): `chips` = mini blocks of `type` (atlas-textured), `sparks` = glowing
+ *  squares that bloom, `confetti` = flat coloured squares that flutter down. Every particle is a closed-form function
+ *  of the shot-local frame: p = p0 + v t + g t^2 / 2 (confetti: drag + a slow terminal fall). `dir` biases the spray
+ *  (unit-ish vector, `cone` = spread around it); `spread` jitters the start box (half extents, m). `face` (sparks and
+ *  confetti) draws flat squares turned to the camera instead of tumbling cubes, so they read as square chips in a
+ *  still (a tumbling glowing cube blooms into a round blob). */
+export const PixelBurst: React.FC<{
+  at: number;
+  origin: Vec3;
+  kind?: "chips" | "sparks" | "confetti";
+  type?: BlockType;
+  count?: number;
+  size?: number;
+  power?: number;
+  up?: number;
+  gravity?: number;
+  life?: number;
+  seed?: number;
+  dir?: Vec3;
+  cone?: number;
+  spread?: Vec3;
+  colors?: string[];
+  glow?: number;
+  face?: boolean;
+}> = ({ at, origin, kind = "chips", type = "stone", count = 24, size, power = 3, up = 1.5, gravity, life = 24, seed = 1, dir, cone = 0.6, spread = [0, 0, 0], colors, glow = 4, face = false }) => {
+  const f = useLocalFrame();
+  const ref = React.useRef<THREE.InstancedMesh>(null);
+  const flat = face && kind !== "chips";
+  const geo = useMemo(() => {
+    if (kind === "confetti" || flat) return PB_PLANE;
+    if (kind === "sparks") return PB_CUBE;
+    const v = new Voxels();
+    v.set(0, 0, 0, type);
+    const g = mesh(v, false);
+    g.translate(-0.5, -0.5, -0.5);
+    return g;
+  }, [kind, type, flat]);
+  const mat = useMemo(() => {
+    if (kind === "chips") return new THREE.MeshBasicMaterial({ map: getAtlas(), vertexColors: true, alphaTest: 0.5 });
+    if (kind === "sparks") return new THREE.MeshBasicMaterial({ color: new THREE.Color(1, 1, 1).multiplyScalar(glow), toneMapped: true });
+    return new THREE.MeshBasicMaterial({ color: "#ffffff", side: THREE.DoubleSide });
+  }, [kind, glow]);
+  const cols = useMemo(() => {
+    if (kind === "chips") return null;
+    const pal = colors ?? (kind === "sparks" ? PB_SPARK : PB_CONFETTI);
+    const arr = new Float32Array(count * 3);
+    const c = new THREE.Color();
+    for (let i = 0; i < count; i++) {
+      c.set(pal[Math.floor(rand(seed + 3, i) * pal.length)]);
+      arr.set([c.r, c.g, c.b], i * 3);
+    }
+    return arr;
+  }, [kind, colors, count, seed]);
+  const dummy = useMemo(() => new THREE.Object3D(), []);
+  const sz = size ?? (kind === "confetti" ? 0.3 : kind === "sparks" ? 0.07 : 0.14);
+  const g = gravity ?? (kind === "confetti" ? 1.2 : kind === "sparks" ? 9.8 : 9.8);
+  useFrame((state) => {
+    const m = ref.current;
+    if (!m) return;
+    const t = (f - at) / 30;
+    for (let i = 0; i < count; i++) {
+      const lifeI = life * (0.7 + 0.3 * rand(seed + 9, i));
+      if (t < 0 || f - at > lifeI) {
+        dummy.position.set(0, -999, 0);
+        dummy.scale.setScalar(0.0001);
+      } else {
+        const th = rand(seed, i * 2) * Math.PI * 2;
+        const ph = (rand(seed, i * 2 + 1) - 0.25) * Math.PI * 0.75;
+        let vx = Math.cos(th) * Math.cos(ph);
+        let vy = Math.sin(ph);
+        let vz = Math.sin(th) * Math.cos(ph);
+        if (dir) {
+          vx = dir[0] + vx * cone;
+          vy = dir[1] + vy * cone;
+          vz = dir[2] + vz * cone;
+          const n = Math.hypot(vx, vy, vz) || 1;
+          vx /= n;
+          vy /= n;
+          vz /= n;
+        }
+        const sp = power * (0.45 + 0.75 * rand(seed + 5, i));
+        const x0 = origin[0] + (rand(seed + 11, i) * 2 - 1) * spread[0];
+        const y0 = origin[1] + (rand(seed + 12, i) * 2 - 1) * spread[1];
+        const z0 = origin[2] + (rand(seed + 13, i) * 2 - 1) * spread[2];
+        let x: number;
+        let y: number;
+        let z: number;
+        if (kind === "confetti") {
+          const k = 2.2;
+          const e = (1 - Math.exp(-k * t)) / k;
+          x = x0 + vx * sp * e + Math.sin(t * 3.1 + i) * 0.35 * Math.min(1, t * 2);
+          y = y0 + (vy * sp + up) * e - g * t;
+          z = z0 + vz * sp * e + Math.cos(t * 2.3 + i) * 0.2 * Math.min(1, t * 2);
+        } else {
+          x = x0 + vx * sp * t;
+          y = y0 + (vy * sp + up) * t - 0.5 * g * t * t;
+          z = z0 + vz * sp * t;
+        }
+        dummy.position.set(x, y, z);
+        const spin = kind === "confetti" ? 3 + (i % 4) : 6 + (i % 5);
+        if (flat) dummy.quaternion.copy(state.camera.quaternion);
+        else dummy.rotation.set(t * spin + i, t * spin * 0.7 + i * 0.5, t * spin * 0.4);
+        const fade = 1 - Math.max(0, (f - at) / lifeI - 0.7) / 0.3;
+        const shrink = kind === "sparks" ? 1 - 0.6 * ((f - at) / lifeI) : 1;
+        dummy.scale.setScalar(Math.max(0.0001, sz * (0.6 + 0.8 * rand(seed + 7, i)) * fade * shrink));
+      }
+      dummy.updateMatrix();
+      m.setMatrixAt(i, dummy.matrix);
+    }
+    m.instanceMatrix.needsUpdate = true;
+  });
+  return (
+    <instancedMesh ref={ref} args={[geo, mat, count]} frustumCulled={false}>
+      {cols ? <instancedBufferAttribute attach="instanceColor" args={[cols, 3]} /> : null}
+    </instancedMesh>
+  );
 };

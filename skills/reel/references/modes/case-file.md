@@ -23,7 +23,7 @@ This mode fits the user's reference (a $6B laptop heist) and the reconstruction 
 
 **Research steps (the agent must do all):**
 
-1. Identify the canonical event: date, place, actors, amounts. Get at least 3 independent sources (Wikipedia plus 2 primary or press sources: court records, official statements, major outlets). Store citations at the top of SCRIPT.md.
+1. Identify the canonical event: date, place, actors, amounts. Get at least 3 independent sources (Wikipedia plus 2 primary or press sources: court records, official statements, major outlets). Store citations in `videos/<slug>/research.md`.
 2. Build a timeline of 8–12 facts. Mark each fact *confirmed*, *alleged* or *disputed*. For example, the Binance "single laptop" framing is contested; Binance describes a months-long campaign across 3 engineers.
 3. Extract the **hook number**, the single most absurd figure (dollar amount, minutes, ratio), and the **twist**: the small mistake, hidden accomplice, denial, or ironic consequence.
 4. Find one physical or visual detail per beat: the object, the place, the screen, the vehicle.

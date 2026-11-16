@@ -273,25 +273,53 @@ export const RiseText: React.FC<{ at: number; x: number; y: number; text: string
   );
 };
 
-/** Rounded pill label with an optional leader line to a point (callout). */
-export const Callout: React.FC<{ at: number; x: number; y: number; text: string; to?: [number, number]; color?: string; size?: number; out?: number }> = ({ at, x, y, text, to, color = GV.cyan, size = 46, out }) => {
+/** Rough width of an uppercase Fredoka 700 label (em widths per glyph class; the browser does the real layout). */
+export const capsWidth = (text: string, size: number, spacing = 3) => {
+  let em = 0;
+  for (const ch of text.toUpperCase()) em += /[MW]/.test(ch) ? 0.88 : /[IJ1]/.test(ch) ? 0.34 : ch === " " ? 0.28 : /[,.'!:]/.test(ch) ? 0.26 : 0.68;
+  return em * size + Math.max(0, text.length - 1) * spacing;
+};
+
+/** Rounded pill label with an optional leader line to a point (callout). The pill is opaque (`fill`) and the leader
+ *  starts at the pill's edge, so nothing behind it shows through the letters. */
+export const Callout: React.FC<{ at: number; x: number; y: number; text: string; to?: [number, number]; color?: string; size?: number; out?: number; fill?: string }> = ({
+  at,
+  x,
+  y,
+  text,
+  to,
+  color = GV.cyan,
+  size = 46,
+  out,
+  fill = "#0B1A30",
+}) => {
   const f = useLocalFrame();
   const s = usePop(at);
   if (s <= 0) return null;
   const o = out !== undefined && f >= out ? 1 - clamp((f - out) / 6) : 1;
-  const w = text.length * size * 0.62 + 60;
+  const w = capsWidth(text, size, 3) + size * 1.3;
   const h = size * 1.55;
-  const draw = clamp((f - at) / 10);
+  // the leader waits for the pill to land, then grows from the pill's edge to the target
+  const draw = clamp((f - at - 3) / 9);
+  let lx = x;
+  let ly = y;
+  if (to) {
+    const dx = to[0] - x;
+    const dy = to[1] - y;
+    const t = Math.min(Math.abs(dx) > 1e-6 ? w / 2 / Math.abs(dx) : Infinity, Math.abs(dy) > 1e-6 ? h / 2 / Math.abs(dy) : Infinity, 1) * 0.86;
+    lx = x + dx * t;
+    ly = y + dy * t;
+  }
   return (
     <g opacity={o}>
-      {to ? (
+      {to && draw > 0 ? (
         <>
-          <line x1={x} y1={y} x2={x + (to[0] - x) * draw} y2={y + (to[1] - y) * draw} stroke={color} strokeWidth={5} strokeLinecap="round" />
+          <line x1={lx} y1={ly} x2={lx + (to[0] - lx) * draw} y2={ly + (to[1] - ly) * draw} stroke={color} strokeWidth={5} strokeLinecap="round" />
           {draw >= 1 ? <circle cx={to[0]} cy={to[1]} r={10} fill={color} /> : null}
         </>
       ) : null}
       <g transform={`translate(${x} ${y}) scale(${s}) translate(${-x} ${-y})`}>
-        <rect x={x - w / 2} y={y - h / 2} width={w} height={h} rx={h / 2} fill="rgba(6,20,40,0.78)" stroke={color} strokeWidth={4} />
+        <rect x={x - w / 2} y={y - h / 2} width={w} height={h} rx={h / 2} fill={fill} stroke={color} strokeWidth={4} />
         <text x={x} y={y + size * 0.36} textAnchor="middle" fontFamily={font("Fredoka")} fontWeight={700} fontSize={size} letterSpacing={3} fill={color}>
           {text.toUpperCase()}
         </text>
@@ -381,21 +409,28 @@ export const Shockwave: React.FC<{ at: number; x: number; y: number; r?: number;
 
 // ------------------------------------------------------------------------------------------------ capsule people
 export type PersonSpec = { skin?: string; shirt: string; pants?: string; hair?: string; hairStyle?: "none" | "short" | "bun" | "long" | "curly"; scale?: number };
-export type PersonFace = "neutral" | "happy" | "shock" | "bored" | "sad" | "talk" | "wince";
-/** Original "capsule person": circle head, rounded body, tapered limbs with mitten hands. Arms in deg (0 down, 90 out). */
-export const Person: React.FC<{ spec: PersonSpec; x: number; y: number; face?: PersonFace; armL?: number; armR?: number; lean?: number; pop?: number; seed?: number; talk?: boolean; flip?: boolean }> = ({
-  spec,
-  x,
-  y,
-  face = "neutral",
-  armL = 12,
-  armR = 12,
-  lean = 0,
-  pop,
-  seed = 1,
-  talk = false,
-  flip = false,
-}) => {
+export type PersonFace = "neutral" | "happy" | "shock" | "bored" | "sad" | "talk" | "wince" | "relief" | "alert" | "shout";
+/** Original "capsule person": circle head, rounded body, tapered limbs with mitten hands. Arms in deg (0 down, 90 out).
+ *  `handL` / `handR` (person units, origin at the feet, before `scale`) bend that arm at the elbow so the hand reaches
+ *  the point (e.g. a hand on a headphone cup); `look` ([-1..1, -1..1]) moves the pupils of open eyes. "wince" squeezes
+ *  the eyes shut (> <) over a gritted mouth; "relief" closes the eyes softly over a small exhaling "o"; "alert" is a
+ *  suspicious "hm?" (one brow up, eyes following `look`, flat mouth); "shout" is a wide-open calling mouth. */
+export const Person: React.FC<{
+  spec: PersonSpec;
+  x: number;
+  y: number;
+  face?: PersonFace;
+  armL?: number;
+  armR?: number;
+  lean?: number;
+  pop?: number;
+  seed?: number;
+  talk?: boolean;
+  flip?: boolean;
+  look?: [number, number];
+  handL?: [number, number];
+  handR?: [number, number];
+}> = ({ spec, x, y, face = "neutral", armL = 12, armR = 12, lean = 0, pop, seed = 1, talk = false, flip = false, look = [0, 0], handL, handR }) => {
   const f = useLocalFrame();
   const { fps } = useVideoConfig();
   const sp = usePop(pop ?? -99999);
@@ -411,10 +446,37 @@ export const Person: React.FC<{ spec: PersonSpec; x: number; y: number; face?: P
   const hy = -bh - hr * 0.9;
   const bl = blink(f, seed, fps) > 0.5;
   const mouthOpen = talk && Math.floor(f / 4) % 2 === 0;
-  const limb = (side: number, ang: number) => {
-    const a = (ang * Math.PI) / 180;
+  const limb = (side: number, ang: number, hand?: [number, number]) => {
     const sx = side * (bw / 2 - 10);
     const sy = -bh + 30;
+    if (hand) {
+      // two-bone arm: upper arm = forearm = 56, the elbow bends away from the body
+      const seg = 56;
+      const dx = hand[0] - sx;
+      const dy = hand[1] - sy;
+      const dist = Math.max(1e-3, Math.hypot(dx, dy));
+      const reach = Math.min(dist, seg * 2 - 0.01);
+      const ux = dx / dist;
+      const uy = dy / dist;
+      const hx2 = sx + ux * reach;
+      const hy2 = sy + uy * reach;
+      const hh = Math.sqrt(Math.max(0, seg * seg - (reach / 2) * (reach / 2)));
+      let px = -uy;
+      let py = ux;
+      if (px * side < 0) {
+        px = -px;
+        py = -py;
+      }
+      const elx = (sx + hx2) / 2 + px * hh;
+      const ely = (sy + hy2) / 2 + py * hh;
+      return (
+        <g key={side}>
+          <path d={`M${sx} ${sy} L${elx} ${ely} L${hx2} ${hy2}`} stroke={shadowOf(spec.shirt, 0.15)} strokeWidth={26} strokeLinecap="round" strokeLinejoin="round" fill="none" />
+          <circle cx={hx2} cy={hy2} r={17} fill={skin} />
+        </g>
+      );
+    }
+    const a = (ang * Math.PI) / 180;
     const L = 108;
     const ex = sx + side * Math.sin(a) * L;
     const ey = sy + Math.cos(a) * L;
@@ -425,6 +487,8 @@ export const Person: React.FC<{ spec: PersonSpec; x: number; y: number; face?: P
       </g>
     );
   };
+  const lx = clamp(look[0], -1, 1);
+  const ly = clamp(look[1], -1, 1);
   return (
     <g transform={`translate(${x} ${y + bob}) scale(${k * s * (flip ? -1 : 1)} ${k * (s < 1 ? s : 1 + (s - 1) * 1.3)}) rotate(${lean})`}>
       <Contact cx={0} cy={4} rx={86} />
@@ -432,9 +496,9 @@ export const Person: React.FC<{ spec: PersonSpec; x: number; y: number; face?: P
       {[-1, 1].map((sd) => (
         <path key={sd} d={`M${sd * 24} -20 L${sd * 26} 0`} stroke={spec.pants ?? GV.navy} strokeWidth={30} strokeLinecap="round" />
       ))}
-      {limb(-1, armL)}
+      {limb(-1, armL, handL)}
       <LitPath d={rrectPath(-bw / 2, -bh, bw, bh - 4, 46)} fill={spec.shirt} off={16} />
-      {limb(1, armR)}
+      {limb(1, armR, handR)}
       {/* head */}
       <LitCircle cx={hx} cy={hy} r={hr} fill={skin} />
       {spec.hairStyle && spec.hairStyle !== "none" ? (
@@ -454,9 +518,43 @@ export const Person: React.FC<{ spec: PersonSpec; x: number; y: number; face?: P
         <>
           <ellipse cx={-16} cy={hy - 2} rx={11} ry={13} fill={GV.white} />
           <ellipse cx={16} cy={hy - 2} rx={11} ry={13} fill={GV.white} />
-          <circle cx={-16} cy={hy - 2} r={4.5} fill={GV.navy} />
-          <circle cx={16} cy={hy - 2} r={4.5} fill={GV.navy} />
+          <circle cx={-16 + lx * 5} cy={hy - 2 + ly * 6} r={4.5} fill={GV.navy} />
+          <circle cx={16 + lx * 5} cy={hy - 2 + ly * 6} r={4.5} fill={GV.navy} />
+          <path d={`M-25 ${hy - 22} L-8 ${hy - 26}`} stroke={GV.navy} strokeWidth={4.5} strokeLinecap="round" />
+          <path d={`M8 ${hy - 26} L25 ${hy - 22}`} stroke={GV.navy} strokeWidth={4.5} strokeLinecap="round" />
           <ellipse cx={0} cy={hy + 24} rx={8} ry={10} fill={GV.navy} />
+        </>
+      ) : face === "wince" ? (
+        <>
+          <path d={`M-25 ${hy - 8} L-11 ${hy} L-25 ${hy + 7}`} stroke={GV.navy} strokeWidth={5} fill="none" strokeLinecap="round" strokeLinejoin="round" />
+          <path d={`M25 ${hy - 8} L11 ${hy} L25 ${hy + 7}`} stroke={GV.navy} strokeWidth={5} fill="none" strokeLinecap="round" strokeLinejoin="round" />
+          <path d={`M-27 ${hy - 17} L-11 ${hy - 12}`} stroke={GV.navy} strokeWidth={4.5} strokeLinecap="round" />
+          <path d={`M11 ${hy - 12} L27 ${hy - 17}`} stroke={GV.navy} strokeWidth={4.5} strokeLinecap="round" />
+          <rect x={-13} y={hy + 16} width={26} height={11} rx={5} fill={GV.white} stroke={GV.navy} strokeWidth={3.5} />
+          <path d={`M-4 ${hy + 16} V${hy + 27} M4 ${hy + 16} V${hy + 27}`} stroke={GV.navy} strokeWidth={2.5} />
+        </>
+      ) : face === "alert" ? (
+        <>
+          <ellipse cx={-16 + lx * 5} cy={hy + ly * 4} rx={5} ry={7.5} fill={GV.navy} />
+          <ellipse cx={16 + lx * 5} cy={hy + ly * 4} rx={5} ry={7.5} fill={GV.navy} />
+          <path d={`M-28 ${hy - 19} Q-18 ${hy - 32} -7 ${hy - 25}`} stroke={GV.navy} strokeWidth={4.5} fill="none" strokeLinecap="round" />
+          <path d={`M8 ${hy - 15} L26 ${hy - 13}`} stroke={GV.navy} strokeWidth={4.5} strokeLinecap="round" />
+          <path d={`M-6 ${hy + 23} L8 ${hy + 20}`} stroke={GV.navy} strokeWidth={4.5} strokeLinecap="round" />
+        </>
+      ) : face === "shout" ? (
+        <>
+          <ellipse cx={-16 + lx * 4} cy={hy - 2 + ly * 4} rx={4.6} ry={7} fill={GV.navy} />
+          <ellipse cx={16 + lx * 4} cy={hy - 2 + ly * 4} rx={4.6} ry={7} fill={GV.navy} />
+          <path d={`M-25 ${hy - 18} L-8 ${hy - 22}`} stroke={GV.navy} strokeWidth={4.5} strokeLinecap="round" />
+          <path d={`M8 ${hy - 22} L25 ${hy - 18}`} stroke={GV.navy} strokeWidth={4.5} strokeLinecap="round" />
+          <path d={`M-13 ${hy + 13} Q0 ${hy + 10} 13 ${hy + 13} Q12 ${hy + 34} 0 ${hy + 35} Q-12 ${hy + 34} -13 ${hy + 13}Z`} fill={GV.navy} />
+          <ellipse cx={0} cy={hy + 29} rx={6} ry={3.5} fill={GV.coral} />
+        </>
+      ) : face === "relief" ? (
+        <>
+          <path d={`M-24 ${hy - 2} Q-16 ${hy + 6} -8 ${hy - 2}`} stroke={GV.navy} strokeWidth={5} fill="none" strokeLinecap="round" />
+          <path d={`M8 ${hy - 2} Q16 ${hy + 6} 24 ${hy - 2}`} stroke={GV.navy} strokeWidth={5} fill="none" strokeLinecap="round" />
+          <ellipse cx={0} cy={hy + 24} rx={5.5} ry={6.5} fill={GV.navy} />
         </>
       ) : face === "happy" ? (
         <>
@@ -473,11 +571,11 @@ export const Person: React.FC<{ spec: PersonSpec; x: number; y: number; face?: P
             </>
           ) : (
             <>
-              <ellipse cx={-16} cy={hy} rx={4.2} ry={6.5} fill={GV.navy} />
-              <ellipse cx={16} cy={hy} rx={4.2} ry={6.5} fill={GV.navy} />
+              <ellipse cx={-16 + lx * 4} cy={hy + ly * 4} rx={4.2} ry={6.5} fill={GV.navy} />
+              <ellipse cx={16 + lx * 4} cy={hy + ly * 4} rx={4.2} ry={6.5} fill={GV.navy} />
             </>
           )}
-          {face === "sad" || face === "wince" ? (
+          {face === "sad" ? (
             <path d={`M-10 ${hy + 24} Q0 ${hy + 16} 10 ${hy + 24}`} stroke={GV.navy} strokeWidth={5} fill="none" strokeLinecap="round" />
           ) : mouthOpen || face === "talk" ? (
             <ellipse cx={0} cy={hy + 22} rx={7} ry={6} fill={GV.navy} />
@@ -511,6 +609,64 @@ export const Mascot: React.FC<{ x: number; y: number; look?: [number, number]; p
       <Glow cx={0} cy={-98} r={12} color={GV.coral} intensity={0.6 + 0.4 * Math.sin(f * 0.2)} />
       <ellipse cx={-92} cy={30} rx={18} ry={34} fill={shadowOf(color, 0.12)} transform={`rotate(${-10 + Math.sin(f * 0.1) * 6} -92 30)`} />
       <ellipse cx={92} cy={30} rx={18} ry={34} fill={shadowOf(color, 0.12)} transform={`rotate(${10 - Math.sin(f * 0.1) * 6} 92 30)`} />
+    </g>
+  );
+};
+
+/** Slow dust motes (soft dots) in screen space, a depth cue rather than decoration: they drift up a few px a second and
+ *  pan with the camera by `depth` (0 = fixed, 1 = moves with the world). Put a sparse, larger set in front of the
+ *  subject (depth > 1, `blur`) for a near layer. Deterministic. */
+export const Motes: React.FC<{ n?: number; cam?: { x: number; y: number; z: number }; depth?: number; color?: string; seed?: number; size?: number; opacity?: number; speed?: number }> = ({
+  n = 22,
+  cam = { x: 540, y: 960, z: 1 },
+  depth = 0.4,
+  color = GV.cream,
+  seed = 1,
+  size = 3,
+  opacity = 0.3,
+  speed = 0.35,
+}) => {
+  const f = useLocalFrame();
+  const id = useId().replace(/:/g, "");
+  const W = 1300;
+  const H = 2160;
+  return (
+    <AbsoluteFill style={{ pointerEvents: "none" }}>
+      <svg width="100%" height="100%" viewBox="0 0 1080 1920">
+        <defs>
+          <radialGradient id={`mt${id}`}>
+            <stop offset="0" stopColor={color} stopOpacity={1} />
+            <stop offset="0.45" stopColor={color} stopOpacity={0.55} />
+            <stop offset="1" stopColor={color} stopOpacity={0} />
+          </radialGradient>
+        </defs>
+        {Array.from({ length: n }).map((_, i) => {
+          const k = seed * 1000 + i;
+          const r = size * (0.6 + rand(13, k) * 0.9) * 2.4;
+          const x = ((((rand(17, k) * W + Math.sin(f * 0.012 + k) * 18 - (cam.x - 540) * depth) % W) + W) % W) - 110;
+          const y = ((((rand(19, k) * H - f * speed * (0.5 + rand(23, k)) - (cam.y - 960) * depth) % H) + H) % H) - 120;
+          const tw = 0.65 + 0.35 * Math.sin(f * 0.05 + k * 1.7);
+          return <circle key={i} cx={x} cy={y} r={r} fill={`url(#mt${id})`} opacity={opacity * tw} />;
+        })}
+      </svg>
+    </AbsoluteFill>
+  );
+};
+
+/** Gaussian blur on a small group (out-of-focus foreground or far shapes). The filter region is the group's own
+ *  bounding box (+30 %), so keep it to parts of the frame: full-frame SVG filters rasterise on the CPU. `r` is in the
+ *  group's own units (divide by the camera zoom for a fixed on-screen blur). */
+export const Soft: React.FC<{ r?: number; opacity?: number; children: React.ReactNode }> = ({ r = 6, opacity = 1, children }) => {
+  const id = useId().replace(/:/g, "");
+  if (r <= 0.05) return <g opacity={opacity}>{children}</g>;
+  return (
+    <g opacity={opacity}>
+      <defs>
+        <filter id={`sf${id}`} x="-30%" y="-30%" width="160%" height="160%">
+          <feGaussianBlur stdDeviation={r} />
+        </filter>
+      </defs>
+      <g filter={`url(#sf${id})`}>{children}</g>
     </g>
   );
 };

@@ -6,7 +6,7 @@
  "language": "en",
  "fps": 30,
  "voice": { "provider": "take", "voice": "ElevenLabs Liam (viral short-form storyteller)", "voiceId": "VCgLBmBjldJmfphyB8sZ", "model": "eleven_v4", "direction": "curious", "wpm": 184 },
- "music": { "mood": "epic" },
+ "music": { "mood": "epic", "gain": 6 },
  "captions": { "preset": "bold-pop" },
  "pronounce": {},
  "hooks": [
@@ -18,26 +18,26 @@
   { "text": "You could cross this country in a morning. Top to bottom takes days.", "family": "contradiction", "score": 76 }
  ],
  "hookVariants": [
-  { "id": "v1", "visual": "Globe spins to South America; Chile lights up red and a ruler snaps along its whole length." },
-  { "id": "v2", "visual": "Start tight on Chile's narrow middle, then rush south along the coast as the country keeps going." },
-  { "id": "v3", "visual": "Flat map of the world; a thin red sliver is picked out and lifted: '24 x' stamps beside it." }
+  { "id": "v1", "visual": "Frame 0 tight on Chile's narrow middle, the teal width bar across it, '24X LONGER THAN IT IS WIDE' beside it; the camera snaps back (12 f) to the whole country as the gold ruler drops from the northern tip; 24 width tiles stack along it." },
+  { "id": "v2", "visual": "Frame 0 shows all of South America with Chile already red; the camera snaps in to the whole country as the ruler drops from the northern tip; '24X' beside it; 24 tiles stack." },
+  { "id": "v3", "visual": "Frame 0 is the whole country already measured (gold ruler down its length, '24X' beside it); a short push, the teal width bar snaps across the middle, 24 tiles stack." }
  ],
  "defaultTransition": "dissolve",
  "beats": [
   { "id": "b01", "shot": "s01", "role": "hook", "text": "This country is 24 times longer than it is *wide.*",
-    "visual": "Dark globe turns to South America; Chile fills red with a white outline; '24 x' counter slams in.",
+    "visual": "Tight on Chile's narrow red middle with a teal width bar across it and '24X LONGER THAN IT IS WIDE'; snap back to the whole country as a gold ruler drops down its length; 24 teal width tiles stack beside the ruler.",
     "sfx": [ { "at": "country", "sound": "whoosh", "gain": -20 }, { "at": "24", "sound": "impact", "gain": -14 } ] },
   { "id": "b02", "shot": "s02", "transition": "push", "text": "Chile runs *4,270* kilometers from top to bottom.",
     "visual": "Flat map, Chile in red. A gold measuring bar draws from the northern tip to Cape Horn; the number counts to 4,270 km.",
     "sfx": [ { "at": "4,270", "sound": "tick_roll", "dur": 0.9, "gain": -24 }, { "at": "bottom", "sound": "ding", "gain": -20 } ] },
   { "id": "b03", "shot": "s02", "text": "It starts in one of the driest deserts on Earth, and ends among *glaciers.*",
-    "visual": "Fly to the north: pin ATACAMA DESERT; then fly all the way south: pin GLACIERS.",
+    "visual": "Fly to the north: the desert turns sand-gold, pin ATACAMA DESERT; then fly all the way south: the two ice fields along the border turn white-blue, pin GLACIERS.",
     "sfx": [ { "at": "driest", "sound": "pop", "gain": -20 }, { "at": "glaciers", "sound": "sparkle", "gain": -22 } ] },
   { "id": "b04", "shot": "s03", "transition": "whip-right", "text": "Slide it over Europe, and it reaches from the top of Norway past the bottom of *Spain.*",
-    "visual": "Map of Europe. A red copy of Chile slides in and stands upright: its top at Norway's Arctic tip, its tail past southern Spain. Labels NORWAY, SPAIN.",
+    "visual": "Map of Europe. A red copy of Chile slides up from below and stops with its top on Norway's Arctic tip (teal line TOP OF NORWAY); a gold line BOTTOM OF SPAIN; its tail runs past it (white dot).",
     "sfx": [ { "at": "Slide", "sound": "whoosh", "gain": -18 }, { "at": "Norway", "sound": "pop", "gain": -20 }, { "at": "Spain", "sound": "impact", "gain": -16 } ] },
   { "id": "b05", "shot": "s04", "transition": "whip-left", "text": "But side to side, it averages just *177* kilometers.",
-    "visual": "Back on Chile, tight on the middle: a short bar measures across, counting to 177 km.",
+    "visual": "Back on the whole country with the tall 4,270 ruler: a short teal bar measures across the middle; on '177' a round magnifier grows out of it and shows the narrow strip up close, the counter under it counts to 177 KM.",
     "sfx": [ { "at": "177", "sound": "tick_roll", "dur": 0.6, "gain": -24 } ] },
   { "id": "b06", "shot": "s04", "text": "So why is it so *thin?*",
     "visual": "A big gold question mark pops beside the sliver.",
@@ -49,16 +49,16 @@
     "visual": "A chain of mountain peaks rises one by one down the eastern edge; label ANDES.",
     "sfx": [ { "at": "Andes", "sound": "giant_step", "gain": -18 }, { "at": "longest", "sound": "riser", "gain": -24 } ] },
   { "id": "b09", "shot": "s06", "transition": "flash", "role": "pivot", "text": "You see, in 1881, Chile and Argentina signed a border *treaty.*",
-    "visual": "Year 1881 stamps in. Chile red, Argentina blue; a treaty paper with two signatures pops between them.",
+    "visual": "Whole country above the captions. Year 1881 stamps in above Chile's tip; CHILE red, ARGENTINA blue are named; then the names give way to a treaty paper with two signatures.",
     "sfx": [ { "at": "1881", "sound": "stamp", "gain": -14 }, { "at": "treaty", "sound": "pen_scribble", "gain": -20 } ] },
   { "id": "b10", "shot": "s06", "text": "The line would follow the highest *peaks* of the Andes.",
-    "visual": "A bright white border line draws itself south along the mountain chain, peak to peak.",
+    "visual": "A bright white border line draws itself south along the mountain chain, every peak lighting up as the pen point passes it.",
     "sfx": [ { "at": "line", "sound": "swoosh_up", "gain": -20 }, { "at": "peaks", "sound": "ding", "gain": -20 } ] },
   { "id": "b11", "shot": "s07", "transition": "zoom-out", "text": "So Chile kept the narrow strip between the mountains and the *sea.*",
     "visual": "Pull back: the strip between the white line and the coast fills red, north to south.",
     "sfx": [ { "at": "strip", "sound": "whoosh", "gain": -20 } ] },
   { "id": "b12", "shot": "s07", "role": "payoff", "text": "It's not a strange shape. It's the edge of a *continent.*",
-    "visual": "Keep pulling back until all of South America is in frame; Chile is simply its glowing western edge; '24 x' returns small.",
+    "visual": "Pull back until all of South America fills the frame (Panama at the top edge); Chile is simply its glowing western edge; '24X' returns small on the South Atlantic.",
     "sfx": [ { "at": "edge", "sound": "sub_drop", "gain": -16 }, { "at": "continent", "sound": "impact", "gain": -14 } ] }
  ]
 }

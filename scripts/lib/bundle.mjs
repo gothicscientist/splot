@@ -14,7 +14,8 @@ export const timelineOf = (slug) => readJson(path.join(STUDIO, "src", "videos", 
 export async function getBundle() {
   return bundle({
     entryPoint: path.join(STUDIO, "src", "index.ts"),
-    outDir: path.join(STUDIO, "out", "bundle"),
+    // NOMEN_BUNDLE_DIR: a private bundle folder, so two renders (or a render and stills) never share one
+    outDir: process.env.NOMEN_BUNDLE_DIR ? path.resolve(STUDIO, process.env.NOMEN_BUNDLE_DIR) : path.join(STUDIO, "out", "bundle"),
     publicDir: path.join(STUDIO, "public"),
     onProgress: () => {},
   });

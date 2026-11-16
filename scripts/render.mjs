@@ -9,6 +9,7 @@ import path from "node:path";
 import os from "node:os";
 import { renderMedia, selectComposition } from "@remotion/renderer";
 import { STUDIO, compId, getBundle, ff, ffprobe, arg, timelineOf } from "./lib/bundle.mjs";
+import { withGpuSlot } from "./lib/gpulock.mjs";
 
 const args = process.argv.slice(2);
 const slug = args[0];
@@ -74,6 +75,8 @@ const total = tl.durationInFrames;
 const main = path.join(outDir, `${slug}.mp4`);
 const fullVideo = path.join(tmp, "full.mp4");
 console.log(`render ${id}: ${total} frames @${tl.fps}fps, concurrency ${concurrency}${wantVariants ? `, ${tl.hook.variants} hook variants` : ""}`);
+// one GPU slot for the whole render (stills and other renders wait: RAM and the iGPU are shared)
+await withGpuSlot(`render ${id}`, async () => {
 if (!wantVariants || tl.hook.variants <= 1) {
   await renderPart(0, [0, total - 1], fullVideo);
   mux(fullVideo, main);
@@ -95,6 +98,7 @@ if (!wantVariants || tl.hook.variants <= 1) {
     console.log(`  -> ${path.relative(STUDIO, out)}`);
   }
 }
+});
 const p = ffprobe(main);
 const v = p.streams.find((s) => s.codec_type === "video");
 const a = p.streams.find((s) => s.codec_type === "audio");

@@ -9,7 +9,10 @@ export type BlockType =
   | "log" | "planks" | "leaves" | "glass" | "water" | "lava" | "brick" | "obsidian" | "snow" | "ice"
   | "coalOre" | "ironOre" | "goldOre" | "gemOre" | "redOre" | "goldBlock" | "gemBlock" | "ironBlock"
   | "wool_white" | "wool_red" | "wool_blue" | "wool_yellow" | "wool_green" | "wool_black" | "wool_orange" | "wool_purple"
-  | "bookshelf" | "glow" | "tnt" | "darkPlanks" | "quartz" | "magma" | "path";
+  | "bookshelf" | "glow" | "tnt" | "darkPlanks" | "quartz" | "magma" | "path" | "sea"
+  // packed snow: the snow tile on every face (the "snow" block shows dirt on its sides), for snow layers seen
+  // edge-on, e.g. the surface strip of a cross-section
+  | "snowBlock";
 
 export const TRANSPARENT = new Set<BlockType>(["glass", "water", "leaves", "ice"]);
 export const EMISSIVE = new Set<BlockType>(["lava", "glow", "magma"]);
@@ -39,7 +42,7 @@ const TILES: Record<string, Px> = {
     const edge = x % 4 === 0 || y % 4 === 0;
     return edge ? vary([84, 84, 84], 0.1, r(1)) : vary([128 + cell * 6, 128 + cell * 6, 128 + cell * 6], 0.1, r(0));
   },
-  deepstone: speckle([78, 78, 86], [60, 60, 68], 0.3),
+  deepstone: (x, y, r) => (r(1) < 0.3 ? vary([54, 52, 60], 0.12, r(2)) : (x + y * 5) % 9 === 0 ? vary([118, 114, 120], 0.08, r(2)) : vary([88, 86, 94], 0.1, r(0))),
   bedrock: speckle([86, 86, 86], [40, 40, 40], 0.45, 0.2),
   sand: speckle([219, 207, 163], [200, 186, 140], 0.25, 0.05),
   sandstone_side: (x, y, r) => vary(y < 4 ? [226, 214, 170] : [216, 202, 156], 0.06, r(0)),
@@ -93,6 +96,9 @@ const WOOL: Record<string, [number, number, number]> = {
   wool_green: [84, 109, 27], wool_black: [20, 21, 25], wool_orange: [240, 118, 19], wool_purple: [121, 42, 172],
 };
 for (const [k, c] of Object.entries(WOOL)) TILES[k] = (x, y, r) => vary(c, 0.06 + ((x + y) % 3 === 0 ? 0.04 : 0), r(0));
+// opaque sea (added after the wool so every older tile keeps its atlas index and noise): a clean blue with short
+// light wave dashes. `water` is translucent and turns purple over emissive rock (a cut-open planet's mantle).
+TILES.sea = (x, y, r) => (y % 5 === 1 && (x + y * 3) % 8 < 3 ? vary([150, 202, 250], 0.04, r(0)) : vary([50, 110, 212], 0.06, r(0)));
 
 // block -> [top, side, bottom]
 const FACES: Record<BlockType, [string, string, string]> = {
@@ -110,13 +116,21 @@ const FACES: Record<BlockType, [string, string, string]> = {
   wool_yellow: ["wool_yellow", "wool_yellow", "wool_yellow"], wool_green: ["wool_green", "wool_green", "wool_green"], wool_black: ["wool_black", "wool_black", "wool_black"],
   wool_orange: ["wool_orange", "wool_orange", "wool_orange"], wool_purple: ["wool_purple", "wool_purple", "wool_purple"],
   bookshelf: ["planks", "bookshelf", "planks"], glow: ["glow", "glow", "glow"], tnt: ["tnt_top", "tnt_side", "tnt_top"],
-  quartz: ["quartz", "quartz", "quartz"], path: ["path", "dirt", "dirt"],
+  quartz: ["quartz", "quartz", "quartz"], path: ["path", "dirt", "dirt"], sea: ["sea", "sea", "sea"],
+  snowBlock: ["snow", "snow", "snow"],
 };
 
 // ------------------------------------------------------------------------------------------------ atlas
+// Each 16x16 tile sits in a 32x32 cell whose 8-texel gutter repeats the tile's edge texels. Under MSAA the fragment
+// shader runs at the pixel centre even when only a sample is covered, so UVs extrapolate past a face's edge: without
+// the gutter that sampled the NEIGHBOURING tile and drew thin seams of another block's colour along block edges
+// (orange lines in stone from the lava tile below it, most visible in wide shots). The tiles and their noise are
+// unchanged; only their place in the atlas moved.
 const tileNames = Object.keys(TILES);
 const COLS = 16;
 const ROWS = Math.ceil(tileNames.length / COLS);
+const PAD = 8;
+const CELL = T + 2 * PAD;
 let atlas: THREE.CanvasTexture | null = null;
 const tileIndex = new Map<string, number>();
 tileNames.forEach((n, i) => tileIndex.set(n, i));
@@ -124,20 +138,26 @@ tileNames.forEach((n, i) => tileIndex.set(n, i));
 export function getAtlas() {
   if (atlas) return atlas;
   const c = document.createElement("canvas");
-  c.width = COLS * T;
-  c.height = ROWS * T;
+  c.width = COLS * CELL;
+  c.height = ROWS * CELL;
   const g = c.getContext("2d")!;
   g.imageSmoothingEnabled = false;
   tileNames.forEach((name, i) => {
-    const ox = (i % COLS) * T;
-    const oy = Math.floor(i / COLS) * T;
+    const ox = (i % COLS) * CELL + PAD;
+    const oy = Math.floor(i / COLS) * CELL + PAD;
     const fn = TILES[name];
     for (let y = 0; y < T; y++)
       for (let x = 0; x < T; x++) {
         const seed = i * 997 + y * 31 + x;
-        g.fillStyle = fn(x, y, (k) => rand(seed, k));
-        g.clearRect(ox + x, oy + y, 1, 1);
-        g.fillRect(ox + x, oy + y, 1, 1);
+        const col = fn(x, y, (k) => rand(seed, k));
+        g.fillStyle = col;
+        // the texel itself, plus its copies in the gutter when it sits on the tile's edge (corners fill the corners)
+        const x0 = x === 0 ? -PAD : x;
+        const x1 = x === T - 1 ? T + PAD : x + 1;
+        const y0 = y === 0 ? -PAD : y;
+        const y1 = y === T - 1 ? T + PAD : y + 1;
+        g.clearRect(ox + x0, oy + y0, x1 - x0, y1 - y0);
+        g.fillRect(ox + x0, oy + y0, x1 - x0, y1 - y0);
       }
   });
   atlas = new THREE.CanvasTexture(c);
@@ -152,10 +172,10 @@ export function getAtlas() {
 export function faceUV(type: BlockType, face: 0 | 1 | 2): [number, number, number, number] {
   const name = FACES[type][face];
   const i = tileIndex.get(name) ?? 0;
-  const W = COLS * T;
-  const H = ROWS * T;
-  const x0 = (i % COLS) * T;
-  const y0 = Math.floor(i / COLS) * T;
+  const W = COLS * CELL;
+  const H = ROWS * CELL;
+  const x0 = (i % COLS) * CELL + PAD;
+  const y0 = Math.floor(i / COLS) * CELL + PAD;
   const e = 0.02;
   return [(x0 + e) / W, 1 - (y0 + T - e) / H, (x0 + T - e) / W, 1 - (y0 + e) / H];
 }
