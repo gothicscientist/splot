@@ -3,6 +3,25 @@
 Live state of the studio. `CLAUDE.md` has the stable rules; this file has what is done, what is not, and what's next.
 Update it at the end of every session.
 
+## Critic budget + real-artist likeness (session of 2026-11-16, branch `video/ug-01-fakemink`)
+Read this block first: it is the newest.
+- **Critic loops are capped** (the owner's tokens): at most 2 critic agents per video: ONE full critic (both lenses in
+  one agent, `model: "sonnet"`), one fix pass, ONE verify critic on the changed shots only, then stop and report the
+  open notes. No critic on the final render unless scenes changed; no workflows that loop until PASS. Rules: "The
+  critic budget" in `skills/reel/references/critic.md`; verify mode in `skills/reel-critic`.
+  `node scripts/stills.mjs v-<slug> --shots <slug> --only s03,s07 --out out/stills/v-<slug>/r2` renders just the
+  changed shots. The paused four-video critic loop below resumes under this budget (one full + one verify each), not
+  the old 4-round workflow.
+- **ug-rap artists are drawn as themselves** (owner decision): bio / scene episodes need a `## Look sheet` in
+  research.md (traits per era from dated public photos, two photos per trait; lint fails a real bio / scene subject
+  without one or with < 2 photo URLs), a cast entry in `src/channels/ugCast.ts` (`UG_CAST`), and a likeness check
+  before scenes; the critic flags an off-model artist as P0. Still drawn, never photoreal, no logos, never voiced,
+  never in a plug shot. Scenario and Tiff episodes keep original characters. Rules: `modes/ug-rap.md`, "Drawing the
+  real artist".
+- **ug-01-fakemink:** spec moved to `UG_CAST.fakemink` (no visual change; tsc + lint clean), look sheet written. The
+  2025-26 look (skullet, goatee, fur-collar vest over a white shirt) matches the sources. **Open:** the 2019-24
+  bedroom shots (s02-s04) reuse the later vest because no dated early-era photo was found yet.
+
 ## Story channels: Tiff x pileGo! + ug-rap (session of 2026-11-15 late, branch `studio/full-implementation`)
 Read this block first: it is the newest. Agents start at `AGENTS.md`.
 - **Built:**

@@ -20,11 +20,24 @@ Studio: `C:\Users\bhara\nomen-studio` (or `$NOMEN_STUDIO`).
 Read EVERY sheet image with the Read tool. When a cell is too small to judge a face, a hand or a word, open the
 single frame (`out/stills/v-<slug>/f<frame>.jpg`) or ask the caller for one. Never score a sheet you did not open.
 
-## Procedure
+## Budget (hard: the owner pays for every token)
+Read only: `critic.md`, the style bible, `script.json`, the sheets, and for a `ug-rap` bio / scene the
+`## Look sheet` section of `videos/<slug>/research.md`. No other research files, niche bibles or source code. Open at
+most 6 single frames. One pass, one report: do not re-read sheets you already scored. The caller spawns at most two
+critics per video (full, then verify); see "The critic budget" in critic.md.
+
+## Two modes (the caller says which)
+- **full** (round 1): the whole procedure below, both lenses in this one pass: first the outlier bar (would this hold
+  up next to the niche's top videos?), then the phone viewer + glitch hunter (what a viewer at phone size notices:
+  clipping, faces under captions, typos, pops, dead stretches).
+- **verify** (round 2): you get the round-1 report and a sheet of the changed shots only. For each round-1 note write
+  `FIXED` or `NOT FIXED` with the frame you checked; list any NEW P0 you see in these frames; re-score only the
+  areas the notes touched and carry the other scores over unchanged. Do not start a new full review.
+
+## Procedure (full mode)
 1. Read `skills/reel/references/critic.md` (the rubric, ban list, traps, output format) and the style's look rules
    `skills/reel/references/styles/<style>-bible.md` (`style` is in script.json). For a `tiff` or `ug-rap` episode
-   (`mode` in script.json) also read `skills/reel/references/brands/pilego.md` and the "Cringe, poser tells and hard
-   avoids" section of every file in `skills/reel/references/niche/`, and apply the story-mode checks in critic.md.
+   (`mode` in script.json) apply the story-mode checks in critic.md (pileGo! rules are summarised there).
 2. Stranger test: for each cell, name every object. Write down anything unreadable.
 3. Pictures-only test: ignore the captions; does each cell show its beat's line?
 4. Walk the ban list and the traps list.
@@ -40,4 +53,5 @@ single frame (`out/stills/v-<slug>/f<frame>.jpg`) or ask the caller for one. Nev
 - Do not propose code. Describe the picture you want ("move the dealer left so his face clears the caption band").
 
 ## Output
-Only the block in the format from `critic.md`, then one line: `Checked: <n> sheets, <m> single frames`.
+Only the block in the format from `critic.md` (verify mode: the FIXED / NOT FIXED list, new P0s, then SCORES and
+VERDICT), then one line: `Checked: <n> sheets, <m> single frames`.

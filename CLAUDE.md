@@ -23,12 +23,14 @@ the team's hackathon repo Nomen and a free, higher-quality equivalent of MotionL
   any mode: interview, versus/rating, series.
 - Two story channels (modes of the same skill, same gates): **`tiff`** (the Tiff x pileGo! series: a broad premise
   fleshed into a story on the archive-fashion / underground-rap scene's real jokes; `/tiff`) and **`ug-rap`** (the
-  underground-rap channel: bios, scene stories, scenarios with original stand-ins; `/ug-rap`). Every episode ties into
+  underground-rap channel: bios and scene stories with the real artist drawn accurately from a sourced look sheet,
+  scenarios with original characters; `/ug-rap`). Every episode ties into
   the owner's app pileGo! (`skills/reel/references/brands/pilego.md`) after ~70 % of the runtime; the owner has
   permission for pileGo!'s automatic relisting, so scripts never hedge it. Tiff's look is the owner-approved
   `src/styles/stickworld/tiff.ts` (silver-lavender hair, black tank, jean shorts, black boots).
 - Facts always sourced in `videos/<slug>/research.md`. Legal fences: no Mojang/Microsoft assets and no "Minecraft"
-  in titles/tags; lore mode uses original stand-in characters; no real person's likeness; never copy Kurzgesagt's
+  in titles/tags; lore mode uses original stand-in characters; no real person's likeness except ug-rap bio / scene artists (owner
+  decision 2026-11-16: drawn, never photoreal, never in a plug shot); never copy Kurzgesagt's
   characters, logo or music.
 
 ## Layout
@@ -127,7 +129,9 @@ Captions show the script text, never ASR output, so they cannot contain transcri
     text (papers, signs, stickers, cards) is drawn once and cached, so a texture drawn before its Google font loaded
     kept the fallback face for the whole render tab: stills and the final MP4 showed different typefaces.
 12. **Fresh critics gate every video** (`skills/reel-critic`): stills are scored by agents that did not build the
-    video, two lenses (outlier bar; phone viewer + glitch hunter); PASS = every area >= 8 and no P0, for both.
+    video, both lenses (outlier bar; phone viewer + glitch hunter) in ONE agent; PASS = every area >= 8 and no P0.
+    Budget: at most 2 critic agents per video (full, then verify on the changed shots), then stop and report open
+    notes. Open-ended critic loops (4 rounds x 2 agents, workflows until PASS) burned the owner's tokens.
 13. **Story channels are modes, not a second engine** (`tiff`, `ug-rap`): same pipeline and gates, plus story-mode
     rules that `lint-script.mjs` enforces (plug after ~68 % of the words, <= 2 spoken "pileGo!", every speaker has a
     cast voice, a real subject needs >= 6 sourced rows and is never named in a plug beat) and critic P0 checks (Tiff

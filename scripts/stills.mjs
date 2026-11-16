@@ -5,7 +5,8 @@
 //                           [--props '{"variant":1}'] [--scale 0.5] [--sheet 4]
 //
 // --shots <slug> picks, for every shot of that video: its first frame, its middle and 2 frames after each
-// starred keyword; that is the frame set the critic reviews.
+// starred keyword; that is the frame set the critic reviews. --only s03,s07 keeps just those shots (a critic verify
+// round looks at the changed shots only; pair it with --out out/stills/<id>/r2 so the full sheet is kept).
 import fs from "node:fs";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
@@ -22,7 +23,7 @@ const opt = (k, d) => {
   return i >= 0 ? args[i + 1] : d;
 };
 if (!id) {
-  console.error("usage: node scripts/stills.mjs <compositionId> [--frames a,b,c] [--every N] [--shots slug] [--out dir] [--props json] [--scale 0.5]");
+  console.error("usage: node scripts/stills.mjs <compositionId> [--frames a,b,c] [--every N] [--shots slug [--only s01,s04]] [--out dir] [--props json] [--scale 0.5]");
   process.exit(1);
 }
 const outDir = path.resolve(STUDIO, opt("--out", path.join("out", "stills", id)));
@@ -51,7 +52,9 @@ if (opt("--frames")) frames = opt("--frames").split(",").map(Number);
 else if (opt("--every")) for (let f = 0; f < comp.durationInFrames; f += Number(opt("--every"))) frames.push(f);
 else if (opt("--shots")) {
   const tl = JSON.parse(fs.readFileSync(path.join(STUDIO, "src", "videos", opt("--shots"), "timeline.json"), "utf8"));
+  const only = opt("--only") ? new Set(opt("--only").split(",")) : null;
   for (const s of tl.shots) {
+    if (only && !only.has(s.id)) continue;
     frames.push(s.s + 2, Math.round((s.s + s.e) / 2));
     for (const w of tl.words) if (w.emph && s.beats.includes(w.beat)) frames.push(w.s + 2);
   }

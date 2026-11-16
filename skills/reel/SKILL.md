@@ -30,7 +30,7 @@ underground-rap scenario is the `ug-rap` mode (the `/ug-rap` skill). Both: Stick
 | `map` | geography & borders, "why is X shaped like this" | Atlas |
 | `problem-solution` | app marketing: teach the user's problem, the app shows up late as THE solution | StickWorld, Glowvector |
 | `tiff` | the Tiff x pileGo! series: a broad premise fleshed into a story on the archive / underground-rap scene's real jokes; every episode ties into pileGo! | StickWorld (Tiff) |
-| `ug-rap` | the second channel: underground-rapper biographies, scenarios and scene stories (sourced, no likeness), with pileGo! tie-ins | StickWorld |
+| `ug-rap` | the second channel: underground-rapper biographies, scenarios and scene stories (sourced; the artist drawn from a look sheet), with pileGo! tie-ins | StickWorld |
 
 Switches usable in any mode: `interview` (two voices), `versus/rating`, `series` (Part 1/2, end on a comment vote).
 Read the chosen mode file AND the chosen style file before writing anything:
@@ -114,8 +114,12 @@ The style file is the kit reference. Universal rules:
 ```bash
 node scripts/stills.mjs v-<slug> --shots <slug> --scale 0.5 --sheet 6
 ```
-Read the sheet yourself, then send the sheet to a FRESH subagent with the `reel-critic` skill (it did not build the video;
-self-scores run ~2 points high). Fix every numbered item, re-render stills, repeat until every area >= 8.
+Read the sheet yourself, then send it to ONE fresh subagent (`model: "sonnet"`) with the `reel-critic` skill in full
+mode, both lenses in that one agent (it did not build the video; self-scores run ~2 points high). Fix every P0 and
+the P1s in areas under 8 in one pass, re-render only the changed shots (`--only <shot ids> --out .../r2`), and send
+that sheet to ONE new critic in verify mode. **That is the whole loop: 2 critic agents per video, never more** unless
+the owner asks. Still FAIL after verify: fix the remaining P0s, check them yourself, continue, and report the open
+notes plainly at delivery. The caps and rules are "The critic budget" in `references/critic.md`.
 
 ## 9. Sound (gate: -14 LUFS, <= -1.5 dBTP, no masked words)
 ```bash
@@ -141,10 +145,12 @@ Story modes: run the posting compliance checklist in `references/niche/story-for
 every pileGo! episode, AI-voice label, the brand connection obvious in bio and caption).
 
 ## Hard rules
-- Facts: sourced, conservative, never invented numbers. No real person's likeness, no copyrighted characters
+- Facts: sourced, conservative, never invented numbers. No real person's likeness (one exception: ug-rap bio / scene
+  artists, drawn from a sourced look sheet, `modes/ug-rap.md`), no copyrighted characters
   (lore mode uses original stand-ins), no Mojang assets or the word "Minecraft" in titles/tags (say "blocky", "voxel").
 - Real people in story modes (artists in ug-rap bios, names dropped in Tiff jokes): verified facts only, no rumours,
-  allegations, private life or invented quotes, no likeness, and never shown or implied using or endorsing pileGo!.
+  allegations, private life or invented quotes, no likeness outside a ug-rap look sheet, and never shown or implied
+  using or endorsing pileGo!.
 - Originality: vary ideas, scripts and visuals per upload (platform "inauthentic/mass-produced" rules).
 - Quality numbers live in `references/quality-bar.md`; the ban list in `references/critic.md`. Read both once per session.
 - Remotion is free for individuals and companies of up to 3 people; larger teams need a Remotion license.
