@@ -1,6 +1,6 @@
 ---
 name: reel
-description: Make a finished, viral-quality animated vertical short (TikTok / Reels / Shorts, 1080x1920) from a one-line topic, entirely in code with Nomen Studio (Remotion + three.js), with researched facts, a scored hook, a word-synced voice-over, word-by-word captions, a scored soundtrack and automated QA. Use whenever the user asks for an animated / faceless / explainer / story video, a "Claude-animated video", a reel or short about a topic, an app-marketing video, or names a style (StickWorld stick figures in a 3D toon world, Blockcraft Minecraft-style voxel, Glowvector Kurzgesagt-style flat vector, Atlas map & data) or a mode (case file / true story / heist, what if, how it works / how it's made, history, back then, lore / anime / game plot, map explained, problem-solution app promo).
+description: Make a finished, viral-quality animated vertical short (TikTok / Reels / Shorts, 1080x1920) from a one-line topic, entirely in code with Nomen Studio (Remotion + three.js), with researched facts, a scored hook, a word-synced voice-over, word-by-word captions, a scored soundtrack and automated QA. Use whenever the user asks for an animated / faceless / explainer / story video, a "Claude-animated video", a reel or short about a topic, an app-marketing video, or names a style (StickWorld stick figures in a 3D toon world, Blockcraft Minecraft-style voxel, Glowvector Kurzgesagt-style flat vector, Atlas map & data) or a mode (case file / true story / heist, what if, how it works / how it's made, history, back then, lore / anime / game plot, map explained, problem-solution app promo, a Tiff x pileGo! story episode from a broad premise, an underground-rapper story / scenario / biography for the ug-rap channel).
 ---
 
 # /reel: one line in, a finished animated short out
@@ -15,7 +15,9 @@ never "eyeball" a number the scripts measure, and never show the user a render t
 Parse: topic, **mode**, **style**, platform, length, language, brand/app (for problem-solution), voice preference.
 If the user gave only a topic, pick mode + style yourself from the tables below and say which you picked in one line.
 Defaults: 45-62 s (61+ s if they monetise on TikTok), all three platforms, English, StickWorld for stories, Glowvector
-for how-it-works, Atlas for maps/history-of-places, Blockcraft for game/what-if/kids topics.
+for how-it-works, Atlas for maps/history-of-places, Blockcraft for game/what-if/kids topics. A premise about Tiff,
+pileGo!, archive / ballhog fashion or reselling is the `tiff` mode (the `/tiff` skill); a rapper's story, rise or an
+underground-rap scenario is the `ug-rap` mode (the `/ug-rap` skill). Both: StickWorld, 40-60 s.
 
 | Mode (references/modes/) | Use for | Best styles |
 |---|---|---|
@@ -27,10 +29,14 @@ for how-it-works, Atlas for maps/history-of-places, Blockcraft for game/what-if/
 | `lore` | anime / game / film plot & lore (original stand-in characters only) | StickWorld, Blockcraft |
 | `map` | geography & borders, "why is X shaped like this" | Atlas |
 | `problem-solution` | app marketing: teach the user's problem, the app shows up late as THE solution | StickWorld, Glowvector |
+| `tiff` | the Tiff x pileGo! series: a broad premise fleshed into a story on the archive / underground-rap scene's real jokes; every episode ties into pileGo! | StickWorld (Tiff) |
+| `ug-rap` | the second channel: underground-rapper biographies, scenarios and scene stories (sourced, no likeness), with pileGo! tie-ins | StickWorld |
 
 Switches usable in any mode: `interview` (two voices), `versus/rating`, `series` (Part 1/2, end on a comment vote).
 Read the chosen mode file AND the chosen style file before writing anything:
-`references/modes/<mode>.md`, `references/styles/<style>.md`.
+`references/modes/<mode>.md`, `references/styles/<style>.md`. Story modes (`tiff`, `ug-rap`) also read
+`references/brands/pilego.md` and the four niche bibles `references/niche/*.md` (scene facts, slang, formats, the
+cringe list, posting compliance).
 
 ## 1. Workspace
 ```bash
@@ -62,14 +68,26 @@ Per beat write `visual` (what is on screen, literally illustrating the line), an
 Pronunciations for names go in `pronounce`. Never describe on screen what the viewer already sees.
 
 ## 5. Voice (gate: --verify passes)
+Best: **one full ElevenLabs narration take** (a single performance has natural flow between sentences).
+```bash
+PYTHONIOENCODING=utf-8 .venv/Scripts/python.exe scripts/voice.py <slug> --take-text   # prints the text, one beat per line
+```
+Generate that text in ONE take with an ElevenLabs connector if one is attached (house voice "Liam - Viral Short-Form
+Storyteller", id `VCgLBmBjldJmfphyB8sZ`, model `eleven_v4`; a per-beat `takeText` overrides the spoken form, e.g.
+numbers written out), save it as `videos/<slug>/voice/take.mp3`, set `"voice": {"provider": "take", ...}` in
+script.json, then:
 ```bash
 PYTHONIOENCODING=utf-8 .venv/Scripts/python.exe scripts/voice.py <slug> --verify
 ```
-Provider auto: ElevenLabs if `ELEVENLABS_API_KEY` (best), else free neural TTS (Microsoft Edge voices, retried).
-Default voice `en-US-AndrewMultilingualNeural` (warm, confident). Alternatives: Brian (casual), Ava/Emma (female),
-set `voice.voice` in script.json. Timings come from forced alignment of the exact script words (WhisperX), so captions
-can never contain transcription errors. If the ASR check shows a garbled word: fix `pronounce` or reword, re-run with
-`--force` for that beat. Never ship WER > 6 % unexplained (respelled names are wildcards).
+voice.py force-aligns the whole take against the exact script words, cuts it per beat at the quietest point, then
+re-spaces, tempo-fits and ASR-checks it like any other voice. It stops if the take does not say the script (re-record).
+Without a take: provider auto picks the ElevenLabs API if `ELEVENLABS_API_KEY` is set, else free neural TTS (Microsoft
+Edge, `en-US-AndrewMultilingualNeural`; alternatives Brian, Ava, Emma via `voice.voice`; retried on outages).
+Dialogue (story modes): a beat with `"speaker"` is voiced from `voice.cast.<speaker>` (its own voice / rate / pitch);
+Tiff's channel narrates in `en-US-AvaMultilingualNeural`, the ug-rap channel in `en-US-BrianMultilingualNeural`.
+Timings always come from forced alignment of the exact script words (WhisperX), so captions can never contain
+transcription errors. If the ASR check shows a garbled word: fix `pronounce` or reword (re-record the take, or re-run
+with `--force` for that beat). Never ship WER > 6 % unexplained (respelled names are wildcards).
 
 ## 6. Timeline
 ```bash
@@ -101,7 +119,7 @@ self-scores run ~2 points high). Fix every numbered item, re-render stills, repe
 
 ## 9. Sound (gate: -14 LUFS, <= -1.5 dBTP, no masked words)
 ```bash
-PYTHONIOENCODING=utf-8 .venv/Scripts/python.exe scripts/sound.py <slug> [--mood heist|mystery|wonder|workshop|epic|comedy|drama|uplift|calm]
+PYTHONIOENCODING=utf-8 .venv/Scripts/python.exe scripts/sound.py <slug> [--mood heist|mystery|wonder|workshop|epic|comedy|drama|uplift|calm|plugg|rage|jerk]
 ```
 One sound identity per video (key/tempo/instrument by mood), music ~20-24 dB under the voice and ducked further on
 words, SFX bus ducked under speech, transitions get air moves, keyword boxes get stings. The script auto-fixes masking
@@ -115,13 +133,18 @@ node scripts/check.mjs <slug>                      # format, loudness, black/whi
 Fails are never shipped. Read `videos/<slug>/qa/report.md` and the 1-fps sheets `qa/sheet_*.jpg` (view them).
 
 ## 11. Deliver
-Send the main MP4 (SendUserFile) + mention the hook variants. Write `videos/<slug>/post.md`: the post caption
-(hook restated + 1 line of value + soft CTA), <= 5 hashtags, the A/B plan from `references/posting.md`
+Send the main MP4 (SendUserFile where the host has it, otherwise give the path) + mention the hook variants.
+Write `videos/<slug>/post.md`: the post caption (hook restated + 1 line of value + soft CTA), <= 5 hashtags, the A/B
+plan from `references/posting.md`
 (IG Trial Reels for hooks, 48-72 h read, kill > 30 % 3-s drop), and the sources. Label AI-generated where required.
+Story modes: run the posting compliance checklist in `references/niche/story-formats.md` (own-brand disclosure on
+every pileGo! episode, AI-voice label, the brand connection obvious in bio and caption).
 
 ## Hard rules
 - Facts: sourced, conservative, never invented numbers. No real person's likeness, no copyrighted characters
   (lore mode uses original stand-ins), no Mojang assets or the word "Minecraft" in titles/tags (say "blocky", "voxel").
+- Real people in story modes (artists in ug-rap bios, names dropped in Tiff jokes): verified facts only, no rumours,
+  allegations, private life or invented quotes, no likeness, and never shown or implied using or endorsing pileGo!.
 - Originality: vary ideas, scripts and visuals per upload (platform "inauthentic/mass-produced" rules).
 - Quality numbers live in `references/quality-bar.md`; the ban list in `references/critic.md`. Read both once per session.
 - Remotion is free for individuals and companies of up to 3 people; larger teams need a Remotion license.

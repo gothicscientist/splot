@@ -222,7 +222,7 @@
    "pan": 0.0
   },
   {
-   "t": 2.8373,
+   "t": 0.8743,
    "sound": "stamp",
    "gain_db": -19.0,
    "pan": 0.0
@@ -250,16 +250,25 @@
    "pan": 0.0
   },
   {
-   "t": 13.5498,
-   "sound": "pen_scribble",
-   "gain_db": -26.0,
+   "t": 13.1878,
+   "sound": "whoosh",
+   "gain_db": -22.0,
+   "pan": 0.0
+  },
+  {
+   "t": 13.5898,
+   "sound": "stamp",
+   "gain_db": -19.0,
    "pan": 0.0
   },
   {
    "t": 14.5938,
-   "sound": "stamp",
-   "gain_db": -19.0,
-   "pan": 0.0
+   "sound": "pop",
+   "gain_db": -22.0,
+   "pan": 0.0,
+   "args": {
+    "pitch": 1.2
+   }
   },
   {
    "t": 19.933,
@@ -296,7 +305,7 @@
   },
   {
    "t": 37.1845,
-   "sound": "stamp",
+   "sound": "sparkle",
    "gain_db": -19.0,
    "pan": 0.0
   },
@@ -332,9 +341,9 @@
    "pan": 0.0
   },
   {
-   "t": 55.2117,
-   "sound": "impact",
-   "gain_db": -14.0,
+   "t": 54.9697,
+   "sound": "stamp",
+   "gain_db": -19.0,
    "pan": 0.0
   },
   {

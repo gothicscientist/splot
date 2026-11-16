@@ -3,7 +3,7 @@
 // constant-width lines at any zoom (vector-effect), focus countries saturated over dimmed context.
 import React, { useId, useMemo } from "react";
 import { AbsoluteFill, Easing, interpolate, spring, useVideoConfig } from "remotion";
-import { geoPath, geoMercator, geoNaturalEarth1, geoEquirectangular, geoOrthographic, geoAzimuthalEquidistant, geoInterpolate, geoBounds, GeoProjection } from "d3-geo";
+import { geoPath, geoMercator, geoNaturalEarth1, geoEquirectangular, geoOrthographic, geoAzimuthalEquidistant, geoInterpolate, geoBounds, geoArea, geoCentroid, GeoProjection } from "d3-geo";
 import { interpolateZoom } from "d3-interpolate";
 import { feature, mesh } from "topojson-client";
 import type { Topology } from "topojson-specification";
@@ -39,7 +39,40 @@ export function country(nameOrId: string, res: "50m" | "110m" = "50m") {
   return c;
 }
 
-export type MapKey = { f: number; lon: number; lat: number; zoom: number };
+/** Which polygons of a country to keep: those whose centroid is inside `bbox` [lonMin, latMin, lonMax, latMax]
+ *  (drops far islands: Svalbard, the Canaries, Juan Fernandez...), only the `largest` one (the mainland), and/or
+ *  those of at least `minKm2` (drops dust islands that read as specks at country scale). */
+export type Trim = { bbox?: [number, number, number, number]; largest?: boolean; minKm2?: number };
+const partCache = new Map<string, Feat>();
+/** A country with only some of its polygons (see Trim). Memoised; without a trim it is `country()`. */
+export function countryPart(nameOrId: string, trim?: Trim, res: "50m" | "110m" = "50m"): Feat {
+  const c = country(nameOrId, res);
+  if (!trim) return c;
+  const key = `${res}:${c.id}:${c.properties.name}:${JSON.stringify(trim)}`;
+  const hit = partCache.get(key);
+  if (hit) return hit;
+  const g = c.geometry;
+  const polys: any[] = g.type === "MultiPolygon" ? g.coordinates : g.type === "Polygon" ? [g.coordinates] : [];
+  let rows = polys.map((p) => {
+    const pg = { type: "Polygon", coordinates: p } as any;
+    return { p, a: geoArea(pg) * 6371 * 6371, ct: geoCentroid(pg) };
+  });
+  if (trim.largest && rows.length) rows = [rows.reduce((m, r) => (r.a > m.a ? r : m), rows[0])];
+  if (trim.bbox) {
+    const [x0, y0, x1, y1] = trim.bbox;
+    rows = rows.filter((r) => r.ct[0] >= x0 && r.ct[0] <= x1 && r.ct[1] >= y0 && r.ct[1] <= y1);
+  }
+  if (trim.minKm2) rows = rows.filter((r) => r.a >= (trim.minKm2 as number));
+  const out: Feat = { ...c, geometry: { type: "MultiPolygon", coordinates: rows.map((r) => r.p) } };
+  partCache.set(key, out);
+  return out;
+}
+
+/** A camera key: (lon, lat) is framed at `zoom`; it lands on the MapView anchor, or on the screen point `at`.
+ *  `ease` shapes the move INTO this key (default ease-in-out cubic): pass a linear one for a hold that keeps creeping
+ *  at a constant rate (every ease-in-out key is a momentary stop), or an ease-out for a fast burst. */
+export type MapKey = { f: number; lon: number; lat: number; zoom: number; at?: [number, number]; ease?: (t: number) => number };
+const EASE_KEY = Easing.inOut(Easing.cubic);
 export type ProjName = "mercator" | "naturalEarth" | "equirect" | "globe" | "local";
 const W = 1080;
 const H = 1920;
@@ -65,6 +98,9 @@ const boundsOf = (c: Feat, res: string) => {
   return b;
 };
 
+/** The projection MapView builds for `proj` (+ `center` for "local"), e.g. to place screen-space overlays with viewAt. */
+export const makeProjection = (name: ProjName, center: [number, number] = [0, 0]) => makeProj(name, center);
+
 function makeProj(name: ProjName, rotate: [number, number] = [0, 0]): GeoProjection {
   // "local": azimuthal equidistant centred on `rotate` = true distances from the centre, under 2 % distortion
   // within ~2,000 km. Use it for one country or region so its shape and proportions are honest.
@@ -74,17 +110,21 @@ function makeProj(name: ProjName, rotate: [number, number] = [0, 0]): GeoProject
   return p.scale(name === "mercator" ? 172 : 190).translate([W / 2, H / 2]);
 }
 
-/** View at frame f from keys: van Wijk-Nuij smooth zoom between keys (ease-in-out on t). Returns centre + zoom. */
-export function viewAt(keys: MapKey[], f: number, proj: GeoProjection) {
+/** View at frame f from keys: van Wijk-Nuij smooth zoom between keys (ease-in-out on t). Returns centre + zoom.
+ *  `anchor` is the screen point the view centre lands on (needed only for keys that carry their own `at`). */
+export function viewAt(keys: MapKey[], f: number, proj: GeoProjection, anchor: [number, number] = [W / 2, H / 2]) {
   const ks = [...keys].sort((a, b) => a.f - b.f);
   const toView = (k: MapKey) => {
     const [x, y] = proj([k.lon, k.lat]) as [number, number];
-    return [x, y, W / k.zoom] as [number, number, number];
+    // shift the projected centre so that (lon, lat) lands on k.at instead of the anchor
+    const dx = k.at ? (anchor[0] - k.at[0]) / k.zoom : 0;
+    const dy = k.at ? (anchor[1] - k.at[1]) / k.zoom : 0;
+    return [x + dx, y + dy, W / k.zoom] as [number, number, number];
   };
   if (f <= ks[0].f) return { v: toView(ks[0]), key: ks[0] };
   for (let i = 0; i + 1 < ks.length; i++) {
     if (f <= ks[i + 1].f) {
-      const t = Easing.inOut(Easing.cubic)(invLerp(ks[i].f, ks[i + 1].f, f));
+      const t = (ks[i + 1].ease ?? EASE_KEY)(invLerp(ks[i].f, ks[i + 1].f, f));
       return { v: interpolateZoom(toView(ks[i]), toView(ks[i + 1]))(t) as [number, number, number], key: ks[i + 1] };
     }
   }
@@ -112,13 +152,18 @@ export type MapProps = {
   background?: string;
   /** layer drawn UNDER the land in map space (ocean texture, graticule) */
   under?: (helpers: MapHelpers) => React.ReactNode;
+  /** per-country polygon filter by country name, e.g. { Norway: { bbox: [4, 57, 32, 72] } } (pass a stable object) */
+  trim?: Record<string, Trim>;
+  /** drop every polygon smaller than this many km² in countries without their own `trim` (dust islands that read as
+   *  dead pixels at the shot's zoom); default keeps everything */
+  minArea?: number;
   children?: (helpers: MapHelpers) => React.ReactNode;
 };
 export type MapHelpers = { p: (lon: number, lat: number) => [number, number]; k: number; f: number; proj: GeoProjection; path: (g: any) => string };
 
 /** The map. Overlays are drawn by `children(helpers)` in map space (use helpers.p(lon, lat) for positions; divide
  *  screen sizes by helpers.k so they stay constant on screen). */
-export const MapView: React.FC<MapProps> = ({ keys, proj = "mercator", palette = "dark", res = "50m", focus = [], dimOthers = true, center, clip, anchor = [W / 2, H / 2], background, under, children }) => {
+export const MapView: React.FC<MapProps> = ({ keys, proj = "mercator", palette = "dark", res = "50m", focus = [], dimOthers = true, center, clip, anchor = [W / 2, H / 2], background, under, trim, minArea, children }) => {
   const f = useLocalFrame();
   const uid = useId().replace(/:/g, "");
   const P = ATLAS[palette];
@@ -132,7 +177,7 @@ export const MapView: React.FC<MapProps> = ({ keys, proj = "mercator", palette =
     while (i + 1 < ks.length && f > ks[i + 1].f) i++;
     const a = ks[i];
     const b = ks[Math.min(i + 1, ks.length - 1)];
-    const t = Easing.inOut(Easing.cubic)(invLerp(a.f, b.f, f));
+    const t = (b.ease ?? EASE_KEY)(invLerp(a.f, b.f, f));
     const c = geoInterpolate([a.lon, a.lat], [b.lon, b.lat])(t);
     rot = [c[0], c[1]];
     // zoom in log space between the keys, then a slow push so a hold never freezes
@@ -154,9 +199,20 @@ export const MapView: React.FC<MapProps> = ({ keys, proj = "mercator", palette =
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [d, resName, clip?.[0], clip?.[1], clip?.[2], clip?.[3]],
   );
-  const paths = useMemo(() => shown.map((c) => ({ id: c.id, name: c.properties.name, d: path(c as any) ?? "" })).filter((c) => c.d), [shown, path]);
+  const trimKey = trim ? JSON.stringify(trim) : "";
+  const paths = useMemo(() => {
+    const trims = new Map<string, Trim>();
+    if (trim) for (const [name, t] of Object.entries(trim)) trims.set(country(name, resName).properties.name, t);
+    return shown
+      .map((c) => {
+        const t = trims.get(c.properties.name) ?? (minArea ? { minKm2: minArea } : undefined);
+        return { id: c.id, name: c.properties.name, d: path((t ? countryPart(c.properties.name, t, resName) : c) as any) ?? "" };
+      })
+      .filter((c) => c.d);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shown, path, trimKey, resName, minArea]);
   const borders = useMemo(() => (clip ? "" : path(d.borders) ?? ""), [d, path, clip]);
-  const { v } = isGlobe ? { v: [W / 2, H / 2, W] as [number, number, number] } : viewAt(keys, f, projection);
+  const { v } = isGlobe ? { v: [W / 2, H / 2, W] as [number, number, number] } : viewAt(keys, f, projection, anchor);
   const k = isGlobe ? globeZoom : W / v[2];
   const tx = anchor[0] - v[0] * k;
   const ty = anchor[1] - v[1] * k;
@@ -220,18 +276,27 @@ export const MapView: React.FC<MapProps> = ({ keys, proj = "mercator", palette =
 // ------------------------------------------------------------------------------------------------ overlays (map space)
 const springAt = (f: number, at: number, fps: number) => (f < at ? 0 : spring({ frame: f - at, fps, config: { mass: 1, stiffness: 180, damping: 13 } }));
 
-/** Place label with a halo (Oswald caps). Size in SCREEN px. */
-export const Label: React.FC<{ h: MapHelpers; at: number; lon: number; lat: number; text: string; size?: number; color?: string; out?: number; dy?: number }> = ({ h, at, lon, lat, text, size = 40, color = "#F1F5F9", out, dy = 0 }) => {
+/** Place label with a halo (Oswald caps). Size in SCREEN px. Default entrance: a spring from 0 (~18 % overshoot).
+ *  `pop` (frames) swaps it for the bible's quick label pop (scale .86 -> 1 plus opacity, no overshoot), so the label
+ *  is fully readable `pop` frames after `at`. `halo` recolours the outline; `lines` stacks the text (line gap 1.08 em). */
+export const Label: React.FC<{ h: MapHelpers; at: number; lon: number; lat: number; text: string; size?: number; color?: string; out?: number; dy?: number; halo?: string; pop?: number; lines?: string[] }> = ({ h, at, lon, lat, text, size = 40, color = "#F1F5F9", out, dy = 0, halo = "#0B1220", pop, lines }) => {
   const { fps } = useVideoConfig();
-  const s = springAt(h.f, at, fps);
+  const s = pop ? (h.f < at ? 0 : 0.86 + 0.14 * Easing.out(Easing.cubic)(invLerp(at, at + pop, h.f))) : springAt(h.f, at, fps);
   if (s <= 0 || (out !== undefined && h.f > out + 6)) return null;
   const o = out !== undefined && h.f > out ? 1 - (h.f - out) / 6 : 1;
+  const alpha = pop ? invLerp(at - 1, at + pop * 0.6, h.f) * o : clamp(s * o);
   const [x, y] = h.p(lon, lat);
   const k = h.k;
+  const rows = lines ?? [text];
+  const y0 = size * 0.35 - ((rows.length - 1) * size * 1.08) / 2;
   return (
-    <g transform={`translate(${x} ${y + dy / k}) scale(${(s * o) / k})`} opacity={clamp(s * o)}>
-      <text textAnchor="middle" y={size * 0.35} fontFamily={font("Oswald")} fontWeight={700} fontSize={size} letterSpacing={size * 0.06} fill={color} stroke="#0B1220" strokeWidth={size * 0.16} paintOrder="stroke" strokeLinejoin="round">
-        {text.toUpperCase()}
+    <g transform={`translate(${x} ${y + dy / k}) scale(${(s * (pop ? 1 : o)) / k})`} opacity={alpha}>
+      <text textAnchor="middle" fontFamily={font("Oswald")} fontWeight={700} fontSize={size} letterSpacing={size * 0.06} fill={color} stroke={halo} strokeWidth={size * 0.16} paintOrder="stroke" strokeLinejoin="round">
+        {rows.map((r, i) => (
+          <tspan key={i} x={0} y={y0 + i * size * 1.08}>
+            {r.toUpperCase()}
+          </tspan>
+        ))}
       </text>
     </g>
   );
@@ -310,11 +375,14 @@ export const Measure: React.FC<{ h: MapHelpers; at: number; from: [number, numbe
 };
 
 /** Draw any GeoJSON feature shifted by (dLon, dLat): honest N-S length comparisons in an equirectangular map. */
-export const Ghost: React.FC<{ h: MapHelpers; name: string; dLon: number; dLat: number; at: number; color?: string; res?: "50m" | "110m"; travel?: number }> = ({ h, name, dLon, dLat, at, color = ATLAS.focus.red, res = "50m", travel = 30 }) => {
+export const Ghost: React.FC<{ h: MapHelpers; name: string; dLon: number; dLat: number; at: number; color?: string; res?: "50m" | "110m"; travel?: number; trim?: Trim; from?: [number, number]; ease?: (t: number) => number }> = ({ h, name, dLon, dLat, at, color = ATLAS.focus.red, res = "50m", travel = 30, trim, from = [0, 0], ease = EASE_KEY }) => {
+  // `from`: the shift (dLon, dLat) it starts at (default its real place), e.g. just below the frame so the slide reads at once
   if (h.f < at) return null;
-  const t = Easing.inOut(Easing.cubic)(clamp((h.f - at) / travel));
-  const c = country(name, res);
-  const shift = (coords: any): any => (typeof coords[0] === "number" ? [coords[0] + dLon * t, coords[1] + dLat * t] : coords.map(shift));
+  const t = ease(clamp((h.f - at) / travel));
+  const c = countryPart(name, trim, res);
+  const sx = from[0] + (dLon - from[0]) * t;
+  const sy = from[1] + (dLat - from[1]) * t;
+  const shift = (coords: any): any => (typeof coords[0] === "number" ? [coords[0] + sx, coords[1] + sy] : coords.map(shift));
   const g = { ...c, geometry: { ...c.geometry, coordinates: shift(c.geometry.coordinates) } };
   return <path d={h.path(g)} fill={color} fillOpacity={0.85} stroke="#FFFFFF" strokeWidth={3} vectorEffect="non-scaling-stroke" />;
 };

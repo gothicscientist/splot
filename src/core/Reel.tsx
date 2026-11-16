@@ -8,6 +8,7 @@ import React from "react";
 import { AbsoluteFill, Audio, Sequence, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { ShotProvider, TimelineProvider } from "./timeline";
 import { Captions } from "./captions";
+import { useAllFontsReady } from "./fonts";
 import { clamp, easeInOut, easeOut, invLerp, smootherstep } from "./anim";
 import type { CaptionStyle, Timeline, TransitionKind, TShot } from "./types";
 
@@ -174,6 +175,9 @@ export const Reel: React.FC<{
   const missing = timeline.shots.filter((s) => !scenes[s.id]).map((s) => s.id);
   if (missing.length) throw new Error(`<Reel>: no scene component for shot(s) ${missing.join(", ")}`);
   const audio = timeline.audio.hasMix ? timeline.audio.mix : timeline.audio.voice;
+  // no scene mounts before every font is drawable: canvas text would bake in a fallback font for good
+  const fontsOk = useAllFontsReady();
+  if (!fontsOk) return <AbsoluteFill style={{ background }} />;
   return (
     <TimelineProvider value={timeline}>
       <AbsoluteFill style={{ background }}>

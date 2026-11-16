@@ -9,6 +9,8 @@ import { Video as V_eiffel_tower_con } from "./eiffel-tower-con/index";
 import V_eiffel_tower_con_T from "./eiffel-tower-con/timeline.json";
 import { Video as V_noise_cancelling } from "./noise-cancelling/index";
 import V_noise_cancelling_T from "./noise-cancelling/timeline.json";
+import { Video as V_tiff_01_the_quiz } from "./tiff-01-the-quiz/index";
+import V_tiff_01_the_quiz_T from "./tiff-01-the-quiz/timeline.json";
 import { Video as V_tiff_chair_pile } from "./tiff-chair-pile/index";
 import V_tiff_chair_pile_T from "./tiff-chair-pile/timeline.json";
 import { Video as V_tiff_date_jacket } from "./tiff-date-jacket/index";
@@ -34,6 +36,7 @@ export const VIDEOS: VideoEntry[] = [
   { id: "v-deepest-hole", component: V_deepest_hole, timeline: V_deepest_hole_T as unknown as Timeline },
   { id: "v-eiffel-tower-con", component: V_eiffel_tower_con, timeline: V_eiffel_tower_con_T as unknown as Timeline },
   { id: "v-noise-cancelling", component: V_noise_cancelling, timeline: V_noise_cancelling_T as unknown as Timeline },
+  { id: "v-tiff-01-the-quiz", component: V_tiff_01_the_quiz, timeline: V_tiff_01_the_quiz_T as unknown as Timeline },
   { id: "v-tiff-chair-pile", component: V_tiff_chair_pile, timeline: V_tiff_chair_pile_T as unknown as Timeline },
   { id: "v-tiff-date-jacket", component: V_tiff_date_jacket, timeline: V_tiff_date_jacket_T as unknown as Timeline },
   { id: "v-tiff-ex-hoodie", component: V_tiff_ex_hoodie, timeline: V_tiff_ex_hoodie_T as unknown as Timeline },

@@ -8,6 +8,7 @@
     "studio": "remotion studio src/index.ts",
     "typecheck": "tsc --noEmit",
     "doctor": "node scripts/doctor.mjs",
+    "install-skills": "node scripts/install-skills.mjs",
     "render": "node scripts/render.mjs",
     "still": "node scripts/stills.mjs",
     "check": "node scripts/check.mjs"

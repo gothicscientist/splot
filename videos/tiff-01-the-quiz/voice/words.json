@@ -1,0 +1,1274 @@
+{
+ "version": 2,
+ "sampleRate": 48000,
+ "duration": 40.4811,
+ "lead": 0.06,
+ "provider": "edge",
+ "voice": "en-US-AvaMultilingualNeural",
+ "tempo": 1.1168,
+ "wpm": 198.3,
+ "beats": [
+  {
+   "id": "b01",
+   "shot": "s01",
+   "start": 0.06,
+   "speechEnd": 2.9765,
+   "end": 3.1965,
+   "say": "He quizzed me on underground rap, wearing a jacket I sold him.",
+   "tightenedSec": 0.171
+  },
+  {
+   "id": "b02",
+   "shot": "s02",
+   "start": 3.1965,
+   "speechEnd": 5.4495,
+   "end": 5.5695,
+   "say": "Name three unreleased songs, or you're a larper.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b03",
+   "shot": "s02",
+   "start": 5.5695,
+   "speechEnd": 8.4299,
+   "end": 8.5899,
+   "say": "So I name four, with the leak dates, before he blinks.",
+   "tightenedSec": 0.121
+  },
+  {
+   "id": "b04",
+   "shot": "s03",
+   "start": 8.5899,
+   "speechEnd": 10.501,
+   "end": 10.621,
+   "say": "Okay, but that fit is probably reps.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b05",
+   "shot": "s03",
+   "start": 10.621,
+   "speechEnd": 13.1855,
+   "end": 13.3055,
+   "say": "It's retail. I keep receipts like a tax office.",
+   "tightenedSec": 0.208
+  },
+  {
+   "id": "b06",
+   "shot": "s03",
+   "start": 13.3055,
+   "speechEnd": 15.4983,
+   "end": 15.6583,
+   "say": "This jacket is real archive. You wouldn't know.",
+   "tightenedSec": 0.772
+  },
+  {
+   "id": "b07",
+   "shot": "s04",
+   "start": 15.6583,
+   "speechEnd": 17.8788,
+   "end": 18.0388,
+   "say": "Except I know that jacket. It lived on my chair.",
+   "tightenedSec": 0.246
+  },
+  {
+   "id": "b08",
+   "shot": "s05",
+   "start": 18.0388,
+   "speechEnd": 21.6777,
+   "end": 21.7977,
+   "say": "I listed it last month: mall brand, worn twice, forty dollars.",
+   "tightenedSec": 0.494
+  },
+  {
+   "id": "b09",
+   "shot": "s05",
+   "start": 21.7977,
+   "speechEnd": 24.7535,
+   "end": 24.9135,
+   "say": "He offered four dollars first, then paid the full forty dollars.",
+   "tightenedSec": 0.0
+  },
+  {
+   "id": "b10",
+   "shot": "s06",
+   "start": 24.9135,
+   "speechEnd": 27.4638,
+   "end": 27.5838,
+   "say": "I tell him: that's not archive. That's my chair.",
+   "tightenedSec": 0.496
+  },
+  {
+   "id": "b11",
+   "shot": "s06",
+   "start": 27.5838,
+   "speechEnd": 29.712,
+   "end": 29.932,
+   "say": "Cool. Would you do thirty dollars for the boots?",
+   "tightenedSec": 0.707
+  },
+  {
+   "id": "b12",
+   "shot": "s07",
+   "start": 29.932,
+   "speechEnd": 32.2831,
+   "end": 32.3431,
+   "say": "Back home, I snap the chair. Listed.",
+   "tightenedSec": 0.164
+  },
+  {
+   "id": "b13",
+   "shot": "s07",
+   "start": 32.3431,
+   "speechEnd": 34.843,
+   "end": 35.003,
+   "say": "pile go! puts the whole chair live on five apps.",
+   "tightenedSec": 0.149
+  },
+  {
+   "id": "b14",
+   "shot": "s08",
+   "start": 35.003,
+   "speechEnd": 38.3811,
+   "end": 39.7811,
+   "say": "So: thirty dollars for the boots. Accept, counter, or block?",
+   "tightenedSec": 0.576
+  }
+ ],
+ "words": [
+  {
+   "i": 0,
+   "beat": "b01",
+   "text": "He",
+   "spoken": "he",
+   "start": 0.12,
+   "end": 0.221,
+   "emph": false
+  },
+  {
+   "i": 1,
+   "beat": "b01",
+   "text": "quizzed",
+   "spoken": "quizzed",
+   "start": 0.301,
+   "end": 0.563,
+   "emph": false
+  },
+  {
+   "i": 2,
+   "beat": "b01",
+   "text": "me",
+   "spoken": "me",
+   "start": 0.583,
+   "end": 0.724,
+   "emph": false
+  },
+  {
+   "i": 3,
+   "beat": "b01",
+   "text": "on",
+   "spoken": "on",
+   "start": 0.865,
+   "end": 0.945,
+   "emph": false
+  },
+  {
+   "i": 4,
+   "beat": "b01",
+   "text": "underground",
+   "spoken": "underground",
+   "start": 1.005,
+   "end": 1.347,
+   "emph": false
+  },
+  {
+   "i": 5,
+   "beat": "b01",
+   "text": "rap,",
+   "spoken": "rap",
+   "start": 1.408,
+   "end": 1.589,
+   "emph": false
+  },
+  {
+   "i": 6,
+   "beat": "b01",
+   "text": "wearing",
+   "spoken": "wearing",
+   "start": 1.689,
+   "end": 1.89,
+   "emph": false
+  },
+  {
+   "i": 7,
+   "beat": "b01",
+   "text": "a",
+   "spoken": "a",
+   "start": 1.931,
+   "end": 1.991,
+   "emph": false
+  },
+  {
+   "i": 8,
+   "beat": "b01",
+   "text": "jacket",
+   "spoken": "jacket",
+   "start": 2.011,
+   "end": 2.333,
+   "emph": false
+  },
+  {
+   "i": 9,
+   "beat": "b01",
+   "text": "I",
+   "spoken": "i",
+   "start": 2.393,
+   "end": 2.454,
+   "emph": false
+  },
+  {
+   "i": 10,
+   "beat": "b01",
+   "text": "sold",
+   "spoken": "sold",
+   "start": 2.494,
+   "end": 2.715,
+   "emph": true
+  },
+  {
+   "i": 11,
+   "beat": "b01",
+   "text": "him.",
+   "spoken": "him",
+   "start": 2.755,
+   "end": 2.836,
+   "emph": false
+  },
+  {
+   "i": 12,
+   "beat": "b02",
+   "text": "Name",
+   "spoken": "name",
+   "start": 3.2565,
+   "end": 3.4375,
+   "emph": false
+  },
+  {
+   "i": 13,
+   "beat": "b02",
+   "text": "three",
+   "spoken": "three",
+   "start": 3.4785,
+   "end": 3.6795,
+   "emph": false
+  },
+  {
+   "i": 14,
+   "beat": "b02",
+   "text": "unreleased",
+   "spoken": "unreleased",
+   "start": 3.7795,
+   "end": 4.1415,
+   "emph": true
+  },
+  {
+   "i": 15,
+   "beat": "b02",
+   "text": "songs,",
+   "spoken": "songs",
+   "start": 4.1625,
+   "end": 4.4635,
+   "emph": false
+  },
+  {
+   "i": 16,
+   "beat": "b02",
+   "text": "or",
+   "spoken": "or",
+   "start": 4.6855,
+   "end": 4.7855,
+   "emph": false
+  },
+  {
+   "i": 17,
+   "beat": "b02",
+   "text": "you're",
+   "spoken": "you're",
+   "start": 4.8255,
+   "end": 4.9665,
+   "emph": false
+  },
+  {
+   "i": 18,
+   "beat": "b02",
+   "text": "a",
+   "spoken": "a",
+   "start": 5.0065,
+   "end": 5.0665,
+   "emph": false
+  },
+  {
+   "i": 19,
+   "beat": "b02",
+   "text": "larper.",
+   "spoken": "larper",
+   "start": 5.0675,
+   "end": 5.3285,
+   "emph": false
+  },
+  {
+   "i": 20,
+   "beat": "b03",
+   "text": "So",
+   "spoken": "so",
+   "start": 5.6505,
+   "end": 5.8115,
+   "emph": false
+  },
+  {
+   "i": 21,
+   "beat": "b03",
+   "text": "I",
+   "spoken": "i",
+   "start": 5.9525,
+   "end": 6.0125,
+   "emph": false
+  },
+  {
+   "i": 22,
+   "beat": "b03",
+   "text": "name",
+   "spoken": "name",
+   "start": 6.0525,
+   "end": 6.2345,
+   "emph": false
+  },
+  {
+   "i": 23,
+   "beat": "b03",
+   "text": "four,",
+   "spoken": "four",
+   "start": 6.2745,
+   "end": 6.5165,
+   "emph": false
+  },
+  {
+   "i": 24,
+   "beat": "b03",
+   "text": "with",
+   "spoken": "with",
+   "start": 6.7575,
+   "end": 6.8785,
+   "emph": false
+  },
+  {
+   "i": 25,
+   "beat": "b03",
+   "text": "the",
+   "spoken": "the",
+   "start": 6.8985,
+   "end": 6.9595,
+   "emph": false
+  },
+  {
+   "i": 26,
+   "beat": "b03",
+   "text": "leak",
+   "spoken": "leak",
+   "start": 6.9995,
+   "end": 7.1605,
+   "emph": true
+  },
+  {
+   "i": 27,
+   "beat": "b03",
+   "text": "dates,",
+   "spoken": "dates",
+   "start": 7.1805,
+   "end": 7.4425,
+   "emph": true
+  },
+  {
+   "i": 28,
+   "beat": "b03",
+   "text": "before",
+   "spoken": "before",
+   "start": 7.6645,
+   "end": 7.9065,
+   "emph": false
+  },
+  {
+   "i": 29,
+   "beat": "b03",
+   "text": "he",
+   "spoken": "he",
+   "start": 7.9265,
+   "end": 8.0065,
+   "emph": false
+  },
+  {
+   "i": 30,
+   "beat": "b03",
+   "text": "blinks.",
+   "spoken": "blinks",
+   "start": 8.0275,
+   "end": 8.2485,
+   "emph": false
+  },
+  {
+   "i": 31,
+   "beat": "b04",
+   "text": "Okay,",
+   "spoken": "okay",
+   "start": 8.6699,
+   "end": 8.8919,
+   "emph": false
+  },
+  {
+   "i": 32,
+   "beat": "b04",
+   "text": "but",
+   "spoken": "but",
+   "start": 9.1129,
+   "end": 9.2139,
+   "emph": false
+  },
+  {
+   "i": 33,
+   "beat": "b04",
+   "text": "that",
+   "spoken": "that",
+   "start": 9.2339,
+   "end": 9.3749,
+   "emph": false
+  },
+  {
+   "i": 34,
+   "beat": "b04",
+   "text": "fit",
+   "spoken": "fit",
+   "start": 9.4149,
+   "end": 9.5759,
+   "emph": false
+  },
+  {
+   "i": 35,
+   "beat": "b04",
+   "text": "is",
+   "spoken": "is",
+   "start": 9.6159,
+   "end": 9.6959,
+   "emph": false
+  },
+  {
+   "i": 36,
+   "beat": "b04",
+   "text": "probably",
+   "spoken": "probably",
+   "start": 9.7369,
+   "end": 10.0989,
+   "emph": false
+  },
+  {
+   "i": 37,
+   "beat": "b04",
+   "text": "reps.",
+   "spoken": "reps",
+   "start": 10.1589,
+   "end": 10.3799,
+   "emph": true
+  },
+  {
+   "i": 38,
+   "beat": "b05",
+   "text": "It's",
+   "spoken": "it's",
+   "start": 10.661,
+   "end": 10.783,
+   "emph": false
+  },
+  {
+   "i": 39,
+   "beat": "b05",
+   "text": "retail.",
+   "spoken": "retail",
+   "start": 10.843,
+   "end": 11.267,
+   "emph": false
+  },
+  {
+   "i": 40,
+   "beat": "b05",
+   "text": "I",
+   "spoken": "i",
+   "start": 11.509,
+   "end": 11.59,
+   "emph": false
+  },
+  {
+   "i": 41,
+   "beat": "b05",
+   "text": "keep",
+   "spoken": "keep",
+   "start": 11.61,
+   "end": 11.772,
+   "emph": false
+  },
+  {
+   "i": 42,
+   "beat": "b05",
+   "text": "receipts",
+   "spoken": "receipts",
+   "start": 11.792,
+   "end": 12.135,
+   "emph": false
+  },
+  {
+   "i": 43,
+   "beat": "b05",
+   "text": "like",
+   "spoken": "like",
+   "start": 12.196,
+   "end": 12.317,
+   "emph": false
+  },
+  {
+   "i": 44,
+   "beat": "b05",
+   "text": "a",
+   "spoken": "a",
+   "start": 12.358,
+   "end": 12.418,
+   "emph": false
+  },
+  {
+   "i": 45,
+   "beat": "b05",
+   "text": "tax",
+   "spoken": "tax",
+   "start": 12.418,
+   "end": 12.681,
+   "emph": true
+  },
+  {
+   "i": 46,
+   "beat": "b05",
+   "text": "office.",
+   "spoken": "office",
+   "start": 12.741,
+   "end": 13.004,
+   "emph": true
+  },
+  {
+   "i": 47,
+   "beat": "b06",
+   "text": "This",
+   "spoken": "this",
+   "start": 13.3455,
+   "end": 13.4865,
+   "emph": false
+  },
+  {
+   "i": 48,
+   "beat": "b06",
+   "text": "jacket",
+   "spoken": "jacket",
+   "start": 13.5265,
+   "end": 13.8485,
+   "emph": false
+  },
+  {
+   "i": 49,
+   "beat": "b06",
+   "text": "is",
+   "spoken": "is",
+   "start": 13.8885,
+   "end": 13.9695,
+   "emph": false
+  },
+  {
+   "i": 50,
+   "beat": "b06",
+   "text": "real",
+   "spoken": "real",
+   "start": 14.0095,
+   "end": 14.1905,
+   "emph": false
+  },
+  {
+   "i": 51,
+   "beat": "b06",
+   "text": "archive.",
+   "spoken": "archive",
+   "start": 14.2505,
+   "end": 14.5725,
+   "emph": true
+  },
+  {
+   "i": 52,
+   "beat": "b06",
+   "text": "You",
+   "spoken": "you",
+   "start": 14.7335,
+   "end": 14.8345,
+   "emph": false
+  },
+  {
+   "i": 53,
+   "beat": "b06",
+   "text": "wouldn't",
+   "spoken": "wouldn't",
+   "start": 14.8745,
+   "end": 15.1365,
+   "emph": false
+  },
+  {
+   "i": 54,
+   "beat": "b06",
+   "text": "know.",
+   "spoken": "know",
+   "start": 15.1765,
+   "end": 15.3175,
+   "emph": false
+  },
+  {
+   "i": 55,
+   "beat": "b07",
+   "text": "Except",
+   "spoken": "except",
+   "start": 15.6983,
+   "end": 16.0213,
+   "emph": false
+  },
+  {
+   "i": 56,
+   "beat": "b07",
+   "text": "I",
+   "spoken": "i",
+   "start": 16.0823,
+   "end": 16.1423,
+   "emph": false
+  },
+  {
+   "i": 57,
+   "beat": "b07",
+   "text": "know",
+   "spoken": "know",
+   "start": 16.1633,
+   "end": 16.2843,
+   "emph": false
+  },
+  {
+   "i": 58,
+   "beat": "b07",
+   "text": "that",
+   "spoken": "that",
+   "start": 16.3043,
+   "end": 16.4253,
+   "emph": false
+  },
+  {
+   "i": 59,
+   "beat": "b07",
+   "text": "jacket.",
+   "spoken": "jacket",
+   "start": 16.4653,
+   "end": 16.8093,
+   "emph": false
+  },
+  {
+   "i": 60,
+   "beat": "b07",
+   "text": "It",
+   "spoken": "it",
+   "start": 16.9703,
+   "end": 17.0313,
+   "emph": false
+  },
+  {
+   "i": 61,
+   "beat": "b07",
+   "text": "lived",
+   "spoken": "lived",
+   "start": 17.0713,
+   "end": 17.2333,
+   "emph": false
+  },
+  {
+   "i": 62,
+   "beat": "b07",
+   "text": "on",
+   "spoken": "on",
+   "start": 17.2733,
+   "end": 17.3333,
+   "emph": false
+  },
+  {
+   "i": 63,
+   "beat": "b07",
+   "text": "my",
+   "spoken": "my",
+   "start": 17.3543,
+   "end": 17.4553,
+   "emph": false
+  },
+  {
+   "i": 64,
+   "beat": "b07",
+   "text": "chair.",
+   "spoken": "chair",
+   "start": 17.4953,
+   "end": 17.6973,
+   "emph": true
+  },
+  {
+   "i": 65,
+   "beat": "b08",
+   "text": "I",
+   "spoken": "i",
+   "start": 18.1188,
+   "end": 18.2198,
+   "emph": false
+  },
+  {
+   "i": 66,
+   "beat": "b08",
+   "text": "listed",
+   "spoken": "listed",
+   "start": 18.2998,
+   "end": 18.5818,
+   "emph": false
+  },
+  {
+   "i": 67,
+   "beat": "b08",
+   "text": "it",
+   "spoken": "it",
+   "start": 18.6218,
+   "end": 18.6818,
+   "emph": false
+  },
+  {
+   "i": 68,
+   "beat": "b08",
+   "text": "last",
+   "spoken": "last",
+   "start": 18.7228,
+   "end": 18.9238,
+   "emph": false
+  },
+  {
+   "i": 69,
+   "beat": "b08",
+   "text": "month:",
+   "spoken": "month",
+   "start": 18.9638,
+   "end": 19.1648,
+   "emph": false
+  },
+  {
+   "i": 70,
+   "beat": "b08",
+   "text": "mall",
+   "spoken": "mall",
+   "start": 19.3858,
+   "end": 19.5668,
+   "emph": false
+  },
+  {
+   "i": 71,
+   "beat": "b08",
+   "text": "brand,",
+   "spoken": "brand",
+   "start": 19.5868,
+   "end": 19.9288,
+   "emph": false
+  },
+  {
+   "i": 72,
+   "beat": "b08",
+   "text": "worn",
+   "spoken": "worn",
+   "start": 20.2298,
+   "end": 20.4518,
+   "emph": false
+  },
+  {
+   "i": 73,
+   "beat": "b08",
+   "text": "twice,",
+   "spoken": "twice",
+   "start": 20.4718,
+   "end": 20.7728,
+   "emph": false
+  },
+  {
+   "i": 74,
+   "beat": "b08",
+   "text": "$40.",
+   "spoken": "forty dollars",
+   "start": 21.0138,
+   "end": 21.5168,
+   "emph": true
+  },
+  {
+   "i": 75,
+   "beat": "b09",
+   "text": "He",
+   "spoken": "he",
+   "start": 21.8577,
+   "end": 21.9387,
+   "emph": false
+  },
+  {
+   "i": 76,
+   "beat": "b09",
+   "text": "offered",
+   "spoken": "offered",
+   "start": 22.0187,
+   "end": 22.2397,
+   "emph": false
+  },
+  {
+   "i": 77,
+   "beat": "b09",
+   "text": "$4",
+   "spoken": "four dollars",
+   "start": 22.2807,
+   "end": 22.7227,
+   "emph": true
+  },
+  {
+   "i": 78,
+   "beat": "b09",
+   "text": "first,",
+   "spoken": "first",
+   "start": 22.7627,
+   "end": 23.0037,
+   "emph": false
+  },
+  {
+   "i": 79,
+   "beat": "b09",
+   "text": "then",
+   "spoken": "then",
+   "start": 23.2657,
+   "end": 23.4267,
+   "emph": false
+  },
+  {
+   "i": 80,
+   "beat": "b09",
+   "text": "paid",
+   "spoken": "paid",
+   "start": 23.5067,
+   "end": 23.7077,
+   "emph": false
+  },
+  {
+   "i": 81,
+   "beat": "b09",
+   "text": "the",
+   "spoken": "the",
+   "start": 23.7277,
+   "end": 23.7887,
+   "emph": false
+  },
+  {
+   "i": 82,
+   "beat": "b09",
+   "text": "full",
+   "spoken": "full",
+   "start": 23.8287,
+   "end": 24.0097,
+   "emph": false
+  },
+  {
+   "i": 83,
+   "beat": "b09",
+   "text": "$40.",
+   "spoken": "forty dollars",
+   "start": 24.0497,
+   "end": 24.5727,
+   "emph": false
+  },
+  {
+   "i": 84,
+   "beat": "b10",
+   "text": "I",
+   "spoken": "i",
+   "start": 24.9735,
+   "end": 25.0335,
+   "emph": false
+  },
+  {
+   "i": 85,
+   "beat": "b10",
+   "text": "tell",
+   "spoken": "tell",
+   "start": 25.0745,
+   "end": 25.2345,
+   "emph": false
+  },
+  {
+   "i": 86,
+   "beat": "b10",
+   "text": "him:",
+   "spoken": "him",
+   "start": 25.2745,
+   "end": 25.3755,
+   "emph": false
+  },
+  {
+   "i": 87,
+   "beat": "b10",
+   "text": "that's",
+   "spoken": "that's",
+   "start": 25.5965,
+   "end": 25.8175,
+   "emph": false
+  },
+  {
+   "i": 88,
+   "beat": "b10",
+   "text": "not",
+   "spoken": "not",
+   "start": 25.8975,
+   "end": 26.0385,
+   "emph": false
+  },
+  {
+   "i": 89,
+   "beat": "b10",
+   "text": "archive.",
+   "spoken": "archive",
+   "start": 26.0785,
+   "end": 26.4595,
+   "emph": false
+  },
+  {
+   "i": 90,
+   "beat": "b10",
+   "text": "That's",
+   "spoken": "that's",
+   "start": 26.6405,
+   "end": 26.8615,
+   "emph": false
+  },
+  {
+   "i": 91,
+   "beat": "b10",
+   "text": "my",
+   "spoken": "my",
+   "start": 26.9015,
+   "end": 27.0225,
+   "emph": false
+  },
+  {
+   "i": 92,
+   "beat": "b10",
+   "text": "chair.",
+   "spoken": "chair",
+   "start": 27.0625,
+   "end": 27.2635,
+   "emph": true
+  },
+  {
+   "i": 93,
+   "beat": "b11",
+   "text": "Cool.",
+   "spoken": "cool",
+   "start": 27.6238,
+   "end": 27.8848,
+   "emph": false
+  },
+  {
+   "i": 94,
+   "beat": "b11",
+   "text": "Would",
+   "spoken": "would",
+   "start": 28.0858,
+   "end": 28.2258,
+   "emph": false
+  },
+  {
+   "i": 95,
+   "beat": "b11",
+   "text": "you",
+   "spoken": "you",
+   "start": 28.2468,
+   "end": 28.3468,
+   "emph": false
+  },
+  {
+   "i": 96,
+   "beat": "b11",
+   "text": "do",
+   "spoken": "do",
+   "start": 28.3668,
+   "end": 28.4878,
+   "emph": false
+  },
+  {
+   "i": 97,
+   "beat": "b11",
+   "text": "$30",
+   "spoken": "thirty dollars",
+   "start": 28.5278,
+   "end": 29.0898,
+   "emph": true
+  },
+  {
+   "i": 98,
+   "beat": "b11",
+   "text": "for",
+   "spoken": "for",
+   "start": 29.1298,
+   "end": 29.2298,
+   "emph": false
+  },
+  {
+   "i": 99,
+   "beat": "b11",
+   "text": "the",
+   "spoken": "the",
+   "start": 29.2498,
+   "end": 29.3308,
+   "emph": false
+  },
+  {
+   "i": 100,
+   "beat": "b11",
+   "text": "boots?",
+   "spoken": "boots",
+   "start": 29.3508,
+   "end": 29.5718,
+   "emph": false
+  },
+  {
+   "i": 101,
+   "beat": "b12",
+   "text": "Back",
+   "spoken": "back",
+   "start": 29.952,
+   "end": 30.133,
+   "emph": false
+  },
+  {
+   "i": 102,
+   "beat": "b12",
+   "text": "home,",
+   "spoken": "home",
+   "start": 30.173,
+   "end": 30.414,
+   "emph": false
+  },
+  {
+   "i": 103,
+   "beat": "b12",
+   "text": "I",
+   "spoken": "i",
+   "start": 30.796,
+   "end": 30.897,
+   "emph": false
+  },
+  {
+   "i": 104,
+   "beat": "b12",
+   "text": "snap",
+   "spoken": "snap",
+   "start": 30.977,
+   "end": 31.258,
+   "emph": false
+  },
+  {
+   "i": 105,
+   "beat": "b12",
+   "text": "the",
+   "spoken": "the",
+   "start": 31.278,
+   "end": 31.339,
+   "emph": false
+  },
+  {
+   "i": 106,
+   "beat": "b12",
+   "text": "chair.",
+   "spoken": "chair",
+   "start": 31.359,
+   "end": 31.6,
+   "emph": false
+  },
+  {
+   "i": 107,
+   "beat": "b12",
+   "text": "Listed.",
+   "spoken": "listed",
+   "start": 31.861,
+   "end": 32.163,
+   "emph": true
+  },
+  {
+   "i": 108,
+   "beat": "b13",
+   "text": "pileGo!",
+   "spoken": "pile go",
+   "start": 32.3631,
+   "end": 32.8271,
+   "emph": true
+  },
+  {
+   "i": 109,
+   "beat": "b13",
+   "text": "puts",
+   "spoken": "puts",
+   "start": 33.0691,
+   "end": 33.2501,
+   "emph": false
+  },
+  {
+   "i": 110,
+   "beat": "b13",
+   "text": "the",
+   "spoken": "the",
+   "start": 33.2701,
+   "end": 33.3511,
+   "emph": false
+  },
+  {
+   "i": 111,
+   "beat": "b13",
+   "text": "whole",
+   "spoken": "whole",
+   "start": 33.3911,
+   "end": 33.5731,
+   "emph": false
+  },
+  {
+   "i": 112,
+   "beat": "b13",
+   "text": "chair",
+   "spoken": "chair",
+   "start": 33.6131,
+   "end": 33.7951,
+   "emph": false
+  },
+  {
+   "i": 113,
+   "beat": "b13",
+   "text": "live",
+   "spoken": "live",
+   "start": 33.8751,
+   "end": 34.0771,
+   "emph": false
+  },
+  {
+   "i": 114,
+   "beat": "b13",
+   "text": "on",
+   "spoken": "on",
+   "start": 34.1371,
+   "end": 34.2181,
+   "emph": false
+  },
+  {
+   "i": 115,
+   "beat": "b13",
+   "text": "five",
+   "spoken": "five",
+   "start": 34.2381,
+   "end": 34.4601,
+   "emph": false
+  },
+  {
+   "i": 116,
+   "beat": "b13",
+   "text": "apps.",
+   "spoken": "apps",
+   "start": 34.5401,
+   "end": 34.6821,
+   "emph": false
+  },
+  {
+   "i": 117,
+   "beat": "b14",
+   "text": "So:",
+   "spoken": "so",
+   "start": 35.063,
+   "end": 35.285,
+   "emph": false
+  },
+  {
+   "i": 118,
+   "beat": "b14",
+   "text": "$30",
+   "spoken": "thirty dollars",
+   "start": 35.526,
+   "end": 36.008,
+   "emph": false
+  },
+  {
+   "i": 119,
+   "beat": "b14",
+   "text": "for",
+   "spoken": "for",
+   "start": 36.029,
+   "end": 36.129,
+   "emph": false
+  },
+  {
+   "i": 120,
+   "beat": "b14",
+   "text": "the",
+   "spoken": "the",
+   "start": 36.149,
+   "end": 36.209,
+   "emph": false
+  },
+  {
+   "i": 121,
+   "beat": "b14",
+   "text": "boots.",
+   "spoken": "boots",
+   "start": 36.23,
+   "end": 36.451,
+   "emph": false
+  },
+  {
+   "i": 122,
+   "beat": "b14",
+   "text": "Accept,",
+   "spoken": "accept",
+   "start": 36.732,
+   "end": 37.114,
+   "emph": false
+  },
+  {
+   "i": 123,
+   "beat": "b14",
+   "text": "counter,",
+   "spoken": "counter",
+   "start": 37.336,
+   "end": 37.677,
+   "emph": false
+  },
+  {
+   "i": 124,
+   "beat": "b14",
+   "text": "or",
+   "spoken": "or",
+   "start": 37.878,
+   "end": 37.979,
+   "emph": false
+  },
+  {
+   "i": 125,
+   "beat": "b14",
+   "text": "block?",
+   "spoken": "block",
+   "start": 38.019,
+   "end": 38.24,
+   "emph": true
+  }
+ ]
+}

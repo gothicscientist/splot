@@ -42,3 +42,59 @@ export const CAST: Record<string, StickSpec> = {
   customerB: { body: "#e65a8c", hair: "bun", hairColor: "#d9532c", seed: 102 },
   customerC: { body: "#7cc576", hair: "short", hairColor: "#5a3b2a", seed: 103 },
 };
+
+// ------------------------------------------------------------------------------------------------ fashion presets
+// SUPERSEDED as the lead: the series lead is CAST.tiff (tiff.ts, the owner-approved design). These stick-figure
+// fashion fits (the first Tiffany draft) stay as ready-made looks for SIDE characters (friends, fans, sellers);
+// never present one as Tiff. All original and logo-free.
+const TIFF_BASE: StickSpec = {
+  body: "#18171d",
+  head: "#fdf3ee",
+  build: "femme",
+  hair: "anime",
+  hairColor: "#141018",
+  lashes: true,
+  animeEyes: true,
+  iris: "#3b2a58",
+  lips: "#8a2342",
+  blush: true,
+  earrings: "drops",
+  piercings: ["nose"],
+  eyeScale: 1.3,
+  bareArms: true,
+  seed: 777,
+};
+export const TIFFANY: Record<string, StickSpec> = {
+  // everyday archive fit: black crop top with a small star print, washed baggy denim, platform boots, crossbody
+  base: { ...TIFF_BASE, outfit: "crop", print: "star", printColor: "#d8d4dc", necklace: "pearls", pants: { kind: "baggy", color: "#4a5a74" }, boots: "platform", shoes: "#141418", crossbody: "#2a2830" },
+  // winter / show night: cream faux-fur coat, fur trapper hat, flared black trousers, pointy boots
+  fur: { ...TIFF_BASE, outfit: "fur", body: "#e6ddd0", accent: "#f4efe7", hat: "fur", hatColor: "#1b1a20", pants: { kind: "flare", color: "#1c1b22" }, boots: "pointy", shoes: "#141418", earrings: null },
+  // leather jacket over a long-sleeve, flares, choker
+  leather: { ...TIFF_BASE, outfit: "leather", body: "#1a191f", sleeves: "#1a191f", necklace: "choker", pants: { kind: "flare", color: "#2c3446" }, boots: "pointy", shoes: "#141418" },
+  // tank + mini skirt, leg warmers, arm warmers, platform boots
+  skirt: { ...TIFF_BASE, outfit: "tank", body: "#2b2533", pants: { kind: "skirt", color: "#141318" }, legWarmers: "#e9e5ee", armWarmers: "#d6d0dc", boots: "platform", shoes: "#141418", necklace: "chain", bareLegs: true },
+  // cosy at-home relisting fit: oversized zip hoodie, shorts, socks
+  // twin tails variant of the base fit
+  twin: { ...TIFF_BASE, hair: "twintails", accent: "#c9c4d2", outfit: "crop", print: "heart", printColor: "#e4dce8", necklace: "choker", pants: { kind: "skirt", color: "#1a1920" }, legWarmers: "#1b1a20", boots: "platform", shoes: "#141418", bareLegs: true },
+  home: { ...TIFF_BASE, outfit: "zip", body: "#55505e", sleeves: "#55505e", pants: { kind: "shorts", color: "#2a2830" }, legWarmers: "#efeef2", shoes: "#f1f0f4", earrings: "studs", piercings: [], bareLegs: true },
+};
+
+// ------------------------------------------------------------------------------------------------ Tiff's world
+// The recurring side cast of the Tiff x pileGo! series (and the ug-rap channel's crowd): stick figures in scene fits,
+// all ORIGINAL and logo-free (washed black, raw denim, faux fur, leather, chunky boots). Tiff herself is CAST.tiff.
+export const SCENE_CAST: Record<string, StickSpec> = {
+  // the gatekeeper who quizzes girls on underground credentials: faux-fur trapper, leather, baggy jeans, chunky boots
+  gatekeeper: { body: "#1f1e24", outfit: "leather", sleeves: "#1f1e24", hat: "fur", hatColor: "#cbbfae", pants: { kind: "baggy", color: "#3c4a64" }, boots: "chunky", shoes: "#141418", necklace: "chain", seed: 41 },
+  // the lowballer: cap, grey zip hoodie, phone always out
+  lowballer: { body: "#8d8b93", outfit: "zip", sleeves: "#8d8b93", hat: "cap", hatColor: "#2b2a31", pants: { kind: "straight", color: "#4a4f5c" }, shoes: "#e9e7e2", seed: 42 },
+  // the archive bro: all black, long-sleeve, flared trousers, pointy boots, wolf cut
+  archiveBro: { body: "#161519", outfit: "tee", sleeves: "#161519", hair: "wolf", hairColor: "#1b1820", pants: { kind: "flare", color: "#1c1b22" }, boots: "pointy", shoes: "#0f0e12", piercings: ["brow"], seed: 43 },
+  // Tiff's bestie: bob, crop top with a heart print, mini skirt, leg warmers, platform boots
+  bestie: { body: "#e8a9bd", build: "femme", outfit: "crop", print: "heart", printColor: "#fdf3f6", hair: "bob", hairColor: "#3a2618", lashes: true, lips: "#b4475f", earrings: "hoops", earringColor: "#e2b23c", pants: { kind: "skirt", color: "#1c1b22" }, legWarmers: "#efeef2", boots: "platform", shoes: "#141418", bareArms: true, bareLegs: true, seed: 44 },
+  // the newgen: just found the scene last week; skull tee, beanie, brand-new everything
+  newgen: { body: "#f1efe9", outfit: "tee", print: "skull", printColor: "#1c1b20", hat: "beanie", hatColor: "#c0392b", pants: { kind: "baggy", color: "#6d8fc2" }, shoes: "#ffffff", seed: 45 },
+  // an ORIGINAL stand-in underground rapper (never a real artist's look): tank, chain, baggy pants, wolf cut
+  rapper: { body: "#0f0e12", outfit: "tank", hair: "wolf", hairColor: "#e8cf6a", necklace: "chain", pants: { kind: "baggy", color: "#1f2230" }, boots: "chunky", shoes: "#101014", bareArms: true, seed: 46 },
+  // venue security
+  security: { body: "#121115", outfit: "tee", text: "STAFF", textColor: "#f2efe4", hair: "short", hairColor: "#1a1410", build: "stout", pants: { kind: "straight", color: "#16151a" }, shoes: "#0f0e12", seed: 47 },
+};

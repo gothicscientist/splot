@@ -1,23 +1,50 @@
-# Status (updated 2026-11-14)
+# Status (updated 2026-11-15, late)
 
 Live state of the studio. `CLAUDE.md` has the stable rules; this file has what is done, what is not, and what's next.
 Update it at the end of every session.
 
-## Tiff, the new recurring lead (2026-11-15, branch `feat/tiff-character`)
-- Shaped lead figure `src/styles/stickworld/tiff.ts` (`drawTiff`), iterated with the owner over many single-still
-  reviews: 23-year-old anime-style cartoon woman; long straight silver-lavender hair with symmetric jagged bangs
-  (kept off the eyes) and chest-length side locks, big blue anime eyes, black choker; hourglass figure (torso sides
-  traced from the owner's red-line markup, saved at `out/stills/tiff-hero-redlines.png`); outfit black scoop tank,
-  frayed high-waisted jean shorts (joined, no thigh gap), bare legs with knee detail, black block-heel boots drawn
-  front-facing. Long hair counter-rotates against head tilt so it hangs with gravity.
-- Same Pose/Face/Item vocabulary as the stick cast. Use `<Stick spec={CAST.tiff} ... />` (`StickSpec.figure: "tiff"`).
-  Recolour via body (top), legColor (shorts), shoes (boots), accent (button), head (skin), hairColor.
-- Look-dev: `TiffHero` (one standing still, `out/stills/tiff-hero.png`) and `TiffSheet` (16 poses,
-  `out/stills/tiff-sheet.png`). Known leftovers: walk frames show crossing legs with front-facing boots (reads OK at
-  size); not yet seen inside a 3D scene or a video; no storyline written yet.
-- `drawItem` in `draw.ts` is now exported (Tiff reuses the hand items).
+## Story channels: Tiff x pileGo! + ug-rap (session of 2026-11-15 late, branch `studio/full-implementation`)
+Read this block first: it is the newest. Agents start at `AGENTS.md`.
+- **Built:**
+  - **Tiff** is the owner-approved `src/styles/stickworld/tiff.ts` (commit 447b01c, pulled and merged with the local
+    work; the draw.ts / STATUS.md conflicts were resolved by keeping both sides). Checked in 3D sets (`TiffStage`):
+    lit card, contact shadow, walk, two-shots with the stick cast. `frameOn()` (`styles/stickworld/frame.ts`) frames
+    her from a table measured on stills (eyes at 1.60 m); stick figures pass `{ who: "stick" }`.
+  - **Modes** `tiff` and `ug-rap` (`skills/reel/references/modes/`), entry skills `skills/tiff` and `skills/ug-rap`,
+    the master skill's mode table, critic P0 checks for story modes, dialogue / plug docs in `reel-script`.
+  - **Niche bibles**, fact-checked on 2026-11-15 by fresh agents, each with a check log (`references/niche/`):
+    `ug-rap.md` (12 artists, 7 bio-ready), `archive-fashion.md` (39 checks: 19 corrected, 2 refuted), `resale.md`
+    (~50 checks), `story-formats.md` (~50 claims, including the TikTok / Instagram / FTC / ASA / EU AI Act posting
+    rules). Raw sweeps: `docs/research/tiff-niche/`.
+  - **pileGo!** brand file + kit, taken from the live site (Libre Franklin 900 italic wordmark, tag mark, palette,
+    claims): `PileGoPhone`, `SoldPing` / `SoldStack`, `DMThread`, `CommentReply`, `ListingCard`, `RelistSnap` (Tiff's
+    repeatable bit), `EndCard`, `PileGoBug` (`src/brands/pilego.tsx`, look-dev `PileGoLab`).
+  - **Kits:** closet kit (`ClothesChair` / `ClothesHeap` with `sold` hops, `Garment`, `Rack`, `Mirror`, `Bed`,
+    `ShipBox`, `Venue`, `Cutout`), `look="club"`, `SCENE_CAST`, ug-rap kit (`src/channels/ug.tsx`: `TrackCard`,
+    `YearStamp`, `AliasStack`, `TitleCard`), fonts Libre Franklin + Grenze Gotisch, caption preset `lower`.
+  - **Pipeline:** `voice.py` per-beat speakers (`speaker` + `voice.cast`, Edge rate / pitch); `lint-script.mjs`
+    story-mode rules; `new-video.mjs` channel defaults; `sound.py` moods plugg / rage / jerk + `--preview` (the nine
+    older moods render bit-identically; phone-speaker translation measured; nobody has listened to them yet).
+- **Sample `tiff-01-the-quiz`** ("He quizzed me in a jacket I sold him", the F4 gatekeeper flip, 40.5 s + end
+  card): lint clean, voice WER 3.1 % (Ava narrating, Guy as the gatekeeper), timeline, 8 hand-written shots; stills
+  self-reviewed twice and fixed (staging, framing, overlaps, phone timing). **Not yet:** a fresh-critic PASS, the
+  sound mix, the render, `check.mjs`, `post.md`.
+- **Owner decisions (none blocks the work):**
+  1. Tiff's hair (`#d9d8ef`) vs Tiffany Day, a real artist in this scene with bleached hair and anime-style
+     visuals: the ug-rap bible advises the hair read clearly lavender, never platinum, and that Tiff never performs.
+     Kept exactly as pushed.
+  2. pileGo! and Grailed: the site lists eBay, Vinted, Depop, Poshmark and Mercari, so the kit never shows Grailed.
+  3. UK CAP Code 6.1 advises written permission before marketing refers to a public figure: get a legal look before
+     ug-rap biographies carry pileGo! plugs.
+  4. The voice is the free Edge Ava; an ElevenLabs voice for Tiff would sound better (needs a key or connector).
+- **Superseded, left untracked (not committed):** the first Tiffany draft (`src/styles/stickworld/anime.ts`,
+  `AnimeCard.tsx`, `tiffany.ts`, `src/lab/Tiffany*.tsx`: black twin tails, revealing variants). Delete when ready.
+  Its stick-figure fashion presets in `cast.ts` stay as side-cast looks.
+- **Next, in order:** two fresh critics on the `tiff-01` stills, fix, sound, `render.mjs --variants`, `check.mjs`,
+  `post.md`; then a first `ug-rap` sample (a `scenario`, or a bio of a bio-ready artist after decision 3); then resume
+  the paused four-video critic loop (next block).
 
-## Tiff reels batch 1 (2026-11-15, branch `feat/tiff-character`, uncommitted)
+## Tiff reels batch 1 (2026-11-15/16, branch `feat/tiff-character`, merged into `studio/full-implementation`)
 - Anime kit (`tiff.ts`, `AnimeLook`) now drives the whole side cast: `jake`, `mia`, plus one-offs `sasha`, `leo`,
   `friendA`, `friendB` in `cast.ts`.
 - Shared Tiff world `src/videos/_tiff/set.tsx`: TiffRoom, ExRoom, CafeSet, `DinnerSet` (table optional), `CouchRoom`,
@@ -31,42 +58,68 @@ Update it at the end of every session.
   Per-line v2 sounded wrong, and v2 at low stability drifted into a French accent.
 - Built with that voice, QA PASS: `tiff-soft-launch` (43.4 s), `tiff-same-jacket` (43.1 s; soft masking warning on
   "minute"), `tiff-no-labels` (40.7 s).
+- Settles decision 4 above: Tiff now has the ElevenLabs voice. Two parallel kits exist: this branch's
+  `src/videos/_tiff/` (sets, phone UI, EndCard) and `src/brands/pilego.tsx`. Unify them on the next pass.
 - Gotchas found:
   - `s.hit("sold")` hits the first "sold" in the shot; pass nth.
   - Hooks must run before any early return: the EndCard crashed renders with React #310, and stills don't catch it.
   - Hand items (signs) clip at the card's 600x1000 canvas when the arm is extended.
 
-## In progress (session of 2026-11-14 late, stopped by a usage limit; branch `studio/full-implementation`)
+
+## In progress (session of 2026-11-15, branch `studio/full-implementation`)
 Read this block first: it is newer than everything below it.
-- **Voice is now ElevenLabs (connector), all four videos.** New `take` provider in `scripts/voice.py`: one full
-  narration take per video (`videos/<slug>/voice/take.mp3`, eleven_v4, voice "Liam - Viral Short-Form Storyteller",
-  id `VCgLBmBjldJmfphyB8sZ`) is force-aligned, cut per beat and re-spaced by the usual pipeline.
-  `voice.py <slug> --take-text` prints the text to send. ASR check WER 0.0 % on all four takes.
-- **Eiffel:** re-voiced, timeline + mix rebuilt (-14.03 LUFS, -1.50 dBTP), stills re-rendered and look fine to the
-  builder. NOT yet re-rendered to MP4, NOT yet critic-reviewed, `check.mjs` not re-run. The old MP4s in `renders/`
-  still carry the old Edge voice.
-- **Three new videos scripted, researched (`research.md`), voiced and timed:** `chile-shape` (Atlas x map, 41.9 s),
-  `noise-cancelling` (Glowvector x how-it-works, 39.6 s), `deepest-hole` (Blockcraft x what-if, 41.9 s).
-  - `chile-shape` and `noise-cancelling`: scenes written, two stills rounds done (`out/stills/v-<slug>/sheet.jpg`).
-    Known leftovers from the builder's own review: Chile s02 label timing at "glaciers" and the final "24x longer"
-    label (partly hidden behind Chile) need a look; noise s01 "MORE NOISE?!" text overlaps the listener's head
-    (move it up), s03 callouts are cut by the frame edge while the camera pans, s05 check badge and s06 chip sit
-    close to the caption band.
-  - `deepest-hole`: scenes written and type-clean, first stills were rendering when the session stopped
-    (`out/stills-hole.log`); nothing has been looked at yet.
-  - None of the three has sound (`sound.py`), a render, `check.mjs` or a critic review yet. `brief.md` is still the
-    scaffold and `post.md` does not exist for any of them.
-- **Kits extended:** Atlas (`local` projection, `clip`, `anchor`, `under`, `background`, `sharedBorder`, smooth globe
-  zoom + shading), Blockcraft (`Voxels.top`, `Voxels.planet`, `Block wobble`, plate item, `PixelThermo`, gauge
-  options, hero recoloured so it no longer resembles the genre's default skin).
-- **Written:** `skills/reel-critic/SKILL.md`, `skills/reel/references/critic.md`. Note for the critic: Glowvector's
-  dark field, haze and glows are that style's signature and are exempt from the generic ban list.
-- **Still open from the list below:** sub-skills `reel-research`, `reel-hooks`, `reel-script`; kit API docs for
-  blockcraft / glowvector / atlas; `scripts/doctor.mjs`; skill install; cleanup; `SKILL.md` step 5 still describes the
-  old voice default and must be updated to the ElevenLabs take flow.
-- **Next, in order:** look at the deep-hole stills and fix; finish the leftovers above; `sound.py` for the three new
-  videos; `render.mjs <slug> --variants` + `check.mjs` for all four; fresh-critic review of each (fix until every
-  area >= 8); then the open items; update this file; commit and push.
+- **PAUSED by the owner on 2026-11-15** to focus on the Tiffany x pileGo! story series (see the Tiffany block when it
+  exists). The critic-fix workflow `reel-critic-fix-loop-v2` (run `wf_1f27ee8b-479`) was stopped mid-run. Where it got:
+  - chile-shape: critic r0 FAIL (6-7) -> builder r0 -> critic r1 **PASS (all areas 8)** -> render + `check.mjs`
+    **PASS** (`videos/chile-shape/renders/*.mp4`, 41.93 s). Only the final critic on the QA sheets was not run.
+  - noise-cancelling: critic r0 FAIL (7-8) -> builder r0 -> critic r1 FAIL (hook 7, story 7, composition 7, characters
+    7) -> builder r1 was interrupted mid-edit.
+  - deepest-hole: critic r0 FAIL (6-7) -> builder r0 -> critic r1 FAIL (hook 7, composition 7) -> builder r1 interrupted.
+  - eiffel-tower-con: builder r0 (from the 12 earlier notes) interrupted mid-edit (it touched `src/styles/stickworld/
+    draw.ts` and `props2.tsx` and the scene file).
+  The interrupted builders' edits are in the working tree (typecheck clean at pause time, never reviewed as a whole).
+  To resume: re-run stills for noise / deep-hole / eiffel, then the workflow (or one builder per video) with fresh
+  critic notes.
+- **Last critic scores (before this workflow):** chile-shape 6-7 (FAIL, 1 P0), noise-cancelling 4-6 (FAIL, 1 P0),
+  eiffel-tower-con 5-6 (FAIL, 1 P0: the portrait in the last frame clips Lustig). deepest-hole not yet scored.
+  A first workflow run was killed by the usage limit; its Chile and noise builders had already rewritten most of
+  both scene files (kept; the v2 critics score that state).
+- **Renders on disk:** eiffel-tower-con and noise-cancelling MP4s (+ hook2/hook3) pass `check.mjs` but predate the
+  critic fixes and the font fix below, so they are NOT final. chile-shape's last render FAILED `check.mjs` (frozen map
+  holds at ~12.1, 28.4, 35.0, 37.4 and 40.8 s). deepest-hole has not been rendered.
+- **Fixed this session (all four videos benefit):**
+  - Canvas text (newspapers, signs, stickers) could be drawn before its Google font loaded and keep the fallback face
+    for the whole render tab, so the final MP4 showed a different typeface from the stills. `<Reel>` now mounts no
+    scene until every registered font is drawable (`useAllFontsReady`, `src/core/fonts.ts`). Verified with
+    `scripts/render-range.mjs` on Eiffel's newspaper stretch.
+  - `sound.py` could not find sfx cue words with thousands commas ("12,262"): phrase tokens are now split on spaces
+    before punctuation is stripped, like the words.
+  - Music levels evened out (per-video `music.gain`): every mix -14.0 LUFS, -1.50 dBTP, music 20.7-22.7 dB under the
+    voice, <= 12.9 noticeable SFX/min, no masked words.
+  - Blockcraft: memory leaks fixed (VoxelWorld re-mesh disposal, cached Blocky head materials, memoised hat
+    materials); the pickaxe is steel (the cyan "diamond" tool is a signature item of the genre's game); `VoxelWorld
+    light` + `Block tint` for depth-lit cutaways; deepstone texture with more contrast; small voxel flowers.
+  - Fonts: Pixelify Sans draws capital C like an O and Silkscreen 700 blobs the W. Pixel UI = Silkscreen 400; voxel
+    captions = new `chunky` preset (Lilita One); `src/lab/FontLab.tsx` tests glyphs.
+  - Parallel GPU work: `NOMEN_BUNDLE_DIR` gives each job its own bundle folder, and `scripts/lib/gpulock.mjs` holds
+    stills / renders to `NOMEN_GPU_SLOTS` (default 2) machine-wide.
+  - deepest-hole scenes reworked (derrick framing, true-scale 23 cm hole close-up with plate, dark shaft back wall,
+    warm depth light); chile-shape and noise-cancelling leftovers from the previous session fixed before the critics ran.
+- **Written this session:** sub-skills `reel-research`, `reel-hooks`, `reel-script`; kit API docs
+  `styles/blockcraft.md`, `glowvector.md`, `atlas.md`; `scripts/doctor.mjs` (16 pass / 1 warn), `scripts/install-skills.mjs`
+  (dry run: 5 new skills, nothing to overwrite), `scripts/lint-script.mjs` (all four scripts lint clean),
+  `scripts/render-range.mjs`; `SKILL.md` step 5 now describes the ElevenLabs take flow; `post.md` for all four videos;
+  `brief.md` for the three new ones; critic.md ban list exempts Glowvector / Atlas dark fields.
+- **Research:** second independent sources added and checked (`second-sources` workflow, run `wf_5c110bb7-93d`).
+  deepest-hole 8/8 done. Flags to keep in mind (the voice is recorded, so wording stays): noise b05 "you hear almost
+  nothing" vs BBC Science Focus "around 70 per cent of ambient noise" (see `videos/noise-cancelling/research.md`
+  "Conflicts to watch"); deepest-hole rows 2, 3+8 and 4 have notes in its research.md.
+- **Known kit traps (documented, not fixed):** Glowvector colour helpers only parse `#RRGGBB`; Callout pill width is
+  estimated from the character count; Atlas `DateCounter` prints years as "1,881" and ignores `x`; the globe's shading
+  disc covers overlays and `h.p` does not hide far-side points; `dimOthers` dims from frame 0.
+- **Next, in order:** let the workflow finish; for any video that still FAILs, run another fix round (resume the
+  workflow or re-run its builder with the remaining notes); once all four pass: `npm run install-skills -- --yes`,
+  update this file, commit, and ask the owner before pushing to `origin` (github.com/gothicscientist/splot).
 
 ## Done and verified
 - **Engine** (`src/core/`): timeline word clock, `<Reel>` with 13 seam types (incl. hard cut), captions (8 presets: bold-pop,
@@ -92,29 +145,18 @@ frozen-picture failure was fixed by the camera-creep change in `src/core/three/c
 of this final render has been run yet.
 
 ## Not done (exact gaps)
-1. **Sub-skills referenced by `skills/reel/SKILL.md` do not exist yet:** `reel-research` (step 2), `reel-hooks`
-   (step 3), `reel-script` (step 4), `reel-critic` (step 8). Write each as `skills/<name>/SKILL.md`, sourcing from
-   `docs/research/` (A §2-4 for research/critic, C §1-3 for hooks/script).
-2. **Missing references:** `skills/reel/references/critic.md` (critic rubric, 7 scored areas, ban list; sources: A §0
-   item 7, §3.8, §4) and the kit API docs `references/styles/blockcraft.md`, `glowvector.md`, `atlas.md` (model them
-   on `styles/stickworld.md`; the `*-bible.md` files are look rules, not APIs).
-3. **Skills are not installed** in `~/.claude/skills/` and there is no install script (copy the folders; junctions
-   are untested with Claude Code's skill loader).
-4. **`scripts/doctor.mjs`** is referenced by `npm run doctor` but not written (environment check: node, ffmpeg,
-   rubberband, .venv imports, WhisperX venv, edge-tts reachability, Chrome headless shell, fonts).
-5. **Glowvector and Atlas kits** (`src/styles/glowvector/kit.tsx`, `src/styles/atlas/kit.tsx`) typecheck but have
-   never been rendered: add lab compositions like `src/lab/BlockLab.tsx` and look-dev them. Watch Atlas performance
-   (all 50m country paths per frame) and the Glowvector `Grain` SVG filter cost.
-6. **Blockcraft** has only been look-dev'd (`BlockLab`). Its terrain has no surface-height helper, so characters on
-   hilly terrain sink in (use `flat: true` under them for now).
-7. **Three planned samples** (facts already checked, below): Blockcraft x what-if, Glowvector x how-it-works,
-   Atlas x map.
-8. **Cleanup candidates:** pipeline test data `videos/_test/`, `src/videos/_test/`, `public/v/_test/`; the unused
-   canvas measuring helpers in `src/core/captions.tsx` (`measureText`, `spaceWidth`, `layout`, `useFontReady`
-   is still used); `src/lab/PostTest.tsx` / `PostRaw.tsx` (post-chain experiments).
-9. **Git:** the initial commit is on branch `studio/initial-import` (`master` was never created; merge or rename when
-   ready). Tracked: code, docs, skills, scripts, per-video data incl. `videos/<slug>/voice/voice.wav`. Ignored and
-   regenerable: stems, 16 kHz copies, `public/v/`. No remote is configured.
+1. **Critic PASS for all four videos** (every area >= 8, no P0) and final renders that pass `check.mjs`: in progress
+   (see the block at the top).
+2. **Skills not installed yet** in `~/.claude/skills/`: run `npm run install-skills -- --yes` once the docs are final
+   (the installer never overwrites a folder it did not create; it writes a `.nomen-studio` marker).
+3. **Blockcraft terrain** has no per-character surface helper beyond `Voxels.top`; keep `flat: true` under characters.
+4. **Cleanup candidates:** pipeline test data `videos/_test/`, `src/videos/_test/`, `public/v/_test/` (kept as a
+   pipeline smoke-test fixture); `src/lab/PostTest.tsx` / `PostRaw.tsx` (post-chain experiments, used by `GlSmoke`).
+   The unused canvas caption-measuring helpers were removed.
+5. **Git:** work is on `studio/full-implementation` (remote `origin` = github.com/gothicscientist/splot). Nothing from
+   this session is committed yet; pushing needs the owner's OK.
+6. **ElevenLabs connector** is not attached in every session: without it a new take cannot be recorded, so narration
+   wording cannot change (critics are told to ask for picture changes only).
 
 ## Known issues / watch-outs
 - The free Edge TTS endpoint fails intermittently ("No audio was received"); voice.py retries, but a long outage
@@ -145,12 +187,4 @@ of this final render has been run yet.
   https://www.scientificamerican.com/blog/psi-vid/how-do-active-noise-canceling-headphones-work/
 
 ## Next steps (in order)
-1. Write `skills/reel-critic/SKILL.md` + `skills/reel/references/critic.md` (gap 1-2; scored areas and ban list from
-   `docs/research/A-x-playbooks.md` §0 item 7, §1 #1 look-match loop, §3.8, §4).
-2. Use it: a fresh subagent reviews the final Eiffel render (`videos/eiffel-tower-con/qa/sheet_*.jpg`); fix anything
-   scored < 8, re-render, re-run `check.mjs`.
-3. Write the other sub-skills and kit docs (gaps 1-2), `scripts/doctor.mjs` and an install step; install the skills
-   into `~/.claude/skills/` (gaps 3-4).
-4. Look-dev Glowvector and Atlas in lab compositions (gap 5), fix what the stills show.
-5. Produce the three planned samples through the full pipeline, each passing `check.mjs` and a fresh-critic review.
-6. Cleanup (gap 8); decide the main branch name and merge `studio/initial-import` into it (gap 9).
+See "Next, in order" in the block at the top of this file.

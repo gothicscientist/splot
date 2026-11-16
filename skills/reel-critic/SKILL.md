@@ -22,7 +22,9 @@ single frame (`out/stills/v-<slug>/f<frame>.jpg`) or ask the caller for one. Nev
 
 ## Procedure
 1. Read `skills/reel/references/critic.md` (the rubric, ban list, traps, output format) and the style's look rules
-   `skills/reel/references/styles/<style>-bible.md` (`style` is in script.json).
+   `skills/reel/references/styles/<style>-bible.md` (`style` is in script.json). For a `tiff` or `ug-rap` episode
+   (`mode` in script.json) also read `skills/reel/references/brands/pilego.md` and the "Cringe, poser tells and hard
+   avoids" section of every file in `skills/reel/references/niche/`, and apply the story-mode checks in critic.md.
 2. Stranger test: for each cell, name every object. Write down anything unreadable.
 3. Pictures-only test: ignore the captions; does each cell show its beat's line?
 4. Walk the ban list and the traps list.

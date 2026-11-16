@@ -44,7 +44,7 @@ OPENAI_MODEL = "gpt-4o-mini-tts"
 
 
 # ----------------------------------------------------------------------------------------------------------- TTS
-def tts_edge(text: str, voice: str, out_mp3: Path, want_words: bool = False, tries: int = 10, rate: str = "+0%"):
+def tts_edge(text: str, voice: str, out_mp3: Path, want_words: bool = False, tries: int = 10, rate: str = "+0%", pitch: str = "+0Hz"):
     import edge_tts
 
     async def go():
@@ -54,6 +54,8 @@ def tts_edge(text: str, voice: str, out_mp3: Path, want_words: bool = False, tri
                 kw = {"boundary": "WordBoundary"} if want_words else {}
                 if rate and rate != "+0%":
                     kw["rate"] = rate
+                if pitch and pitch != "+0Hz":
+                    kw["pitch"] = pitch
                 c = edge_tts.Communicate(text, voice, **kw)
                 audio = bytearray()
                 words = []
@@ -424,12 +426,22 @@ def main():
         if a.force or not all(s["raw_wav"].exists() for s in specs):
             split_take(take, specs, cache, lang, align_py)
     clips = []
+    cast = vcfg.get("cast", {}) or {}
     for b in beats:
         tokens = normalize_sentence(b["text"], None if take else pron)
         say = tts_text(tokens) if take else (b.get("say") or tts_text(tokens))
-        edge_rate = vcfg.get("rate", "+8%")
+        # dialogue: a beat with "speaker" uses that cast member's voice (voice.cast.<speaker>.voice/rate/pitch/settings)
+        spk = b.get("speaker")
+        if spk and not take and spk not in cast and spk != "narrator":
+            die(f"beat {b['id']}: speaker '{spk}' is not in voice.cast ({', '.join(cast) or 'empty'})")
+        sv = cast.get(spk, {}) if spk and not take else {}
+        b_voice = sv.get("voice", voice)
+        edge_rate = sv.get("rate", vcfg.get("rate", "+8%"))
+        edge_pitch = sv.get("pitch", vcfg.get("pitch", "+0Hz"))
+        b_settings = sv.get("settings", vcfg.get("settings"))
         key = (sha("take", take_id, b["id"], say, lang, "t1") if take else
-               sha(provider, voice, say, vcfg.get("settings"), vcfg.get("model"), lang, edge_rate if provider == "edge" else "", "v3"))
+               sha(provider, b_voice, say, b_settings, vcfg.get("model"), lang, edge_rate if provider == "edge" else "", "v3")
+               + ("" if edge_pitch in ("", "+0Hz") or provider != "edge" else sha(edge_pitch)[:6]))
         raw_wav = cache / f"{key}.raw.wav"
         meta_p = cache / f"{key}.json"
         if take and not raw_wav.exists():
@@ -438,15 +450,15 @@ def main():
             mp3 = cache / f"{key}.mp3"
             native = None
             if provider == "edge":
-                wb = tts_edge(say, voice, mp3, want_words=not align_py, rate=edge_rate)
+                wb = tts_edge(say, b_voice, mp3, want_words=not align_py, rate=edge_rate, pitch=edge_pitch)
                 native = {"kind": "edge-wb", "words": wb} if wb else None
             elif provider == "elevenlabs":
-                native = {"kind": "eleven", "alignment": tts_elevenlabs(say, voice, env["ELEVENLABS_API_KEY"], mp3, vcfg.get("settings"), vcfg.get("model"))}
+                native = {"kind": "eleven", "alignment": tts_elevenlabs(say, b_voice, env["ELEVENLABS_API_KEY"], mp3, b_settings, vcfg.get("model"))}
             elif provider == "openai":
-                tts_openai(say, voice, env["OPENAI_API_KEY"], mp3, vcfg.get("instructions"))
+                tts_openai(say, b_voice, env["OPENAI_API_KEY"], mp3, sv.get("instructions", vcfg.get("instructions")))
             to_wav(mp3, raw_wav, SR)
             write_json(meta_p, {"say": say, "native": native})
-            log(f"  tts {b['id']}: {say[:70]}")
+            log(f"  tts {b['id']}{' [' + spk + ']' if spk else ''}: {say[:70]}")
         sr, x = read_wav_mono(raw_wav)
         x = trim_edges(x, sr)
         x, removed = tighten(x, sr, max_pause=vcfg.get("maxPause", 0.30), keep=vcfg.get("keepPause", 0.18))

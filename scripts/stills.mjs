@@ -11,6 +11,7 @@ import path from "node:path";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { bundle } from "@remotion/bundler";
+import { withGpuSlot } from "./lib/gpulock.mjs";
 import { renderStill, selectComposition } from "@remotion/renderer";
 
 const STUDIO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -30,7 +31,8 @@ const scale = Number(opt("--scale", "0.5"));
 const inputProps = JSON.parse(opt("--props", "{}"));
 
 export async function getBundle() {
-  const bdir = path.join(STUDIO, "out", "bundle-stills"); // separate from render.mjs so both can run at once
+  // separate from render.mjs so both can run at once; NOMEN_BUNDLE_DIR gives parallel jobs their own folder
+  const bdir = process.env.NOMEN_BUNDLE_DIR ? path.resolve(STUDIO, process.env.NOMEN_BUNDLE_DIR) : path.join(STUDIO, "out", "bundle-stills");
   return bundle({
     entryPoint: path.join(STUDIO, "src", "index.ts"),
     outDir: bdir,
@@ -40,8 +42,11 @@ export async function getBundle() {
 }
 
 const serveUrl = await getBundle();
-const comp = await selectComposition({ serveUrl, id, inputProps, chromiumOptions: { gl: "angle" } });
 let frames = [];
+const files = [];
+// one GPU slot for the whole Chrome session (other stills / renders wait: RAM and the iGPU are shared)
+await withGpuSlot(`stills ${id}`, async () => {
+const comp = await selectComposition({ serveUrl, id, inputProps, chromiumOptions: { gl: "angle" } });
 if (opt("--frames")) frames = opt("--frames").split(",").map(Number);
 else if (opt("--every")) for (let f = 0; f < comp.durationInFrames; f += Number(opt("--every"))) frames.push(f);
 else if (opt("--shots")) {
@@ -53,7 +58,6 @@ else if (opt("--shots")) {
 } else frames = [0, Math.floor(comp.durationInFrames / 2), comp.durationInFrames - 1];
 frames = [...new Set(frames.filter((f) => f >= 0 && f < comp.durationInFrames))].sort((a, b) => a - b);
 const t0 = Date.now();
-const files = [];
 for (const f of frames) {
   const output = path.join(outDir, `f${String(f).padStart(5, "0")}.jpg`);
   await renderStill({
@@ -73,6 +77,7 @@ for (const f of frames) {
   process.stdout.write(`  still ${f} `);
 }
 console.log(`\n${files.length} stills in ${((Date.now() - t0) / 1000).toFixed(1)}s -> ${outDir}`);
+});
 // contact sheet with frame numbers burned in
 const cols = Number(opt("--sheet", String(Math.min(4, files.length))));
 try {
