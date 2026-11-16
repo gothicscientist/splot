@@ -1,0 +1,38 @@
+# Records an ElevenLabs narration take on GitHub, where the key lives (repo secret KEYFORVIDS), and commits the
+# audio back to the branch that asked for it. Trigger: a push that changes videos/<slug>/voice/take-request.json.
+# See scripts/ci_eleven_take.py for the request shape. The bot's own commit does not re-trigger the workflow.
+name: voice-take
+on:
+  push:
+    paths:
+      - "videos/*/voice/take-request.json"
+permissions:
+  contents: write
+concurrency:
+  group: voice-take-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  take:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Record the take
+        env:
+          ELEVENLABS_API_KEY: ${{ secrets.KEYFORVIDS }}
+        run: |
+          files=$(git diff --name-only HEAD~1 HEAD -- 'videos/*/voice/take-request.json' || true)
+          [ -z "$files" ] && files=$(ls videos/*/voice/take-request.json 2>/dev/null || true)
+          python scripts/ci_eleven_take.py $files
+      - name: Commit the audio
+        run: |
+          git config user.name "voice-take bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f videos/*/voice/take.mp3 videos/*/voice/take.done.json 2>/dev/null || true
+          if git diff --cached --quiet; then echo "nothing to commit"; exit 0; fi
+          git commit -m "voice-take: record ElevenLabs take [skip ci]"
+          git push
