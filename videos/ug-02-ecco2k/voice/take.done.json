@@ -1,8 +1,9 @@
 {
- "id": "check-1",
+ "id": "take-1",
  "tier": "creator",
- "characters_left_before": 125288,
+ "characters_left_before": 124239,
  "voice": "Liam - Viral Short-Form Storyteller",
- "chars": 0,
- "check": true
+ "chars": 1290,
+ "check": false,
+ "bytes": 1847004
 }
