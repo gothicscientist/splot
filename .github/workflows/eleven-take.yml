@@ -1,0 +1,39 @@
+name: eleven-take
+# Records ElevenLabs narration takes for Nomen Studio with the KEYFORVIDS secret.
+# Each voice-job/<name>.json = {"voice": "<voice id>", "model": "<model id>", "text": "...", "settings": {...}}
+# -> artifact "take" with <name>.mp3. Triggered by a push to a voice/** branch.
+on:
+  push:
+    branches: ['voice/**']
+jobs:
+  tts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Models available to this key
+        env:
+          XI_KEY: ${{ secrets.KEYFORVIDS }}
+        run: |
+          curl -sS https://api.elevenlabs.io/v1/models -H "xi-api-key: $XI_KEY" | jq -r '.[] | "\(.model_id)  \(.name)"' || true
+      - name: Text to speech
+        env:
+          XI_KEY: ${{ secrets.KEYFORVIDS }}
+        run: |
+          set -euo pipefail
+          mkdir -p out
+          for job in voice-job/*.json; do
+            name=$(basename "$job" .json)
+            voice=$(jq -r .voice "$job")
+            jq -c '{text, model_id: .model} + (if .settings then {voice_settings: .settings} else {} end)' "$job" > body.json
+            code=$(curl -sS -o "out/$name.mp3" -w '%{http_code}' -X POST \
+              "https://api.elevenlabs.io/v1/text-to-speech/$voice?output_format=mp3_44100_192" \
+              -H "xi-api-key: $XI_KEY" -H 'Content-Type: application/json' --data @body.json)
+            echo "$name: HTTP $code, $(stat -c %s "out/$name.mp3") bytes"
+            if [ "$code" != "200" ]; then head -c 600 "out/$name.mp3"; echo; exit 1; fi
+          done
+          curl -sS https://api.elevenlabs.io/v1/user/subscription -H "xi-api-key: $XI_KEY" | jq '{character_count, character_limit, tier}' || true
+      - uses: actions/upload-artifact@v4
+        with:
+          name: take
+          path: out/
+          retention-days: 3
