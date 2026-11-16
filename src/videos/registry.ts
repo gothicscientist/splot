@@ -9,6 +9,8 @@ import { Video as V_eiffel_tower_con } from "./eiffel-tower-con/index";
 import V_eiffel_tower_con_T from "./eiffel-tower-con/timeline.json";
 import { Video as V_noise_cancelling } from "./noise-cancelling/index";
 import V_noise_cancelling_T from "./noise-cancelling/timeline.json";
+import { Video as V_tiff_01_the_quiz } from "./tiff-01-the-quiz/index";
+import V_tiff_01_the_quiz_T from "./tiff-01-the-quiz/timeline.json";
 
 export type VideoEntry = { id: string; component: React.FC<{ variant?: number }>; timeline: Timeline };
 export const VIDEOS: VideoEntry[] = [
@@ -16,4 +18,5 @@ export const VIDEOS: VideoEntry[] = [
   { id: "v-deepest-hole", component: V_deepest_hole, timeline: V_deepest_hole_T as unknown as Timeline },
   { id: "v-eiffel-tower-con", component: V_eiffel_tower_con, timeline: V_eiffel_tower_con_T as unknown as Timeline },
   { id: "v-noise-cancelling", component: V_noise_cancelling, timeline: V_noise_cancelling_T as unknown as Timeline },
+  { id: "v-tiff-01-the-quiz", component: V_tiff_01_the_quiz, timeline: V_tiff_01_the_quiz_T as unknown as Timeline },
 ];

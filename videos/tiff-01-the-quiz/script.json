@@ -1,0 +1,304 @@
+{
+ "slug": "tiff-01-the-quiz",
+ "title": "He quizzed me in a jacket I sold him",
+ "mode": "tiff",
+ "style": "stickworld",
+ "language": "en",
+ "fps": 30,
+ "channel": "tiff",
+ "series": {
+  "name": "Tiff",
+  "episode": 1
+ },
+ "voice": {
+  "provider": "auto",
+  "voice": "en-US-AvaMultilingualNeural",
+  "rate": "+12%",
+  "wpm": 192,
+  "cast": {
+   "gatekeeper": {
+    "voice": "en-US-GuyNeural",
+    "rate": "+10%"
+   }
+  }
+ },
+ "music": {
+  "mood": "plugg"
+ },
+ "captions": {
+  "preset": "lower"
+ },
+ "pronounce": {
+  "pileGo": "pile go"
+ },
+ "defaultTransition": "whip",
+ "hooks": [
+  {
+   "text": "He quizzed me on underground rap, wearing a jacket I *sold* him.",
+   "family": "D1 in-medias-res paradox",
+   "score": 88,
+   "chosen": true
+  },
+  {
+   "text": "POV: a guy quizzes you on underground rap in your own jacket.",
+   "family": "M1 POV",
+   "score": 83
+  },
+  {
+   "text": "The guy who gatekept me was wearing my old jacket.",
+   "family": "A1 curiosity gap",
+   "score": 82
+  },
+  {
+   "text": "A guy made me name three unreleased songs to prove I'm real.",
+   "family": "J1 challenge",
+   "score": 80
+  },
+  {
+   "text": "He offered me $4 for a jacket he called archive.",
+   "family": "B1 shock-number",
+   "score": 78
+  },
+  {
+   "text": "A guy at the show tried to quiz me. Wrong girl.",
+   "family": "F4 role-reversal (mode)",
+   "score": 77
+  }
+ ],
+ "hookVariants": [
+  {
+   "id": "v1",
+   "visual": "frame 0: the show (club light), a two-shot at eye level: the gatekeeper mid-point at Tiff, a dashed tomato cutout outline already pulsing around his jacket, Tiff deadpan; text hook 'he's wearing my jacket' in the top band"
+  },
+  {
+   "id": "v2",
+   "visual": "frame 0: tight on the gatekeeper's jacket and pointing hand with the dashed outline; the camera pulls back to the two-shot by 'jacket'; same text hook"
+  },
+  {
+   "id": "v3",
+   "visual": "frame 0: Tiff's MCU deadpan with his pointing finger entering from screen left; a whip to the two-shot on 'jacket'; same text hook"
+  }
+ ],
+ "plug": {
+  "pattern": "habit",
+  "beats": [
+   "b12",
+   "b13"
+  ]
+ },
+ "beats": [
+  {
+   "id": "b01",
+   "shot": "s01",
+   "role": "hook",
+   "text": "He quizzed me on underground rap, wearing a jacket I *sold* him.",
+   "visual": "The show, club light, crowd bouncing behind. Two-shot: the gatekeeper (fur trapper, leather jacket) points in Tiff's face; a dashed tomato cutout outline pulses around his jacket; Tiff deadpan. Text hook 'he's wearing my jacket' from frame 0. Slow push.",
+   "sfx": [
+    {
+     "at": "jacket",
+     "sound": "glitch",
+     "gain": -21
+    }
+   ],
+   "ambience": [
+    "crowd_cheer"
+   ]
+  },
+  {
+   "id": "b02",
+   "shot": "s02",
+   "speaker": "gatekeeper",
+   "transition": "whip-right",
+   "text": "Name three *unreleased* songs, or you're a larper.",
+   "visual": "MCU on the gatekeeper, smug, talking, finger up counting; a speech bubble 'name 3 unreleased' pops on 'unreleased'.",
+   "sfx": [],
+   "ambience": [
+    "crowd_cheer"
+   ]
+  },
+  {
+   "id": "b03",
+   "shot": "s02",
+   "text": "So I name four, with the *leak dates*, before he blinks.",
+   "visual": "Whip to Tiff's MCU, unimpressed; four lowercase tags pop around her one per beat: 'leak · 03.14', 'snippet · 05.02', 'demo · 06.30', 'the deleted one · 08.09'; on 'blinks' cut to his frozen shocked face.",
+   "sfx": [
+    {
+     "at": "four",
+     "sound": "tick",
+     "gain": -20
+    },
+    {
+     "at": "blinks",
+     "sound": "boing",
+     "gain": -20
+    }
+   ]
+  },
+  {
+   "id": "b04",
+   "shot": "s03",
+   "speaker": "gatekeeper",
+   "transition": "push",
+   "text": "Okay, but that fit is probably *reps*.",
+   "visual": "Full shot at eye level: he squints at her with a magnifier like a legit check; a red 'LC?' tag hovers by her (never a leg or body close-up).",
+   "sfx": [
+    {
+     "at": "probably",
+     "sound": "scan_beep",
+     "gain": -20
+    }
+   ]
+  },
+  {
+   "id": "b05",
+   "shot": "s03",
+   "text": "It's retail. I keep receipts like a *tax office*.",
+   "visual": "Tiff MCU, smug; a stack of receipts unrolls down the frame beside her; a 'retail' tag pops.",
+   "sfx": [
+    {
+     "at": "receipts",
+     "sound": "cash",
+     "gain": -20
+    }
+   ]
+  },
+  {
+   "id": "b06",
+   "shot": "s03",
+   "speaker": "gatekeeper",
+   "text": "This jacket is real *archive*. You wouldn't know.",
+   "visual": "He strikes a pose (hands on hips), chin up; a gold 'ARCHIVE' tag sparkles on his jacket.",
+   "sfx": [
+    {
+     "at": "archive",
+     "sound": "sparkle",
+     "gain": -20
+    }
+   ]
+  },
+  {
+   "id": "b07",
+   "shot": "s04",
+   "transition": "push",
+   "text": "Except I know that jacket. It lived on my *chair*.",
+   "visual": "Push in on the jacket; the dashed cutout outline locks onto it; on 'chair' a flash and the jacket's outline lands on top of Tiff's clothes chair at home.",
+   "sfx": [
+    {
+     "at": "chair",
+     "sound": "record_scratch",
+     "gain": -14
+    }
+   ]
+  },
+  {
+   "id": "b08",
+   "shot": "s05",
+   "transition": "flash",
+   "text": "I listed it last month: mall brand, worn twice, *$40*.",
+   "visual": "Tiff's bedroom (plum walls, the chair buried in clothes, the jacket on top). A plain listing card pops: 'faux leather jacket · mall brand · worn twice' $40.",
+   "sfx": [
+    {
+     "at": "listed",
+     "sound": "pop",
+     "gain": -19
+    }
+   ]
+  },
+  {
+   "id": "b09",
+   "shot": "s05",
+   "text": "He offered *$4* first, then paid the full $40.",
+   "visual": "A DM thread slides up: 'would u do $4' / 'no' / 'ok fine $40'; the listing card gets a SOLD stamp on the second '$40'.",
+   "sfx": [
+    {
+     "at": "first",
+     "sound": "pop",
+     "gain": -19
+    },
+    {
+     "at": "full",
+     "sound": "stamp",
+     "gain": -18
+    }
+   ]
+  },
+  {
+   "id": "b10",
+   "shot": "s06",
+   "transition": "whip-left",
+   "text": "I tell him: that's not archive. That's my *chair*.",
+   "visual": "Back at the show: Tiff MCU, deadpan, leaning in; on 'chair' cut to the two-shot: his face drops (shocked), the crowd behind turns to look.",
+   "sfx": [
+    {
+     "at": "chair",
+     "sound": "impact",
+     "gain": -15
+    }
+   ],
+   "ambience": [
+    "crowd_cheer"
+   ]
+  },
+  {
+   "id": "b11",
+   "shot": "s06",
+   "speaker": "gatekeeper",
+   "text": "Cool. Would you do *$30* for the boots?",
+   "visual": "His MCU with a nervous smile, already holding up his phone; a speech bubble '$30 for the boots?' pops.",
+   "sfx": [
+    {
+     "at": "boots",
+     "sound": "boing",
+     "gain": -19
+    }
+   ],
+   "ambience": [
+    "crowd_cheer"
+   ]
+  },
+  {
+   "id": "b12",
+   "shot": "s07",
+   "role": "plug",
+   "transition": "dip",
+   "text": "Back home, I snap the chair. *Listed.*",
+   "visual": "Tiff's bedroom at night, medium shot: she raises her phone at the clothes chair; the relist snap: viewfinder corners close on the chair, shutter flash on 'snap', the deadpan 'listed.' stamp on 'Listed'.",
+   "sfx": [
+    {
+     "at": "snap",
+     "sound": "shutter",
+     "gain": -17
+    },
+    {
+     "at": "listed",
+     "sound": "ding",
+     "gain": -17
+    }
+   ]
+  },
+  {
+   "id": "b13",
+   "shot": "s07",
+   "role": "plug",
+   "text": "*pileGo!* puts the whole chair live on five apps.",
+   "visual": "The pileGo! phone slides up: real cutouts, drafts, 'Live on 5', one sells, 'down everywhere else'; behind it pieces hop off the chair one by one; a small pileGo! bug top-left.",
+   "sfx": [
+    {
+     "at": "five",
+     "sound": "notify",
+     "gain": -19
+    }
+   ]
+  },
+  {
+   "id": "b14",
+   "shot": "s08",
+   "role": "kicker",
+   "transition": "push",
+   "text": "So: $30 for the boots. Accept, counter, or *block*?",
+   "visual": "Tiff MCU on her bed, unimpressed, phone in hand; three choice tags 'accept / counter / block' pop on their words; then the pileGo! end card.",
+   "sfx": [],
+   "pause": 1.4
+  }
+ ]
+}

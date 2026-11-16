@@ -34,6 +34,9 @@ Scoring guide: 10 = indistinguishable from a top outlier in the niche; 8 = shipp
 
 ## Ban list (any hit is at least a P1; name it)
 - Purple/blue gradient backgrounds; glow halos on everything; particles as decoration; navy space + bloom.
+  Exemption: in **Glowvector** a dark field with haze and glow-lit subjects is the style's signature (see
+  `styles/glowvector-bible.md`), and in **Atlas** a dark ocean/space field is the base map. Judge those by whether
+  the subject leads (brightest, largest, sharpest), not by the background colour.
 - Fade-and-slide-up on every element; the same ease everywhere; bounce on text or UI; titles that keep moving after
   they land; breathing/floating loops on text.
 - Centred text on a flat background; three cards in a row; cream paper + serif + mono labels; a docked logo; an
@@ -41,6 +44,26 @@ Scoring guide: 10 = indistinguishable from a top outlier in the niche; 8 = shipp
 - A static hold of 4+ frames; a blank or near-blank frame; a first frame without the subject.
 - Captions that restate on-screen text word for word in the same place; full stops in captions.
 - Real brands, real people's likenesses, copyrighted characters, Mojang textures, the word "Minecraft" on screen.
+
+## Story modes (`tiff`, `ug-rap`): exemptions and extra checks
+Exemptions: **pileGo!** is the owner's own app, so its wordmark, tag mark and UI are expected on screen (from ~70 % of
+the runtime on). Marketplace names as plain text (eBay, Vinted, Depop, Poshmark, Mercari) are fine; their logos are
+not. A show / club set (`look="club"`) whose stage wash comes from visible truss lights and haze is a lit source, not
+a decorative purple gradient: judge it by whether the characters lead.
+Extra checks (each hit is a **P0**):
+- **Tiff framing:** any shot whose subject is her body instead of her face and attitude (torso-centred frame, a low
+  angle looking up, a slow move over the figure, a pose that reads as suggestive); her face under the caption band.
+  She must also stay on model: silver-lavender hair, blue eyes, black choker, black tank, frayed jean shorts, black
+  boots (unless the script changes her fit on purpose).
+- **The plug:** app UI, logo or a spoken "pileGo!" before ~70 % of the runtime (a chair pile in the background is fine);
+  the plug interrupting the story instead of paying it off; a hard CTA on screen; more than two spoken mentions.
+- **Real people:** a real artist (or anyone real) shown, named or implied as using or endorsing pileGo! or anything;
+  a stand-in drawn with a real artist's signature look (hair, tattoos, mask, outfit) in a `scenario` episode.
+- **Trademarks:** a real brand's logo, monogram or signature graphic on any garment, sign or screen.
+Niche lens (score it under **hook** and **story clarity**): read the "Cringe, poser tells and hard avoids" sections of
+`skills/reel/references/niche/*.md`. Would someone from this scene clown the video in the comments: dated or misused
+slang, a wrong fact about an artist, a poser tell, a joke that only works because the app shows up? The joke must land
+with the plug cut out.
 
 ## Readability traps (check each style's list too)
 - A figure on one rope reads as a hanging; a prop next to a hand reads as the hand; a foreground bush reads as a

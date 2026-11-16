@@ -1,0 +1,969 @@
+{
+ "topic": "Second-hand selling culture on Depop, Vinted, Grailed, eBay, Poshmark and Vestiaire as seen on TikTok and Instagram, 2025-2026: seller pain points (relisting, cross-listing, lowballers, returns, scams, fees, algorithm folklore), joke and meme formats, existing cross-listing and relisting tools, and what each platform's terms say about bots, automation and third-party tools",
+ "summary": "Every app rewards fresh or active listings, which is why relisting is a grind. Vinted's official recommender disclosure lists time since upload and says it promotes new listings. Depop gives newer items only a slight edge. Grailed allows a free bump every 7 days for the first 30 days, then only after a 10% price cut. Poshmark runs on sharing.\n\nThe platforms police automated relisting hard, so the owner's 'one-click AI relisting' pitch has to be framed carefully:\n- **Vinted** (T&Cs from 8 Oct 2026) bans external tools (bots, scrapers) unless Vinted authorises them. It also bans deleting and re-listing the same item several times, or many items in bulk. Its rules say photos must be yours and unedited, and standard accounts may not run a reselling business (Pro is needed, and Pro does not exist in the US). Vendors report 24-hour 'automated activity' restrictions since July 2026. Crosslist stopped supporting Vinted for new users in Nov 2026. The only sanctioned automation is Vinted Pro Integrations, which is limited to allowlisted Pro businesses.\n- **Poshmark** bans unauthorised automation, explicitly including deleting and reposting, sharing and following. Since May 2025 it suspends listing privileges for repeated removal or relisting within 60 days.\n- **Grailed** (ToS of 3 Sep 2026) bans apps, browser extensions, plugins and third-party tools that touch Grailed without its prior written consent.\n- **eBay** bans bots, including LLM-driven bots, without permission. It offers official listing APIs.\n- **Depop** explicitly allows third-party cross-listing platforms if you delist promptly and own any double-sale. It bans bots and other third-party software on the service. Its US terms from 1 Jan 2027 copy eBay's ban on LLM-driven bots and automated access. eBay completed its purchase of Depop on 30 Jul 2026.\n\nFees:\n- Depop (UK/US/AU) and Vinted charge sellers nothing; buyers pay fees instead, and Vinted's 'Buyer Protection fee' was renamed the 'Vinted fee' in Oct 2026.\n- Depop Boost costs 12% and is charged even if the buyer only saw the boosted tile.\n- Grailed takes 6% under $120 and 9% above (since 20 May 2026).\n- Poshmark takes 20% (a flat $2.95 under $15).\n- Vestiaire caps total seller fees at 30%, with a minimum of 15.\n\nNative AI listing tools already exist: eBay's camera-first listing (Nov 2026), Poshmark Smart List AI (Jan 2025), and Depop's AI description tools plus Repop. The owner's edge therefore has to be cross-platform drafting with human review and keeping inventory in sync, not 'bots'.\n\nCulture:\n- Recurring TikTok formats include lowball rants, revenue breakdowns, 'pack an order with me', hauls, mystery-bale unboxings, fake-spotting and scam storytimes, and 'Vinted addiction' posts (Dazed, Nov 2026: 17.4M UK users).\n- 'Archive' has become a catch-all keyword (NYT: 38k+ Grailed listings). 'Ballhog' is now one too. My 15 Nov 2026 snapshot found about 6.97K Depop US results, 321 on Vinted UK and 40 on Grailed. These are often mall brands (Zara, Hollister, Uniqlo, Levi's) with 'ballhog', 'archive', designer or underground-rapper names stacked in the title. Depop and Vinted both penalise or ban that.\n\nGen Z buyers distrust AI-edited photos (OfferUp 2026: 68%), so the AI should write honest text and not touch photos.\n\nCaveat: the shared web-search quota ran out near the end. Meme evidence rests on fewer sources (a handful of TikTok pages plus Dazed, NYT and Yahoo) than the policy evidence, which comes mostly from primary policy pages opened directly.",
+ "findings": [
+  {
+   "kind": "rule",
+   "name": "Depop: cross-listing tools allowed, bots not",
+   "claim": "Depop's Terms of Service cover three versions: current (Oct 2026), US from 1 Jan 2027 and Rest of World from 1 Jan 2027. All three ban modifying, scraping or crawling the service and using bots or other third-party software on it. All three also expressly let sellers list the same items on other marketplaces through third-party cross-listing platforms, on three conditions: they follow Depop's Terms, they remove the Depop listing promptly when the item sells elsewhere, and they accept full responsibility if it sells twice, including refunding the buyer.",
+   "sources": [
+    "https://depophelp.zendesk.com/hc/en-gb/articles/360001773148-Terms-of-Service",
+    "https://listperfectly.com/selling/depop-terms-of-service-update-2026/"
+   ],
+   "confidence": "high",
+   "asOf": "2026-11-15",
+   "usage": "The safe Depop pitch is cross-listing plus instant delisting when an item sells. A double-sale is literally Tiffany's liability under Depop's rules, which makes it a good plot beat."
+  },
+  {
+   "kind": "rule",
+   "name": "Depop US terms from 1 Jan 2027: no automated access, no LLM bots",
+   "claim": "The US Terms effective 1 January 2027 add a ban on robots, spiders, scrapers, data tools or other automated means used to access Depop for any purpose without Depop's prior express permission. The ban explicitly names buy-for-me agents, LLM-driven bots and end-to-end flows that place orders without human review. The wording matches eBay's User Agreement, and the same US Terms say eBay pays the batch-arbitration administrator's fees.",
+   "sources": [
+    "https://depophelp.zendesk.com/hc/en-gb/articles/360001773148-Terms-of-Service",
+    "https://www.ebay.com/help/policies/member-behaviour-policies/user-agreement?id=4259"
+   ],
+   "confidence": "high",
+   "asOf": "2026-11-15",
+   "usage": "Never market an 'AI agent that relists on Depop by itself' for US users. Show Tiffany tapping approve."
+  },
+  {
+   "kind": "rule",
+   "name": "Depop: no outside links, on-platform payment only, one account",
+   "claim": "Depop's Terms ban linking to third-party websites, apps or platforms, require every purchase to go through Depop Payments, and ban running more than one account (unless agreed), coordinating prices with other sellers, and listing items you don't possess (dropshipping).",
+   "sources": [
+    "https://depophelp.zendesk.com/hc/en-gb/articles/360001773148-Terms-of-Service"
+   ],
+   "confidence": "high",
+   "asOf": "2026-11-15",
+   "usage": "Promote the app in the TikTok or Story itself, never inside Tiffany's listing or bio on Depop. Never show 'DM me, pay by PayPal'."
+  },
+  {
+   "kind": "rule",
+   "name": "Depop: honest listings rank, keyword spam hurts",
+   "claim": "Depop's Community Guidelines require original images (no stock photos or copied listings) and tell sellers to avoid misleading titles and irrelevant hashtags. Its ranking help says that adding information unrelated to the item, such as a brand you aren't selling, can hurt exposure. Listings or sellers that break policy may be ranked lower or removed.",
+   "sources": [
+    "https://depophelp.zendesk.com/hc/en-gb/articles/360026370634-Community-Guidelines",
+    "https://depophelp.zendesk.com/hc/en-gb/articles/360050410093-Improving-the-search-ranking-of-your-items",
+    "https://depophelp.zendesk.com/hc/en-gb/articles/9422984899985-How-Depop-ranks-search-results-and-recommends-listings"
+   ],
+   "confidence": "high",
+   "asOf": "2026-11-15",
+   "usage": "Have the AI 'refuse' to stuff 'Rick Owens style' into a Zara title. It is funny, and it matches the rules."
+  },
+  {
+   "kind": "rule",
+   "name": "Depop ranking factors (official)",
+   "claim": "For relevance search, Depop weighs:\n- how well the listing matches the search (description, brand, category, colour)\n- popularity (views, likes, adds to bag)\n- the seller's country\n- the buyer's habits\n- listing age (newer items get only a slight edge)\n- the seller's sales and views\n- whether the item is boosted\n- policy compliance\n\nTop Seller or verified status has no effect on ranking. Sorting by price or newest only checks relevance and location first. Depop says boosts are the only paid way to rank higher.",
+   "sources": [
+    "https://depophelp.zendesk.com/hc/en-gb/articles/9422984899985-How-Depop-ranks-search-results-and-recommends-listings",
+    "https://depophelp.zendesk.com/hc/en-gb/articles/360050410093-Improving-the-search-ranking-of-your-items"
+   ],
+   "confidence": "high",
+   "asOf": "2026-11-15",
+   "usage": "The 'relist to bump' belief is only half true. My inference: a fresh copy gains a small recency edge but restarts at zero likes and views, which Depop counts as popularity."
+  },
+  {
+   "kind": "rule",
+   "name": "Depop fees and Boost 2026",
+   "claim": "Sellers in the UK, US and Australia pay no Depop selling fee, only payment processing (2.9% + £0.30 UK, 3.3% + $0.45 US, 2.6% + A$0.30 AU). Sellers elsewhere pay 10%. UK and US buyers pay a Marketplace fee of up to 5% plus up to £/$1 (since 15 Apr 2024 in the UK and 18 Jul 2024 in the US). Boosted Listings cost 12% in the UK and US (from 23 Mar 2026) and 8% in Australia. The fee applies if a buyer saw the boosted tile, even without clicking, and bought within 28 days. 'Boost shop' auto-boosts every new listing.",
+   "sources": [
+    "https://depophelp.zendesk.com/hc/en-gb/articles/360001791127-What-about-fees-",
+    "https://depophelp.zendesk.com/hc/en-gb/articles/21752555753361-Marketplace-fee-for-buyers",
+    "https://depophelp.zendesk.com/hc/en-gb/articles/9253129255569-Boosted-Listings-Policy"
+   ],
+   "confidence": "high",
+   "asOf": "2026-11-15",
+   "usage": "Joke: 'I got charged because someone looked at it.' Keep fee numbers out of ads, since they change often."
+  },
+  {
+   "kind": "tool",
+   "name": "Depop's native AI listing tools and Repop",
+   "claim": "Depop's Terms say it may offer AI tools that generate descriptions or suggestions from what you upload. Repop pre-fills a new listing from the original listing of something you bought on Depop (single items only, normal fees). The seller stays responsible for the accuracy of any AI or Repop content.",
+   "sources": [
+    "https://depophelp.zendesk.com/hc/en-gb/articles/12803766422289-Repop",
+    "https://depophelp.zendesk.com/hc/en-gb/articles/360001773148-Terms-of-Service"
+   ],
+   "confidence": "high",
+   "asOf": "2026-11-15",
+   "usage": "Competitor baseline: Depop's tools work on one platform only. The owner's angle is draft once, post to several apps, keep stock in sync."
+  },
+  {
+   "kind": "brand",
+   "name": "eBay now owns Depop",
+   "claim": "eBay announced the purchase of Depop from Etsy on 18 Feb 2026 and completed it on 30 Jul 2026, for a headline price of about $1.2B (about $1.4B with adjustments). Depop keeps its brand, app, culture and CEO Peter Semple. At the end of 2025 Depop had about 7M active buyers, 3M+ active sellers, about $1B in 2025 GMS and roughly 60% US growth; nearly 90% of its buyers are under 34.",
+   "sources": [
+    "https://investors.ebayinc.com/investor-news/press-release-details/2026/eBay-Completes-Acquisition-of-Depop/default.aspx",
+    "https://fashionunited.com/news/business/ebay-completes-1-4-billion-dollar-depop-acquisition/2026073073828"
+   ],
+   "confidence": "high",
+   "asOf": "2026-07-30",
+   "usage": "Light running gag ('Depop's new stepdad'). Expect Depop's rules to move toward eBay's; that is already visible in the 2027 terms."
+  },
+  {
+   "kind": "rule",
+   "name": "Vinted T&Cs (8 Oct 2026): no bots, no bulk delete-and-relist",
+   "claim": "Vinted's UK and US user T&Cs (new version from 8 Oct 2026) ban any external software tools, including bots, scrapers, crawlers and spiders, when registering or using Vinted, explicitly including for promoting items or adding favourites, unless Vinted authorises or offers them. They also ban disruptive tools, data mining and scraping. They ban deleting and re-listing the same item several times, or many items in bulk, and promoting other websites or companies on Vinted.",
+   "sources": [
+    "https://www.vinted.co.uk/terms_and_conditions",
+    "https://www.vinted.com/terms_and_conditions"
+   ],
+   "confidence": "high",
+   "asOf": "2026-11-15",
+   "usage": "The biggest red flag for any 'relisting' claim on Vinted. Do not show Tiffany mass-reposting on Vinted."
+  },
+  {
+   "kind": "rule",
+   "name": "Vinted Catalogue Rules: one listing per item, your own unedited photos",
+   "claim": "Vinted's Catalogue Rules require one listing per item, ban uploading items already sold or unavailable, and ban references or links to external websites or platforms in listings and profiles. Photos must be taken by you for Vinted and show the item as it is: no image editing, and no stock, ad or watermarked images (up to 20 photos). Putting unrelated brands in the brand field, title, description or hashtags is banned, as is 'inspired by' followed by a brand. Auctions and bidding are not allowed. The T&Cs add that neither photos nor descriptions may be taken from the internet.",
+   "sources": [
+    "https://www.vinted.co.uk/catalog-rules",
+    "https://www.vinted.co.uk/terms_and_conditions"
+   ],
+   "confidence": "high",
+   "asOf": "2026-11-15",
+   "usage": "Never promise AI photo enhancement or background swaps for Vinted. On Vinted the AI should only write honest text."
+  },
+  {
+   "kind": "rule",
+   "name": "Vinted: standard accounts can't run a reselling business",
+   "claim": "Vinted's commercial selling policy says standard accounts are private and non-commercial. A standard seller cannot list items bought or sourced to resell, earn a regular income from reselling, or run a reselling business, even with a registered company. Commercial sellers need Vinted Pro, which is offered in European markets but not in the US. The US T&Cs say the service is for personal benefit only.",
+   "sources": [
+    "https://www.vinted.co.uk/catalog-rules",
+    "https://www.vinted.com/terms_and_conditions",
+    "https://www.valueaddedresource.net/vinted-us-uk-australia-terms-october-2026/"
+   ],
+   "confidence": "high",
+   "asOf": "2026-11-15",
+   "usage": "On Vinted, write Tiffany as rotating her own archive wardrobe, not as a bale-flipper on a standard account."
+  },
+  {
+   "kind": "rule",
+   "name": "Vinted's 2026 automation crackdown (vendor-reported)",
+   "claim": "Tool vendors report 24-hour 'automated activity' restrictions starting around 21 Jul 2026, triggered by bursts of relists, messages or favourites, with false positives. They also report stricter enforcement since Sep 2026. Crosslist says Vinted has authorised no consumer cross-listing app, that even form-filling tools count as automation, and that it no longer supports Vinted for new users (Nov 2026). Text embedded in Vinted's own site (its appeal flow) says relisting sold, removed or previously listed items without meaningful changes, or posting identical or slightly altered duplicates, is not allowed.",
+   "sources": [
+    "https://www.redrip.app/en/blog/vinted-automation-restriction-2026/",
+    "https://crosslist.com/blog/does-vinted-allow-resellers",
+    "https://www.vinted.co.uk/terms_and_conditions"
+   ],
+   "confidence": "medium",
+   "asOf": "2026-11-13",
+   "usage": "Strong evidence not to market 'auto-relist for Vinted'. If Vinted is shown at all, show a human posting a drafted listing."
+  },
+  {
+   "kind": "tool",
+   "name": "Vinted Pro Integrations API (the only sanctioned automation)",
+   "claim": "Vinted's official Pro Integrations API (item create/update/delete, orders, shipping labels, webhooks) is available only to a limited set of allowlisted Vinted Pro businesses. Users start with 500 active item slots, can send up to 100 items per request, and must price in EUR or GBP. Vinted's own interface says only selected Pro sellers may apply.",
+   "sources": [
+    "https://pro-docs.svc.vinted.com/",
+    "https://www.vinted.co.uk/terms_and_conditions"
+   ],
+   "confidence": "high",
+   "asOf": "2026-11-15",
+   "usage": "The compliant route if the owner wants Vinted in scope, for EU/UK business sellers only."
+  },
+  {
+   "kind": "rule",
+   "name": "Vinted fees and paid visibility",
+   "claim": "Sellers pay no selling fee. Buyers pay the 'Vinted fee': the Buyer Protection fee renamed in the T&Cs of 5 Oct 2026 (Europe) and 8 Oct 2026 (UK/US/AU), calculated the same way. In the UK it is typically 3–8% plus £0.30–£0.80. Sellers can buy Bumps lasting 3 or 7 days; the price depends on the item's price, and a bumped item's price can be lowered but not raised. Sellers can also buy Showcase, a paid wardrobe promotion that appears to be the new name for Wardrobe Spotlight. Buyers can add Item Verification (£10) or Electronics Verification (£5).",
+   "sources": [
+    "https://www.vinted.com/help/1653",
+    "https://www.vinted.co.uk/pricelist",
+    "https://www.vinted.co.uk/help/340-what-is-item-bump",
+    "https://www.valueaddedresource.net/vinted-us-uk-australia-terms-october-2026/"
+   ],
+   "confidence": "high",
+   "asOf": "2026-11-15",
+   "usage": "The 'Bumped' badge is all over Vinted search, so it is great visual comedy."
+  },
+  {
+   "kind": "rule",
+   "name": "Vinted's official ranking factors: freshness is real",
+   "claim": "Vinted's recommender disclosure lists these factors:\n- time since upload\n- interactions (impressions, favourites, clicks)\n- location and language\n- price\n- item attributes (brand, size, colour, photos)\n- condition\n- descriptions\n- seller type\n- the buyer's following list\n\nVinted says it promotes new listings and paid Bumps and Showcase. When a seller uploads many items in a short time, it shows them in proportion ('listing frequency'). Measures against illegal content can also reduce the visibility of legitimate listings.",
+   "sources": [
+    "https://www.vinted.co.uk/help/409-recommended-content-on-vinted"
+   ],
+   "confidence": "high",
+   "asOf": "2026-11-15",
+   "usage": "Explains why Tiffany is tempted to re-upload, and why dumping 50 items at midnight doesn't work."
+  },
+  {
+   "kind": "rule",
+   "name": "Vinted refunds and SNAD",
+   "claim": "Buyers have 2 calendar days after the delivery notice to report a problem; otherwise payment goes to the seller. Returns must be posted within 5 business days. Buyers pay return postage unless the seller covers it. Payments outside 'Buy now' are not covered. SNAD (significantly not as described) is the core dispute category.",
+   "sources": [
+    "https://www.vinted.co.uk/help/465-the-vinted-refund-policy",
+    "https://www.vinted.co.uk/terms_and_conditions"
+   ],
+   "confidence": "high",
+   "asOf": "2026-11-15",
+   "usage": "A '48 hours of terror' beat: Tiffany refreshing to see whether the buyer pressed 'everything is OK'."
+  },
+  {
+   "kind": "rule",
+   "name": "Vinted is 18+, and the UK is considering an under-16 ban",
+   "claim": "Vinted's T&Cs require users to be 18 or over (parents may open supervised accounts for minors). In Nov 2026, nss magazine, citing BBC reporting, said the UK government was considering banning under-16s from Vinted and eBay, possibly also Depop and Facebook Marketplace, as part of a digital-safety plan. Vinted welcomed dialogue and eBay said it is engaging; no decision had been made.",
+   "sources": [
+    "https://www.vinted.co.uk/terms_and_conditions",
+    "https://www.nssmag.com/en/fashion/47663/is-vinted-addiction-really-a-thing"
+   ],
+   "confidence": "medium",
+   "asOf": "2026-11-12",
+   "usage": "Tiffany must clearly read as an adult. Avoid school settings and teen-coded framing."
+  },
+  {
+   "kind": "rule",
+   "name": "Grailed ToS (3 Sep 2026): written consent needed for extensions and tools",
+   "claim": "Grailed's Terms ban robots, scrapers, crawlers and AI/ML systems (including LLMs) used to access or extract its content. They ban automated offer, bidding or buying tools that act without a person starting and reviewing each transaction. They also ban developing or using apps, browser extensions, plugins or third-party tools that interact with Grailed without Grailed's prior written consent, and ignoring robots.txt. Steering users to competitors counts as off-site activity.",
+   "sources": [
+    "https://www.grailed.com/about/terms"
+   ],
+   "confidence": "high",
+   "asOf": "2026-09-03",
+   "usage": "Do not claim Grailed support without Grailed's written OK. Cross-listing extensions are exactly what the clause targets."
+  },
+  {
+   "kind": "rule",
+   "name": "Grailed bumps, price drops and fees",
+   "claim": "Grailed sellers can bump a listing every 7 days during its first 30 days. After that, bumping requires a price cut of 10% or more, which also notifies everyone who favourited the item. Grailed's selling guide advises against automatic bumping, recommends a price drop instead, and says most items sell after about two drops. Commission is 9% at $120 and above and 6% under $120 (minimum $1.99) for sales from 20 May 2026, plus a separate processing fee. Buyer-paid shipping counts toward the price tier unless a Grailed Label is used.",
+   "sources": [
+    "https://support.grailed.com/hc/en-us/articles/30299286841101-Listing-FAQ",
+    "https://www.grailed.com/how-to-sell/dropping-and-bumping",
+    "https://support.grailed.com/hc/en-us/articles/30282580172045-What-are-the-fees"
+   ],
+   "confidence": "high",
+   "asOf": "2026-11-15",
+   "usage": "Jokes: '$119.99 is financial literacy', and 'Grailed literally told me to drop the price'."
+  },
+  {
+   "kind": "rule",
+   "name": "Poshmark: no automation, including deleting and reposting",
+   "claim": "Poshmark's Community Guidelines allow human helpers but ban unauthorised programs or automation. The ban explicitly covers deleting and reposting, liking, sharing, following and unfollowing, and excessive reposting of the same item counts as spam. The ToS also ban automated data collection and implying that Poshmark endorses you without its written consent.",
+   "sources": [
+    "https://poshmark.com/community_guidelines",
+    "https://poshmark.com/terms",
+    "https://www.valueaddedresource.net/poshmark-bulk-sharing-comeback/"
+   ],
+   "confidence": "high",
+   "asOf": "2026-11-15",
+   "usage": "Auto-relisting on Poshmark is off-limits in marketing. Don't imply any partnership."
+  },
+  {
+   "kind": "rule",
+   "name": "Poshmark Excessive Listing Removal policy (May 2025)",
+   "claim": "Since about 1 May 2025, Poshmark has penalised repeatedly removing or relisting the same items within 60 days, and mass removals, whether manual or automated, with a suspension of listing privileges of at least 6 days. Cross-listers reported being hit for deleting items that had sold elsewhere, and Poshmark advised spacing out deletions. In Nov 2025, mass listing deletions and suspensions hit sellers who used third-party services. They were reversed, but no full post-mortem was published. Poshmark removed Bulk Sharing and then announced its return in Dec 2025.",
+   "sources": [
+    "https://www.modernretail.co/technology/i-followed-their-rules-and-was-hit-anyway-poshmark-sellers-voice-frustrations-with-new-excessive-listing-policy/",
+    "https://www.valueaddedresource.net/poshmark-bulk-sharing-comeback/"
+   ],
+   "confidence": "high",
+   "asOf": "2025-12-15",
+   "usage": "Even delisting after a sale is risky on Poshmark. Any 'sync' feature must pace its deletions."
+  },
+  {
+   "kind": "rule",
+   "name": "Poshmark fees",
+   "claim": "Listing on Poshmark is free. Poshmark keeps a flat $2.95 on sales under $15 and 20% on sales of $15 or more.",
+   "sources": [
+    "https://poshmark.com/terms?poshmark=fee-policy#fee-policy"
+   ],
+   "confidence": "high",
+   "asOf": "2026-11-15"
+  },
+  {
+   "kind": "rule",
+   "name": "eBay: bots banned, official APIs allowed, one listing per identical item",
+   "claim": "eBay's User Agreement (current version effective 28 Jun 2026) bans robots, scrapers and other automated access, explicitly including buy-for-me agents, LLM-driven bots and order flows without human review, unless eBay gives express permission. eBay's official Inventory API lets third-party apps create seller inventory and publish it as eBay listings. The Duplicate listings policy allows only one fixed-price listing of an identical item at a time per seller.",
+   "sources": [
+    "https://www.ebay.com/help/policies/member-behaviour-policies/user-agreement?id=4259",
+    "https://developer.ebay.com/api-docs/sell/inventory/overview.html",
+    "https://www.ebay.com/help/policies/listing-policies/duplicate-listings-policy?id=4255"
+   ],
+   "confidence": "high",
+   "asOf": "2026-11-15",
+   "usage": "eBay is the easiest platform to support compliantly, through the official API."
+  },
+  {
+   "kind": "rule",
+   "name": "eBay fees: free for UK private sellers, 13.6% in the US",
+   "claim": "UK private sellers pay no transaction fees in any category except vehicles. Buyers pay a Buyer Protection fee of £0.10 plus 7% of the price up to £20, 4% from £20 to £300 and 2% from £300 to £4,000. US sellers pay a 13.6% final value fee (up to $7,500) plus $0.30 or $0.40 per order. From 3 to 31 Mar 2026 eBay ran an invite-only US promotion that waived final value fees on the first 25 sales in clothing, baby, home décor and jewellery, which Value Added Resource saw as a response to Vinted's US push.",
+   "sources": [
+    "https://www.ebay.co.uk/help/selling/selling/pricing-items/buyer-protection-information-sellers?id=5595",
+    "https://www.ebay.com/help/selling/fees-credits-invoices/selling-fees?id=4822",
+    "https://www.valueaddedresource.net/ebay-zero-selling-fees-fashion-baby-home/"
+   ],
+   "confidence": "high",
+   "asOf": "2026-11-15"
+  },
+  {
+   "kind": "tool",
+   "name": "eBay 'magical listing' camera-first AI",
+   "claim": "On 11 Nov 2026 eBay rolled out a camera-first listing flow for consumer sellers in Australia, France, Germany, Italy, the UK and the US. AI identifies the item from photos and pre-fills the listing for the seller to review; eBay says nothing goes live without the seller's approval. eBay claims 10M+ unique sellers have used its AI features and that they create 800k+ new listings a day.",
+   "sources": [
+    "https://www.ebayinc.com/stories/news/ebay-makes-selling-easier-with-a-new-camera-first-experience/",
+    "https://www.digitalcommerce360.com/2026/11/11/ebay-visual-identification-magical-listing-tool/"
+   ],
+   "confidence": "high",
+   "asOf": "2026-11-11",
+   "usage": "Photo-to-listing AI is table stakes. Position on 'one draft, every app, honest, synced' instead."
+  },
+  {
+   "kind": "tool",
+   "name": "Poshmark Smart List AI",
+   "claim": "Announced 30 Jan 2025: you photograph an item, the AI generates listing details, and you review before publishing. Poshmark says 82% of beta testers felt it saved time compared with Classic List.",
+   "sources": [
+    "https://blog.poshmark.com/2025/01/30/introducing-smart-list-ai/"
+   ],
+   "confidence": "high",
+   "asOf": "2025-01-30"
+  },
+  {
+   "kind": "tool",
+   "name": "Vinted and AI photos",
+   "claim": "I found no native Vinted AI listing writer. A vendor reported a 'mark photos as AI-generated' toggle in the vinted.fr listing form (seen Sep–Oct 2026, rollout unknown). The same vendor says Vinted told Dutch broadcaster NOS that AI is acceptable only if the photo accurately represents the item. The Catalogue Rules still bar image editing.",
+   "sources": [
+    "https://www.vendystudio.com/blog/vinted-ai-button-ai-photos",
+    "https://www.vinted.co.uk/catalog-rules"
+   ],
+   "confidence": "low",
+   "asOf": "2026-10-22"
+  },
+  {
+   "kind": "rule",
+   "name": "Vestiaire Collective seller terms (11 Nov 2026)",
+   "claim": "Vestiaire reviews and approves each product page and runs automated risk checks on listing behaviour and pricing anomalies. Total seller fees are capped at 30%, with a minimum fee of 15 EUR/GBP/USD/CHF. The fee schedule in force at the time of sale applies, not the one at listing. I found no explicit bot or third-party-tool clause in the seller T&Cs; the general website terms were not fully checked.",
+   "sources": [
+    "https://faq.vestiairecollective.com/hc/en-gb/articles/8982306039313-Seller-Terms-Conditions"
+   ],
+   "confidence": "medium",
+   "asOf": "2026-11-15"
+  },
+  {
+   "kind": "rule",
+   "name": "UK HMRC platform reporting threshold",
+   "claim": "UK digital platforms must report sellers of goods to HMRC unless the seller made fewer than 30 sales and received €2,000 (about £1,700) or less in the year. The guidance covers the reporting duty only; it does not say that being reported means you owe tax.",
+   "sources": [
+    "https://www.gov.uk/guidance/reporting-rules-for-digital-platforms"
+   ],
+   "confidence": "high",
+   "asOf": "2026-07-21",
+   "usage": "If tax comes up at all, keep it accurate ('reported' is not a tax bill). Never joke about staying under the threshold to dodge."
+  },
+  {
+   "kind": "rule",
+   "name": "US Form 1099-K threshold back to $20k and 200 transactions",
+   "claim": "The IRS says the One, Big, Beautiful Bill retroactively restored the pre-2021 threshold. Third-party settlement organisations now file a 1099-K only when a payee exceeds $20,000 and 200 transactions.",
+   "sources": [
+    "https://www.irs.gov/newsroom/form-1099-k-faqs-general-information"
+   ],
+   "confidence": "high",
+   "asOf": "2026-11-15"
+  },
+  {
+   "kind": "pain-point",
+   "name": "The relisting and bumping grind",
+   "claim": "Each app rewards freshness or activity:\n- Vinted promotes new listings.\n- Depop gives newer items a slight edge.\n- Grailed has 7-day bumps.\n- Poshmark runs on sharing.\n\nSo sellers delete and repost, or bump, by hand. Vinted and Poshmark ban automated or bulk delete-and-repost, and Grailed tells sellers to drop the price instead. A typical relist tool (Nifty) creates a copy, deletes the original, can't carry SKUs over, and enforces a 30-day minimum cycle, which it says is out of respect for Depop.",
+   "sources": [
+    "https://www.vinted.co.uk/help/409-recommended-content-on-vinted",
+    "https://depophelp.zendesk.com/hc/en-gb/articles/9422984899985-How-Depop-ranks-search-results-and-recommends-listings",
+    "https://www.grailed.com/how-to-sell/dropping-and-bumping",
+    "https://docs.nifty.ai/automation/automatic-relists/automatic-relists-depop",
+    "https://poshmark.com/community_guidelines"
+   ],
+   "confidence": "high",
+   "asOf": "2026-11-15",
+   "usage": "This is the core pain to dramatise: thumb-cramp montages of deleting and reposting. The resolution should be review-and-tap drafts, not a bot running all night."
+  },
+  {
+   "kind": "pain-point",
+   "name": "Double-sold across apps and delisting panic",
+   "claim": "Cross-listers have to delist within minutes when an item sells. Depop puts the refund and the responsibility on the seller, and Vinted bans keeping sold or unavailable items listed. List Perfectly can list on Vinted but cannot detect Vinted sales, so they don't trigger auto-delist. Poshmark's removal limits have punished even deleting items that sold elsewhere.",
+   "sources": [
+    "https://depophelp.zendesk.com/hc/en-gb/articles/360001773148-Terms-of-Service",
+    "https://www.vinted.co.uk/catalog-rules",
+    "https://listperfectly.com/pricing/",
+    "https://www.modernretail.co/technology/i-followed-their-rules-and-was-hit-anyway-poshmark-sellers-voice-frustrations-with-new-excessive-listing-policy/"
+   ],
+   "confidence": "high",
+   "asOf": "2026-11-15",
+   "usage": "'Two buyers, one hoodie' heist episode. Sync and delist-on-sale is the most defensible feature to show."
+  },
+  {
+   "kind": "pain-point",
+   "name": "Lowballers and offer culture",
+   "claim": "Lowball rants are a staple of UK reseller TikTok: creators asking why the offers are so low today, or explaining how they handle lowballs. Dazed lists lowball offers as part of Ballhog culture. On Grailed, haggling happens through binding offers that sellers accept, counter or decline.",
+   "sources": [
+    "https://www.tiktok.com/@thriftysenmum/video/7533602733140561174",
+    "https://www.tiktok.com/@jess.vintage.revivals/video/7611105082700008726",
+    "https://www.dazeddigital.com/fashion/article/71240/1/wtf-ballhog-fashion-most-unserious-aesthetic-archive-algorithm",
+    "https://www.grailed.com/about/terms"
+   ],
+   "confidence": "medium",
+   "asOf": "2026-11-15",
+   "usage": "A lowball 'boss fight' with an HP bar. Write original offer lines; never screenshot real users."
+  },
+  {
+   "kind": "pain-point",
+   "name": "'Is this still available?'",
+   "claim": "This is mainly a Facebook Marketplace pain: it is the default suggested message, buyers send it to several sellers and ghost all but the first to reply, and no-shows are common. On Vinted and Depop the item is live with a Buy now button, so asking is pointless, which is what makes it a joke there.",
+   "sources": [
+    "https://www.mumsnet.com/talk/am_i_being_unreasonable/4611811-time-wasters-on-fb-marketplace"
+   ],
+   "confidence": "low",
+   "asOf": "2022-08-15",
+   "usage": "Use it only as a cross-platform gag (Tiffany pointing at the Buy button like a bouncer). It is Marketplace-coded and slightly dated."
+  },
+  {
+   "kind": "pain-point",
+   "name": "SNAD claims, swaps and fakes",
+   "claim": "Sellers fear 'not as described' claims inside Vinted's short 2-day window, along with return swaps. UK reseller TikTok runs counterfeit and scam storytimes, for example a creator asking whether a bundle was a £500 scam and posting 'update on the fakes', plus 'how many are authentic' fake-check videos.",
+   "sources": [
+    "https://www.vinted.co.uk/help/465-the-vinted-refund-policy",
+    "https://www.tiktok.com/@thriftysenmum/video/7533602733140561174"
+   ],
+   "confidence": "medium",
+   "asOf": "2026-11-15",
+   "usage": "Show Tiffany filming her packing as proof. Keep claims about how often scams happen vague."
+  },
+  {
+   "kind": "pain-point",
+   "name": "Phishing and off-platform payment",
+   "claim": "Vinted warns about look-alike emails, texts and QR codes, urgent 'account blocked' or 'confirm payment' messages, and buyers trying to move the deal off Vinted, and tells users to forward phishing to Vinted. Depop requires Depop Payments for every purchase. Grailed treats off-site deals as entirely at your own risk. Poshmark's Posh Protect doesn't cover any deal taken off-platform.",
+   "sources": [
+    "https://www.vinted.co.uk/help/628-recognize-spoof-and-phishing-messages",
+    "https://depophelp.zendesk.com/hc/en-gb/articles/360001773148-Terms-of-Service",
+    "https://www.grailed.com/about/terms",
+    "https://poshmark.com/community_guidelines"
+   ],
+   "confidence": "high",
+   "asOf": "2026-11-15",
+   "usage": "A scam-bait villain DMs 'my cousin will pay on WhatsApp'. Tiffany refuses and the story moves on."
+  },
+  {
+   "kind": "pain-point",
+   "name": "Photos, measurements, honesty, and AI distrust",
+   "claim": "Depop wants every angle, the flaws and measurements, and complete fields so filters match. Vinted wants your own unedited photos. In OfferUp's 2026 report, 68% of Gen Z (54% overall) said AI-generated or heavily edited images make them less confident in a listing, and 41% of shoppers who had items shipped got something different from the description.",
+   "sources": [
+    "https://depophelp.zendesk.com/hc/en-gb/articles/360050410093-Improving-the-search-ranking-of-your-items",
+    "https://www.vinted.co.uk/catalog-rules",
+    "https://www.prnewswire.com/news-releases/secondhand-isnt-about-settling-81-of-us-shoppers-say-resale-puts-what-they-really-want-within-reach-according-to-offerups-2026-recommerce-report-302916051.html"
+   ],
+   "confidence": "high",
+   "asOf": "2026-10-22",
+   "usage": "The AI writes honest flaws ('small mark near hem'). Tiffany takes real mirror pics. Never show AI-generated product photos."
+  },
+  {
+   "kind": "pain-point",
+   "name": "Keyword stuffing: 'archive', 'ballhog' and rapper names",
+   "claim": "The NYT (Oct 2025) found 38,000+ Grailed listings using 'archive' for anything from a $20,000 2005 Raf Simons parka to a $49 Stüssy tee. On 15 Nov 2026, 'ballhog' returned about 6.97K Depop US results, 321 on Vinted UK and 40 on Grailed. Many were mall brands (Zara, Hollister, Uniqlo, Abercrombie, Levi's, Express) with 'ballhog', 'archive', 'rare', 'grail', designer names or underground-rapper names stacked in the title.",
+   "sources": [
+    "https://www.thestar.com.my/lifestyle/style/2025/10/19/what-counts-as-archive-in-fashion-and-why-the-word-now-also-means-everything",
+    "https://www.depop.com/search/?q=ballhog",
+    "https://www.vinted.co.uk/catalog?search_text=ballhog",
+    "https://www.grailed.com/shop?query=ballhog"
+   ],
+   "confidence": "high",
+   "asOf": "2026-11-15",
+   "usage": "Perfect parody material for side characters. Tiffany's AI drafts stay honest, which is also the rule-compliant behaviour."
+  },
+  {
+   "kind": "pain-point",
+   "name": "Fee and boost confusion",
+   "claim": "'No seller fees' headlines hide several costs:\n- buyer fees\n- processing fees\n- pay-to-be-seen boosts (Depop's 12% applies if a buyer merely saw the boosted tile)\n- tier cliffs (Grailed 6% vs 9% at $120)\n- minimums and caps (Vestiaire: 15 minimum, 30% cap)\n- frequent changes (Depop Boost Mar 2026, Grailed May 2026, Vinted rename Oct 2026, Vestiaire T&Cs Nov 2026)",
+   "sources": [
+    "https://depophelp.zendesk.com/hc/en-gb/articles/9253129255569-Boosted-Listings-Policy",
+    "https://support.grailed.com/hc/en-us/articles/30282580172045-What-are-the-fees",
+    "https://faq.vestiairecollective.com/hc/en-gb/articles/8982306039313-Seller-Terms-Conditions",
+    "https://www.vinted.com/help/1653"
+   ],
+   "confidence": "high",
+   "asOf": "2026-11-15"
+  },
+  {
+   "kind": "pain-point",
+   "name": "Shadowban paranoia",
+   "claim": "Sellers routinely suspect they are shadowbanned. Vinted's own disclosure says measures against illegal content can reduce the visibility of legitimate listings. Separately, Lithuania's data protection authority fined Vinted €2,385,276 (decision of 2 Jul 2024), partly over 'shadow blocking': processing a suspected rule-breaker's data so that they leave without knowing it is still being processed. The authority found this breached GDPR fairness and transparency.",
+   "sources": [
+    "https://www.edpb.europa.eu/news/news/2024/lithuanian-sa-fine-eu-2-385-276-vinted-uab-company_en",
+    "https://www.vinted.co.uk/help/409-recommended-content-on-vinted"
+   ],
+   "confidence": "medium",
+   "asOf": "2026-11-15",
+   "usage": "Run the shadowban joke as folk paranoia (a red-string conspiracy board). Don't claim in ads that any platform shadowbans sellers."
+  },
+  {
+   "kind": "pain-point",
+   "name": "Embarrassment and privacy of selling",
+   "claim": "In OfferUp's 2026 report, 47% of Gen Z (30% overall) had avoided listing something so that people they know wouldn't see it, and 55% prefer a dedicated resale profile.",
+   "sources": [
+    "https://www.prnewswire.com/news-releases/secondhand-isnt-about-settling-81-of-us-shoppers-say-resale-puts-what-they-really-want-within-reach-according-to-offerups-2026-recommerce-report-302916051.html"
+   ],
+   "confidence": "medium",
+   "asOf": "2026-10-22",
+   "usage": "Tiffany hides her ex's hoodie listing from mutuals."
+  },
+  {
+   "kind": "other",
+   "name": "Vinted listing limbo and listing streaks (UI text)",
+   "claim": "Text in Vinted's web app describes an automated pre-publication check that usually takes 15–30 minutes but can take 1–4 days. It also shows a listing-streak badge (Star Wardrobe Award for listing a set number of items), a 'best items to bump' recommender, and Showcase choosing up to 15 of your listings to match a buyer's search. The rollout of each is unknown.",
+   "sources": [
+    "https://www.vinted.co.uk/terms_and_conditions"
+   ],
+   "confidence": "low",
+   "asOf": "2026-11-15",
+   "usage": "Tiffany visibly ages while her listing is 'being checked'."
+  },
+  {
+   "kind": "trend",
+   "name": "Selling, not buying, is the bottleneck",
+   "claim": "ThredUp's 2026 report (with GlobalData) projects secondhand at about $393B globally by 2030 and $78.8B in the US. It says Gen Z and Millennials drive 71% of growth, that making selling as easy as clicking 'buy' could unlock $23.3B more US value, and that nearly half of shoppers now discover secondhand through social media, creators and influencers.",
+   "sources": [
+    "https://newsroom.thredup.com/news/thredup-14th-resale-report"
+   ],
+   "confidence": "high",
+   "asOf": "2026-04-02",
+   "usage": "A credible stat for the founder or pitch narrative: social is where resale gets discovered, which suits a Tiffany series."
+  },
+  {
+   "kind": "format",
+   "name": "Pack an order with me (packing ASMR)",
+   "claim": "An established small-business TikTok format: film yourself packing an order with music, narration or ASMR sound, to show care and make the shop feel personal. Depop sellers use it to promote their shops.",
+   "sources": [
+    "https://www.adobe.com/uk/express/discover/ideas/viral-tiktok-trends-for-small-businesses"
+   ],
+   "confidence": "medium",
+   "asOf": "2026-11-15",
+   "usage": "Parody: an underground-rap packing ASMR with tape-gun ad-libs and bubble-wrap hi-hats, whispering the tracking number."
+  },
+  {
+   "kind": "format",
+   "name": "Hauls and the 'haulification' of vintage",
+   "claim": "Dazed (14 Jul 2025) argues that resale now copies fast fashion's urgency. Its examples: bulk vintage hauls (one shipping fee encourages overbuying), daily-deal posts on TikTok, Instagram and Substack, unboxings, and mourning 'graveyard' listings you missed.",
+   "sources": [
+    "https://www.dazeddigital.com/fashion/article/68216/1/inside-tiktok-haulification-of-vintage-fashion-shopping-the-real-real-depop-ebay"
+   ],
+   "confidence": "high",
+   "asOf": "2025-07-14"
+  },
+  {
+   "kind": "format",
+   "name": "Revenue breakdowns and target videos",
+   "claim": "Reseller TikTok runs monthly revenue and profit breakdowns, posts about hitting a revenue target, and 'I made £X in Y months flipping on Vinted, Whatnot, eBay and Depop' videos, often name-checking wholesale vintage suppliers.",
+   "sources": [
+    "https://www.tiktok.com/@jess.vintage.revivals/video/7611105082700008726"
+   ],
+   "confidence": "medium",
+   "asOf": "2026-02-26",
+   "usage": "Parody: 'I made £6k this month (gross) (I spent £6.1k on archive).'"
+  },
+  {
+   "kind": "format",
+   "name": "Mystery bags, 'restock with me', fake-checks and scam storytimes",
+   "claim": "UK reseller accounts post mystery bundle and bale unboxings (for example a 25kg bag of new-with-tags items), restock-with-me videos, authenticity checks, and scam or counterfeit storytime follow-ups.",
+   "sources": [
+    "https://www.tiktok.com/@thriftysenmum/video/7533602733140561174"
+   ],
+   "confidence": "medium",
+   "asOf": "2026-11-15",
+   "usage": "A '25kg archive bale' that turns out to be 40 lanyards and one Evisu tee."
+  },
+  {
+   "kind": "meme",
+   "name": "The self-aware lowballer persona",
+   "claim": "A buyer-side self-own format exists: a 2024 clip captioned along the lines of 'yes, I'm that guy on Vinted' (about 24.7K likes), in which the poster plays the annoying buyer.",
+   "sources": [
+    "https://www.tiktok.com/@ethanpalmer153/video/7397476094745644321"
+   ],
+   "confidence": "medium",
+   "asOf": "2024-07-30",
+   "usage": "Recurring side character: Tiffany's friend who opens every chat with a £3 offer."
+  },
+  {
+   "kind": "meme",
+   "name": "Vinted addiction",
+   "claim": "Dazed (10 Nov 2026) documents TikTok and Reddit posts about out-of-control Vinted use: checking it in meetings, first and last thing every day, and 'one more refresh' bargain hunting. Psychologists quoted in the piece point to the bargain rush, the pressure of one-off listings, and haggling. Dazed puts Vinted at about 17.4M UK users (about 1 in 4), the UK's third-largest fashion retailer.",
+   "sources": [
+    "https://www.dazeddigital.com/fashion/article/71338/1/high-lasted-for-days-the-rise-of-vinted-addiction-secondhand-shopping-fashion"
+   ],
+   "confidence": "high",
+   "asOf": "2026-11-10",
+   "usage": "Tiffany's screen-time report is 70% Vinted. Keep it light; don't glamorise compulsive spending."
+  },
+  {
+   "kind": "meme",
+   "name": "Everything is 'archive' now",
+   "claim": "The NYT (10 Oct 2025, republished by The Star) reports that 'archive' has lost meaning in resale. Sellers use it to game search algorithms; Grailed doesn't restrict its use and defines it loosely as signalling an important design or era. A fashion historian compared its overuse to the word 'curation'. Live listings in Nov 2026 still pair it with mall brands.",
+   "sources": [
+    "https://www.thestar.com.my/lifestyle/style/2025/10/19/what-counts-as-archive-in-fashion-and-why-the-word-now-also-means-everything",
+    "https://www.vinted.co.uk/catalog?search_text=ballhog"
+   ],
+   "confidence": "high",
+   "asOf": "2026-11-15",
+   "usage": "An 'archive' word-counter that explodes while scrolling. 'If it's from 2019 and faded, it's archive.'"
+  },
+  {
+   "kind": "trend",
+   "name": "Ballhog went from meme to listing tag",
+   "claim": "Dazed (27 Oct 2026) describes Ballhog as a self-aware meme-turned-style. It is named after the Ball Hog Collective, a Discord friend group bonded over clothes and NBA 2K, and personality Bradygoo is its reference point. The look is ordinary-looking outfits built from obscure archive pieces. Dazed says the tag now appears in Vinted hashtags and listings for worn denim and old tees, with lowball offers and Taobao 'reps' part of the culture. Live searches confirm sellers appending 'ballhog' to everything from Number (N)ine to Uniqlo.",
+   "sources": [
+    "https://www.dazeddigital.com/fashion/article/71240/1/wtf-ballhog-fashion-most-unserious-aesthetic-archive-algorithm",
+    "https://www.depop.com/search/?q=ballhog",
+    "https://www.vinted.co.uk/catalog?search_text=ballhog"
+   ],
+   "confidence": "high",
+   "asOf": "2026-11-15",
+   "usage": "Tiffany's home turf. Name-drop public figures only; no likenesses."
+  },
+  {
+   "kind": "trend",
+   "name": "Underground-rap names and merch on Depop",
+   "claim": "A Depop US search for 'nettspend' returned about 5.33K results on 15 Nov 2026. They were mostly tour merch, handprinted or 'inspired' tees, and titles stacking several artist names (for example with osamason). Vinted bans 'inspired by' plus a brand, and every platform bans counterfeits.",
+   "sources": [
+    "https://www.depop.com/search/?q=nettspend",
+    "https://www.vinted.co.uk/catalog-rules"
+   ],
+   "confidence": "medium",
+   "asOf": "2026-11-15",
+   "usage": "Tiffany can collect official tour merch. Never show her selling bootlegs or 'inspired' copies."
+  },
+  {
+   "kind": "meme",
+   "name": "Overpriced 'vintage' outrage",
+   "claim": "In May 2024 a TikTok with more than 2M views mocked a Depop listing for Forever 21 sequin shorts labelled 'vintage' at $298. It revived the debate about calling 2000s–2010s mall brands vintage and about markups, with some viewers doubting the item had really sold, since sellers can mark items sold themselves.",
+   "sources": [
+    "https://www.yahoo.com/lifestyle/gen-z-reseller-sparks-outrage-151837434.html"
+   ],
+   "confidence": "medium",
+   "asOf": "2024-05-14",
+   "usage": "Classic but slightly dated framing. Refresh it as 'Zara jeans, ballhog archive, £180'."
+  },
+  {
+   "kind": "format",
+   "name": "Instagram archive shop drop mechanics",
+   "claim": "Instagram archive and vintage shops sell by DM with 'first come, first served' rules. They run scheduled drops (for example twice a week, or Sundays at noon PT), use 'Next Drop' and sold-items highlights, and update captions the moment something sells; some add pop-ups or showroom appointments.",
+   "sources": [
+    "https://www.thequalityedit.com/articles/best-instagram-vintage-shops"
+   ],
+   "confidence": "medium",
+   "asOf": "2024-08-20",
+   "usage": "Story-format episodes: a countdown sticker, then 47 DMs saying 'mine' in one second."
+  },
+  {
+   "kind": "slang",
+   "name": "Bumped / bump",
+   "claim": "A paid visibility boost on Vinted (3 or 7 days; the 'Bumped' label is visible all over search), a free 7-day bump on Grailed, and the generic seller word for pushing a listing back to the top, which is what Depop 'bump bots' sell.",
+   "sources": [
+    "https://www.vinted.co.uk/help/340-what-is-item-bump",
+    "https://support.grailed.com/hc/en-us/articles/30299286841101-Listing-FAQ",
+    "https://bump.bot/"
+   ],
+   "confidence": "high",
+   "asOf": "2026-11-15",
+   "usage": "Example (original): 'Everything on my feed says Bumped, even a single sock is paying for promo.'"
+  },
+  {
+   "kind": "slang",
+   "name": "Boosted",
+   "claim": "Depop's paid label for promoted listings and shops. The 12% fee in the UK and US applies only when a buyer who saw the boosted tile buys within 28 days.",
+   "sources": [
+    "https://depophelp.zendesk.com/hc/en-gb/articles/9253129255569-Boosted-Listings-Policy"
+   ],
+   "confidence": "high",
+   "asOf": "2026-11-15",
+   "usage": "Example (original): 'Boosted means I'm paying rent on attention.'"
+  },
+  {
+   "kind": "slang",
+   "name": "SNAD",
+   "claim": "Short for 'significantly not as described', the formal dispute category in Vinted's terms; Depop's help centre uses the same phrase. Sellers say it the way people dread 'we need to talk'.",
+   "sources": [
+    "https://www.vinted.co.uk/terms_and_conditions",
+    "https://depophelp.zendesk.com/hc/en-gb/articles/360001773148-Terms-of-Service"
+   ],
+   "confidence": "high",
+   "asOf": "2026-11-15",
+   "usage": "Example (original): 'Day two after delivery and she opened a SNAD because the black hoodie was \"too black\".'"
+  },
+  {
+   "kind": "slang",
+   "name": "Lowball / lowballer",
+   "claim": "An offer far below the asking price, and the person who makes it. It is the central villain of reseller TikTok and, per Dazed, part of Ballhog culture.",
+   "sources": [
+    "https://www.tiktok.com/@thriftysenmum/video/7533602733140561174",
+    "https://www.dazeddigital.com/fashion/article/71240/1/wtf-ballhog-fashion-most-unserious-aesthetic-archive-algorithm"
+   ],
+   "confidence": "high",
+   "asOf": "2026-11-15",
+   "usage": "Example (original): 'He offered six quid on a sixty-quid Hysteric tee and called it a starting point.'"
+  },
+  {
+   "kind": "slang",
+   "name": "Archive / grail",
+   "claim": "'Archive' means important past-season designer pieces, but it is now stretched to anything old-ish. 'Grail' means the dream piece you hunt for; Grailed is named after it, and live titles say things like 'archive grail'. Both terms are current, though using 'archive' sincerely about mall brands is now the joke.",
+   "sources": [
+    "https://www.thestar.com.my/lifestyle/style/2025/10/19/what-counts-as-archive-in-fashion-and-why-the-word-now-also-means-everything",
+    "https://www.vinted.co.uk/catalog?search_text=ballhog"
+   ],
+   "confidence": "high",
+   "asOf": "2026-11-15",
+   "usage": "Example (original): 'That Undercover longsleeve was my grail until I saw the shipping.'"
+  },
+  {
+   "kind": "slang",
+   "name": "Reps",
+   "claim": "Replicas of designer pieces, which Dazed says Ballhog teens source from Taobao. Every platform bans counterfeits, and Vinted can now dispose of items verified as counterfeit in the UK.",
+   "sources": [
+    "https://www.dazeddigital.com/fashion/article/71240/1/wtf-ballhog-fashion-most-unserious-aesthetic-archive-algorithm",
+    "https://www.valueaddedresource.net/vinted-us-uk-australia-terms-october-2026/"
+   ],
+   "confidence": "medium",
+   "asOf": "2026-10-27",
+   "usage": "Use only as an accusation side characters throw, never as Tiffany's stock. Example (original): 'At that price it's either a steal or reps.'"
+  },
+  {
+   "kind": "slang",
+   "name": "Repop",
+   "claim": "Depop's one-tap resale of something you bought on Depop, pre-filled from the original listing. People say 'just Repop it' about a buy that didn't fit.",
+   "sources": [
+    "https://depophelp.zendesk.com/hc/en-gb/articles/12803766422289-Repop"
+   ],
+   "confidence": "high",
+   "asOf": "2026-11-15",
+   "usage": "Example (original): 'This tee has been Repopped five times, it's seen more cities than me.'"
+  },
+  {
+   "kind": "slang",
+   "name": "Vinted fee",
+   "claim": "The new name, since Oct 2026, for the mandatory buyer charge formerly called the Buyer Protection fee. Sellers still pay nothing.",
+   "sources": [
+    "https://www.vinted.com/help/1653",
+    "https://www.vinted.co.uk/pricelist"
+   ],
+   "confidence": "high",
+   "asOf": "2026-11-15",
+   "usage": "Example (original): 'I get the full twenty, the buyer eats the Vinted fee, everyone pretends that's free.'"
+  },
+  {
+   "kind": "slang",
+   "name": "Vinted condition ladder: New with tags → Satisfactory",
+   "claim": "Vinted's condition labels, visible on every listing, run New with tags, New without tags, Very good, Good, Satisfactory. Sellers commonly shorten them (NWT and similar); that shorthand was not verified in this pass.",
+   "sources": [
+    "https://www.vinted.co.uk/catalog?search_text=ballhog"
+   ],
+   "confidence": "medium",
+   "asOf": "2026-11-15",
+   "usage": "Example (original): 'New without tags means I wore it once to a show and sweated through it.'"
+  },
+  {
+   "kind": "slang",
+   "name": "Bundle",
+   "claim": "Buying several listings from one seller in a single order is a core Vinted mechanic. It has rules: bundle listings must state the total price, and refunds work per item. Depop also bundles. Low confidence: sellers say buyers open chats with just 'bundle?'.",
+   "sources": [
+    "https://www.vinted.co.uk/catalog-rules",
+    "https://www.vinted.co.uk/help/465-the-vinted-refund-policy",
+    "https://depophelp.zendesk.com/hc/en-gb/articles/360001791127-What-about-fees-"
+   ],
+   "confidence": "medium",
+   "asOf": "2026-11-15",
+   "usage": "Example (original): 'He favourited one jacket and messaged \"bundle?\" like it was a marriage proposal.'"
+  },
+  {
+   "kind": "item",
+   "name": "What Ballhog and archive listings actually contain",
+   "claim": "Dazed cites Number (N)ine hoodies, Undercover 85 sneakers, Hysteric Glamour tees, beat-up Jeremy Scott trainers, 2000s luxury and 2010s swag. Live 'ballhog' listings in Nov 2026 also include:\n- If Six Was Nine, L.G.B. and Mastermind Japan\n- Hedi Slimane name-drops on denim\n- Evisu and True Religion\n- AllSaints skinny jeans and 'Japanese style' denim\n- Levi's 501/511, Dickies and Hollister",
+   "sources": [
+    "https://www.dazeddigital.com/fashion/article/71240/1/wtf-ballhog-fashion-most-unserious-aesthetic-archive-algorithm",
+    "https://www.grailed.com/shop?query=ballhog",
+    "https://www.vinted.co.uk/catalog?search_text=ballhog",
+    "https://www.depop.com/search/?q=ballhog"
+   ],
+   "confidence": "high",
+   "asOf": "2026-11-15",
+   "usage": "Prop list for Tiffany's racks. Render invented garment designs with no real logos, and name brands only in dialogue."
+  },
+  {
+   "kind": "other",
+   "name": "Platform personalities for worldbuilding",
+   "claim": "Each platform has a distinct personality:\n- **Depop:** young (nearly 90% of buyers under 34), now eBay-owned, has boosts and Repop.\n- **Vinted:** mass-market UK (about 17.4M users), no seller fees, bundles and the 'Vinted fee', strict anti-bot rules, addiction discourse, pushing into the US.\n- **Grailed:** menswear and archive, offers and haggling, 7-day bumps, strict tool rules.\n- **eBay:** the everything app, free for UK private sellers, AI camera listing.\n- **Poshmark:** US, social sharing, 20% fee, anti-automation.\n- **Vestiaire:** luxury, every listing reviewed, fees up to 30% with a 15 minimum.",
+   "sources": [
+    "https://fashionunited.com/news/business/ebay-completes-1-4-billion-dollar-depop-acquisition/2026073073828",
+    "https://www.dazeddigital.com/fashion/article/71338/1/high-lasted-for-days-the-rise-of-vinted-addiction-secondhand-shopping-fashion",
+    "https://support.grailed.com/hc/en-us/articles/30299286841101-Listing-FAQ",
+    "https://poshmark.com/terms?poshmark=fee-policy#fee-policy",
+    "https://faq.vestiairecollective.com/hc/en-gb/articles/8982306039313-Seller-Terms-Conditions"
+   ],
+   "confidence": "high",
+   "asOf": "2026-11-15",
+   "usage": "Personify the apps as Tiffany's friend group, described in words only, with no logos or real UI."
+  },
+  {
+   "kind": "tool",
+   "name": "Vendoo",
+   "claim": "US cross-lister with plans at $14.99, $29.99 and $59.99 a month ($12.49–$49.99 billed yearly), all with unlimited listings:\n- Starter includes sale detection and auto-delist (Poshmark, eBay, Mercari, Depop, Whatnot, Etsy).\n- Growth adds AI listing enhancement and background removal.\n- Pro adds auto offers and marketplace sharing (Poshmark, Depop, Grailed).\n\nIt says it posts to '10+ marketplaces' and is trusted by 81,000+ US resellers. Its pricing page doesn't name Vinted.",
+   "sources": [
+    "https://www.vendoo.co/pricing"
+   ],
+   "confidence": "high",
+   "asOf": "2026-11-15"
+  },
+  {
+   "kind": "tool",
+   "name": "List Perfectly",
+   "claim": "$29, $49, $69 and $99+ a month, marketed on all-inclusive pricing with no add-ons. Plans include AI-generated listings (25 to 1,000+ a month), bulk relist and background removal; auto-delist and stale-listing tools are only on the top tier. It supports Depop, eBay, Etsy, Facebook, Grailed, Mercari, Poshmark, Vestiaire and 'Vinted (Lite)', but Vinted sales aren't detected, so they don't trigger auto-delist.",
+   "sources": [
+    "https://listperfectly.com/pricing/"
+   ],
+   "confidence": "high",
+   "asOf": "2026-11-15"
+  },
+  {
+   "kind": "tool",
+   "name": "Crosslist",
+   "claim": "$29.99–$44.99 a month by monthly listing volume, with AI as a $4.99 add-on and auto-delist on the higher tiers. It claims users see up to 156% more sales and save over 80% of their time. It is available in the US, UK, Canada and Australia but not to EU residents, and in Nov 2026 it stopped supporting Vinted for new users.",
+   "sources": [
+    "https://crosslist.com/pricing",
+    "https://crosslist.com/blog/does-vinted-allow-resellers"
+   ],
+   "confidence": "high",
+   "asOf": "2026-11-13",
+   "usage": "Evidence that even big vendors treat Vinted as off-limits."
+  },
+  {
+   "kind": "tool",
+   "name": "Nifty",
+   "claim": "Automation and cross-listing plans start at $39.99 a month ($69.99 bundle, $89.99 Pro bundle). They include daily Poshmark sharing, following, relisting and offers, eBay listing recreation, and Depop and Mercari relisting, plus AI listing generation and auto-delist. The Poshmark-only plan advertises free CAPTCHA solving. Its Depop relist creates a copy, deletes the original and enforces a 30-day minimum cycle.",
+   "sources": [
+    "https://nifty.ai/pricing",
+    "https://docs.nifty.ai/automation/automatic-relists/automatic-relists-depop"
+   ],
+   "confidence": "high",
+   "asOf": "2026-11-15",
+   "usage": "Shows how the category markets itself. CAPTCHA solving is exactly the kind of claim the owner should never make."
+  },
+  {
+   "kind": "tool",
+   "name": "PrimeLister",
+   "claim": "A cross-lister marketed on super-seller and 'never sell the same item twice' messaging and a claim of 10+ hours saved weekly. Features: one-click re-list keeping photos and price, auto-delist, scheduled tasks, and AI mapping of category, size and brand. It claims 10,000+ users and $38M+ in user sales, and has a separate Vinted automation product.",
+   "sources": [
+    "https://primelister.com/pricing"
+   ],
+   "confidence": "medium",
+   "asOf": "2026-11-15"
+  },
+  {
+   "kind": "tool",
+   "name": "Bump (Depop bot)",
+   "claim": "Marketed as growing Depop sales 'on autopilot': it automatically refreshes and re-lists items and follows and unfollows accounts, has a free plan for small shops, and says it is not affiliated with Depop.",
+   "sources": [
+    "https://bump.bot/"
+   ],
+   "confidence": "high",
+   "asOf": "2026-11-15",
+   "usage": "The archetypal 'bot' pitch to differentiate from. Depop's Terms ban bots on the service."
+  },
+  {
+   "kind": "tool",
+   "name": "Redrip (multi-platform Chrome extension)",
+   "claim": "A free-to-start extension that relists automatically ('unlimited'), moves listings between Vinted and eBay and other marketplaces, and runs several accounts using your logged-in session. It claims 3× sales and 15 hours saved a week. Its own blog documents Vinted's 2026 automation restrictions.",
+   "sources": [
+    "https://www.redrip.app/en/",
+    "https://www.redrip.app/en/blog/vinted-automation-restriction-2026/"
+   ],
+   "confidence": "high",
+   "asOf": "2026-11-15"
+  },
+  {
+   "kind": "trend",
+   "name": "2026: platforms write anti-AI-agent clauses",
+   "claim": "Platforms tightened their terms against AI agents through 2026:\n- **eBay** (current agreement, effective 28 Jun 2026) names buy-for-me agents and LLM-driven bots.\n- **Grailed** (3 Sep 2026) bans AI/ML scraping, AI-assistant purchasing and unconsented extensions.\n- **Vinted** (8 Oct 2026) restates its external-tool ban.\n- **Depop** US (1 Jan 2027) copies eBay's wording.",
+   "sources": [
+    "https://www.ebay.com/help/policies/member-behaviour-policies/user-agreement?id=4259",
+    "https://www.grailed.com/about/terms",
+    "https://www.vinted.co.uk/terms_and_conditions",
+    "https://depophelp.zendesk.com/hc/en-gb/articles/360001773148-Terms-of-Service"
+   ],
+   "confidence": "high",
+   "asOf": "2026-11-15",
+   "usage": "Marketing should stress 'AI drafts, you decide'. Avoid 'AI agent' language."
+  },
+  {
+   "kind": "trend",
+   "name": "Fee war: zero seller fees",
+   "claim": "Zero seller fees are spreading:\n- Vinted: no seller fees.\n- Depop: none in the UK, US and Australia.\n- eBay UK: free for private sellers.\n- eBay US: piloted invite-only zero-fee fashion promos (Mar 2026) as Vinted pushed into the US.\n- Grailed: cut to 6% under $120 (May 2026).\n\nBuyers and boosts now carry more of the cost.",
+   "sources": [
+    "https://www.vinted.com/help/1653",
+    "https://depophelp.zendesk.com/hc/en-gb/articles/360001791127-What-about-fees-",
+    "https://www.ebay.co.uk/help/selling/selling/pricing-items/buyer-protection-information-sellers?id=5595",
+    "https://www.valueaddedresource.net/ebay-zero-selling-fees-fashion-baby-home/",
+    "https://support.grailed.com/hc/en-us/articles/30282580172045-What-are-the-fees"
+   ],
+   "confidence": "high",
+   "asOf": "2026-11-15"
+  },
+  {
+   "kind": "rule",
+   "name": "Marketing guardrails (synthesis of the rules above)",
+   "claim": "Claims that fit the rules:\n- AI drafts listings from your own photos and you review and publish.\n- One inventory; when it sells, the rest delist (Depop explicitly allows cross-listing platforms on that condition).\n- Use official channels where they exist (eBay Inventory API; Vinted Pro Integrations for allowlisted Pro businesses).\n- Suggest the platform's own refresh tools (Grailed bump or 10% drop, Vinted Bump, Depop Boost) at a human pace.\n\nClaims that conflict with the rules: auto-relisting or bumping bots, '24/7 autopilot', bulk delete-and-repost, CAPTCHA solving, 'undetectable' or 'ban-proof', AI-edited photos on Vinted, and implied partnership with or endorsement by any platform.",
+   "sources": [
+    "https://depophelp.zendesk.com/hc/en-gb/articles/360001773148-Terms-of-Service",
+    "https://www.vinted.co.uk/terms_and_conditions",
+    "https://poshmark.com/community_guidelines",
+    "https://www.grailed.com/about/terms",
+    "https://developer.ebay.com/api-docs/sell/inventory/overview.html",
+    "https://pro-docs.svc.vinted.com/"
+   ],
+   "confidence": "high",
+   "asOf": "2026-11-15",
+   "usage": "Run every video script against this list before rendering."
+  }
+ ],
+ "jokeAngles": [
+  "The 3 a.m. delete-and-repost ritual: Tiffany hand-relists 60 pieces until her thumb files for workers' comp. Smash cut to morning: one tap and 60 honest drafts to approve over coffee. She stays the one pressing publish.",
+  "Archive inflation court: her friend lists £3 Zara jeans as 'rare ballhog archive grail Japanese style'. Tiffany's AI draft just says 'Zara jeans, grey, W28, tiny mark on hem'. The friend sues for defamation of denim.",
+  "Two buyers, one Number (N)ine hoodie: it sells on Depop and Vinted within four minutes. Heist-movie split screen, Tiffany sprinting between apps. The sync delists the second copy the instant the first sells.",
+  "Lowball boss fight: a JRPG battle screen. The enemy casts 'would u do £5' on a £120 tee. Tiffany's menu reads Counter / Decline / Block / Write a diss track.",
+  "$119.99 enlightenment: Tiffany learns Grailed's commission jumps from 6% to 9% at $120 and becomes a fee monk, pricing everything at 119.99 with incense burning.",
+  "The Bumped feed: every listing she scrolls past wears a 'Bumped' badge, even a single sock. 'The whole marketplace is on hype-man duty.'",
+  "Grailed told me to drop the price: Tiffany proudly bumps every 7 days, hits the 30-day wall where only a 10% drop will bump it, and treats the price cut like a breakup.",
+  "48 hours of terror: after delivery she refreshes the order chat like waiting for a text back, until 'everything is OK' lands and confetti plays over an ad-lib.",
+  "'Is this still available?' sent next to a live Buy now button. Tiffany points at the button like a bouncer pointing at the door.",
+  "Boost tax: Tiffany gets charged a boosting fee because a buyer merely looked at her boosted tile. 'I'm paying rent on eye contact.'",
+  "Repop roulette: a Hysteric Glamour tee has been Repopped through six owners. Its listing history has more passport stamps than Tiffany.",
+  "Packing ASMR, underground-rap edition: tape-gun ad-libs, bubble-wrap hi-hats, a whispered tracking number, and a 'hand-written thank-you note' that just says 'w'.",
+  "Revenue breakdown parody: 'I made £6,000 this month' (gross) (before refunds) (I spent £6,100 on archive).",
+  "Mystery bale unboxing: a 25kg 'archive' bale turns out to be 40 lanyards, a Hollister tee tagged 'ballhog asf', and one real Evisu tee she guards like the Ark.",
+  "Shadowban detective: a red-string conspiracy board about why nobody sees her listing. The reveal: her title had 19 hashtags and two brands she wasn't selling. The honest AI title fixes it.",
+  "Listing limbo: Vinted's 'checking your listing' screen. Tiffany ages through the seasons while she waits.",
+  "The archive counter: Tiffany installs a meter that ticks every time she reads 'archive' in her feed. It overheats by the third scroll.",
+  "Photo day chaos: perfect mirror-pic lighting, tape measure out, and her cat sits on the jeans. The AI writes the description in seconds, honest flaws included."
+ ],
+ "avoid": [
+  "Don't claim or show auto-relisting, auto-bumping or '24/7 autopilot' bots on Vinted, Poshmark or Grailed. Vinted bans external tools and bulk delete-and-relist, Poshmark bans automated deleting and reposting, sharing and following, and Grailed requires written consent for any tool.",
+  "Don't use 'undetectable', 'ban-proof', 'never get suspended', 'CAPTCHA solving', 'unlimited relists' or 'AI agent does it for you' wording. These are the exact behaviours the 2026 terms target.",
+  "Don't show Tiffany deleting and re-uploading the same items in bulk on Vinted, or repeatedly removing and relisting within 60 days on Poshmark.",
+  "Don't show AI-generated or AI-edited product photos, background swaps or AI try-ons for Vinted listings. Vinted bans image editing, and 68% of Gen Z distrust edited images.",
+  "Don't show off-platform deals: PayPal friends and family, bank transfer, 'add me on WhatsApp', links to the app inside Depop or Vinted listings or bios, or 'DM to buy' on platforms that require their own checkout.",
+  "Don't give Tiffany's own listings keyword stuffing: unrelated brands, 'X style' or 'inspired by' name-drops, or artist names on items they aren't connected to. Mock it only through side characters.",
+  "Don't show Tiffany selling reps, counterfeits or bootleg or 'inspired' artist merch, or coordinating prices with friends. All of it breaks platform rules.",
+  "On Vinted, don't frame Tiffany as a full-time reseller sourcing stock on a standard account. Vinted bans commercial selling without Pro, and Pro doesn't exist in the US. Frame her as rotating her own wardrobe.",
+  "Don't imply partnership with or endorsement by Depop, Vinted, eBay, Grailed, Poshmark or Vestiaire. Don't recreate their logos or real UI pixel-for-pixel; draw generic marketplace UI and add a 'not affiliated' line.",
+  "Don't print fee numbers or 'zero fees' claims in ads. Depop Boost (Mar 2026), Grailed (May 2026), Vinted (Oct 2026) and Vestiaire (Nov 2026) all changed in 2026.",
+  "Don't make jokes about staying under HMRC or IRS reporting thresholds, or about dodging tax.",
+  "Don't depict or imply minors. Vinted is 18+, and the UK is debating under-16 bans for resale apps. Keep Tiffany clearly adult and avoid school settings.",
+  "Don't name, depict or copy captions or screenshots from private TikTok sellers or real buyers. Write all chat lines and offers fresh.",
+  "Don't treat dated formats as fresh. 'Is this still available?' is Facebook Marketplace-coded, 'no lowballers I know what I have' is boomer-coded and only works ironically, and 'Depop prices are insane' peaked around 2020-2024.",
+  "Don't claim in marketing that a platform shadowbans or punishes sellers. Keep shadowban jokes as Tiffany's own paranoia."
+ ],
+ "openQuestions": [
+  "How does the owner's 'one-click relisting' actually work on each platform: official API, browser extension or automation, or a copy-paste handoff? Whether it complies depends entirely on this. Today only eBay (Inventory API) and Vinted (Pro Integrations, allowlisted EU/UK Pro businesses only) have sanctioned automation routes.",
+  "Would Depop (now under eBay) give the 'prior express permission' its US terms will require from 1 Jan 2027 for automated access? Does Depop's cross-listing carve-out cover relisting automation, or only cross-posting plus delisting? A direct partner inquiry is needed.",
+  "Grailed requires prior written consent for any extension or third-party tool. Is the owner willing to seek it, or should Grailed be left out of marketing?",
+  "Poshmark has not published a numeric threshold for 'excessive' removals or mass deletions, so safe pacing for sync deletes is unknown.",
+  "Vinted Bump and Showcase prices are not published (they depend on item price and duration). Vinted's catalogue rules don't address AI-generated text, and the 'mark photos as AI-generated' toggle has only been reported on vinted.fr.",
+  "Vestiaire's general website terms on automation were not fully checked; only the seller T&Cs (11 Nov 2026) were read.",
+  "Will eBay integrate or cross-post Depop listings after the acquisition? Nothing official on this was found.",
+  "How will the UK's proposed under-16 ban on resale apps turn out (reported Nov 2026)?",
+  "Meme coverage is thinner than policy coverage. TikTok discover pages need a login, and the shared web-search quota ran out before sweeps of 'bundle?' chat memes, Depop-specific seller memes, pit-to-pit measurement-request jokes and IG story-drop memes. A follow-up pass with more search budget is recommended.",
+  "Marketplace search counts (Depop 6.97K, Vinted UK 321, Grailed 40 for 'ballhog'; Depop 5.33K for 'nettspend') are single snapshots from 15 Nov 2026 and may include fuzzy matches.",
+  "Claims by Chrome-extension tools such as Relisted (site unreachable) and other Chrome Web Store listings were not verified."
+ ]
+}

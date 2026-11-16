@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // new-video.mjs - scaffold a video workspace.
 //
-//   node scripts/new-video.mjs <slug> --style stickworld|blockcraft|glowvector|atlas --mode case-file|what-if|... [--title "..."]
+//   node scripts/new-video.mjs <slug> --style stickworld|blockcraft|glowvector|atlas --mode case-file|what-if|...|tiff|ug-rap [--title "..."]
 //
 // Creates videos/<slug>/ (brief.md, research.md, script.json skeleton) and src/videos/<slug>/index.tsx with a
 // placeholder scene per shot (so timing can be previewed before any art exists). Run again with --scenes to
@@ -16,8 +16,26 @@ if (!slug || !/^[a-z0-9][a-z0-9-]*$/.test(slug)) {
   console.error("usage: node scripts/new-video.mjs <slug: lowercase-with-dashes> --style stickworld --mode case-file [--title '...']");
   process.exit(1);
 }
-const style = arg(args, "--style", "stickworld");
 const mode = arg(args, "--mode", "case-file");
+const style = arg(args, "--style", "stickworld");
+// story modes: channel defaults (skills/reel/references/modes/tiff.md, ug-rap.md)
+const STORY = {
+  tiff: {
+    channel: "tiff",
+    voice: { provider: "auto", voice: "en-US-AvaMultilingualNeural", rate: "+6%", wpm: 192, cast: {} },
+    music: { mood: "plugg" },
+    captions: { preset: "lower" },
+    series: { name: "Tiff", episode: 1 },
+  },
+  "ug-rap": {
+    channel: "ug",
+    voice: { provider: "auto", voice: "en-US-BrianMultilingualNeural", rate: "+6%", wpm: 188, cast: {} },
+    music: { mood: "rage" },
+    captions: { preset: "boxed" },
+    series: { name: "", episode: 1 },
+    subject: { kind: "bio", name: "", real: true },
+  },
+}[mode];
 const title = arg(args, "--title", slug.replace(/-/g, " "));
 const vdir = path.join(STUDIO, "videos", slug);
 const sdir = path.join(STUDIO, "src", "videos", slug);
@@ -26,10 +44,12 @@ fs.mkdirSync(sdir, { recursive: true });
 const write = (p, s) => {
   if (!fs.existsSync(p)) fs.writeFileSync(p, s);
 };
-const CAPTION = { stickworld: "boxed", blockcraft: "pixel", glowvector: "clean", atlas: "bold-pop" };
+const CAPTION = { stickworld: "boxed", blockcraft: "chunky", glowvector: "clean", atlas: "bold-pop" };
 write(
   path.join(vdir, "brief.md"),
-  `# ${title}\n\n- mode: ${mode}\n- style: ${style}\n- platform: tiktok + reels + shorts\n- target length: 45-62 s\n- audience:\n- the one thing the viewer should feel/learn:\n- reference videos (outliers) and what we copy from them (structure, hook pattern, pacing):\n`,
+  STORY
+    ? `# ${title}\n\n- mode: ${mode} (channel: ${STORY.channel})\n- style: ${style}\n- premise (the owner's words):\n- episode: ${STORY.series.episode} (series "${STORY.series.name}")\n- format (fit check / POV skit / storytime / roast / comment-reply / bio / scenario):\n- the joke engine in one line:\n- niche facts and memes used (each with its row in research.md or the niche file it comes from):\n- pileGo! tie-in: pattern (punchline / habit / ad-beat), which beat, which pain it releases:\n- platform: tiktok + reels + shorts; target length: 40-60 s\n- reference videos (outliers) and what we copy from them (format + hook mechanic only):\n`
+    : `# ${title}\n\n- mode: ${mode}\n- style: ${style}\n- platform: tiktok + reels + shorts\n- target length: 45-62 s\n- audience:\n- the one thing the viewer should feel/learn:\n- reference videos (outliers) and what we copy from them (structure, hook pattern, pacing):\n`,
 );
 write(path.join(vdir, "research.md"), `# Research: ${title}\n\n| # | fact (as it will be said) | source URL | checked |\n|---|---|---|---|\n`);
 write(
@@ -42,12 +62,14 @@ write(
       style,
       language: "en",
       fps: 30,
-      voice: { provider: "auto", wpm: 175 },
-      music: { mood: null },
-      captions: { preset: CAPTION[style] ?? "bold-pop" },
-      pronounce: {},
+      ...(STORY ? { channel: STORY.channel, series: STORY.series, ...(STORY.subject ? { subject: STORY.subject } : {}) } : {}),
+      voice: STORY?.voice ?? { provider: "auto", wpm: 175 },
+      music: STORY?.music ?? { mood: null },
+      captions: STORY?.captions ?? { preset: CAPTION[style] ?? "bold-pop" },
+      pronounce: STORY ? { pileGo: "pile go" } : {},
       hooks: [],
       hookVariants: [],
+      ...(STORY ? { plug: { pattern: "punchline", beats: [] } } : {}),
       beats: [{ id: "b01", shot: "s01", role: "hook", text: "Replace me with the hook line.", visual: "", sfx: [] }],
     },
     null,

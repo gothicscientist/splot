@@ -3,7 +3,7 @@
 // shot's forward axis (0 = backlight, +90 = from screen right, 180 = from behind the camera), el = elevation.
 import { LIGHTS, LightPreset } from "./look/lights";
 
-export type LookName = "day" | "golden" | "night" | "interior" | "alarm" | "studio" | "dusk" | "dawn" | "overcast";
+export type LookName = "day" | "golden" | "night" | "interior" | "alarm" | "studio" | "dusk" | "dawn" | "overcast" | "club";
 
 const day = LIGHTS.day;
 const golden = LIGHTS.golden;
@@ -47,6 +47,15 @@ export const LOOKS: Record<LookName, LightPreset & { skyTop: string; skyHor: str
     az: 140, el: 40, lit: [1.85, 0.46, 0.36], shade: [0.26, 0.06, 0.12], lift: [0.08, 0.0, 0.04], lambert: 0.4, term: 0.2,
     charTint: [1.0, 0.62, 0.56], charShade: 0.82, top: "#3a0610", hor: "#7a1220", fog: "#5a0c18", fogNear: 15, fogFar: 140,
     skyTop: "#3a0610", skyHor: "#7a1220", grade: "golden",
+  },
+  // underground show / club: magenta-violet key from the stage, deep indigo shade, hazy purple air; characters stay
+  // readable (char tint near white) while the room falls off into colour
+  club: {
+    ...day,
+    az: 35, el: 32, lit: [1.5, 0.92, 1.42], shade: [0.2, 0.12, 0.34], lift: [0.1, 0.05, 0.16], lambert: 0.35, term: 0.25,
+    charTint: [1.0, 0.9, 0.98], charShade: 0.84, charGrad: 0.09, bodyGrad: 0.22, sideTint: [0.9, 0.8, 1.0],
+    top: "#140a22", hor: "#3d1856", fog: "#2b1242", fogNear: 9, fogFar: 48, skyTop: "#140a22", skyHor: "#3d1856",
+    sunCol: "#ffa3dc", sunI: 2.2, hemiI: 0.32, grade: "golden",
   },
   // clean showroom / museum / stage: bright, low contrast shadow
   studio: {

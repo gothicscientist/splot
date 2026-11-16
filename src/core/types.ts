@@ -55,6 +55,7 @@ export type CaptionStyle = {
   keywordText?: string; // text colour inside the box
   stroke?: number; // outline px
   uppercase?: boolean;
+  lowercase?: boolean;
   hidden?: boolean;
 };
 

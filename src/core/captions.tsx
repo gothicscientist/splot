@@ -24,6 +24,8 @@ type Preset = {
   keywordBox: string | null;
   keywordText: string;
   uppercase: boolean;
+  /** all lowercase (the alt / underground-scene text look); keyword boxes stay */
+  lowercase?: boolean;
   mode: "single" | "phrase";
   activeColor: string | null;
   letterSpacing: number;
@@ -58,8 +60,11 @@ export const CAPTION_PRESETS: Record<string, Preset> = {
   boxed: { ...BASE, keywordBox: "#FFD43B", keywordText: "#121212" },
   // phrase captions with the spoken word lighting up (explainers / talking formats)
   karaoke: { ...BASE, weight: 800, size: 84, minSize: 56, mode: "phrase", activeColor: "#FFD43B", stroke: 10 },
-  // voxel style: pixel font, hard drop shadow, no outline
-  pixel: { ...BASE, font: "Pixelify Sans", weight: 700, size: 96, stroke: 0, shadow: "hard", keywordColor: "#FFE14D", letterSpacing: 2 },
+  // pixel font, hard drop shadow, no outline. Silkscreen 400 only: Pixelify Sans draws capital C like an O and
+  // Silkscreen 700 merges W into a blob. Prefer "chunky" for voxel videos (more legible at caption size).
+  pixel: { ...BASE, font: "Silkscreen", weight: 400, size: 84, stroke: 0, shadow: "hard", keywordColor: "#FFE14D", letterSpacing: 0 },
+  // voxel / game look: chunky rounded display face (gaming-thumbnail style), dark outline + hard shadow
+  chunky: { ...BASE, font: "Lilita One", weight: 400, size: 104, stroke: 11, strokeColor: "#141018", shadow: "hard", keywordColor: "#FFE14D", letterSpacing: 1 },
   // flat-vector science look: clean geometric sans, soft shadow, phrase chunks
   clean: { ...BASE, font: "Inter", weight: 800, size: 80, minSize: 54, mode: "phrase", stroke: 0, shadow: "soft", keywordColor: "#FFD166" },
   // comic / cartoon look
@@ -68,10 +73,12 @@ export const CAPTION_PRESETS: Record<string, Preset> = {
   marker: { ...BASE, font: "Permanent Marker", weight: 400, size: 92, stroke: 9, keywordColor: "#FF5A5F" },
   // documentary / history look
   serif: { ...BASE, font: "DM Serif Display", weight: 400, size: 92, stroke: 8, keywordColor: "#F4C95D" },
+  // story channels (Tiff x pileGo!): lowercase editorial sans, lilac keyword box (her hair, the brand lilac)
+  lower: { ...BASE, font: "Inter", weight: 800, size: 96, minSize: 58, stroke: 10, lowercase: true, keywordBox: "#CDB6EA", keywordText: "#17151A" },
   none: { ...BASE },
 };
 
-// ---- font-safe text measurement (never measure with a fallback font: that cached wrong widths before)
+// ---- captions are laid out by the browser (HTML spans); this only holds the frame until the font has loaded
 const ready = new Set<string>();
 /** Real hook: holds the frame (delayRender) until the font is loaded, then re-renders with it. */
 function useFontReady(fam: string, weight: number) {
@@ -93,64 +100,7 @@ function useFontReady(fam: string, weight: number) {
   }, [ok, key, fam, weight, handle]);
   return ok;
 }
-let mctx: CanvasRenderingContext2D | null = null;
-function measureText({ text, fontFamily, fontSize, fontWeight, letterSpacing }: { text: string; fontFamily: string; fontSize: number; fontWeight: string; letterSpacing: string }) {
-  if (!mctx) mctx = document.createElement("canvas").getContext("2d");
-  const g = mctx as CanvasRenderingContext2D;
-  g.font = `${fontWeight} ${fontSize}px "${fontFamily}"`;
-  const ls = parseFloat(letterSpacing) || 0;
-  return { width: g.measureText(text).width + ls * Math.max(0, text.length - 1) };
-}
-const spaceWidth = (fam: string, size: number, weight: number) => {
-  const a = measureText({ text: "a a", fontFamily: fam, fontSize: size, fontWeight: String(weight), letterSpacing: "0px" }).width;
-  const b = measureText({ text: "aa", fontFamily: fam, fontSize: size, fontWeight: String(weight), letterSpacing: "0px" }).width;
-  return Math.max(size * 0.22, a - b);
-};
-
 const strip = (t: string) => t.replace(/[.,;:]+$/g, "").replace(/^["“(]+|["”)]+$/g, "");
-
-type Placed = { w: TWord; text: string; x: number; width: number; line: number };
-
-function layout(words: TWord[], p: Preset, fam: string, size: number) {
-  const space = spaceWidth(fam, size, p.weight) * 1.08;
-  const items = words.map((w) => {
-    let text = p.stripPunct ? strip(w.text) : w.text;
-    if (p.uppercase) text = text.toUpperCase();
-    const width = measureText({ text, fontFamily: fam, fontSize: size, fontWeight: String(p.weight), letterSpacing: `${p.letterSpacing}px` }).width;
-    return { w, text, width };
-  });
-  const pad = (x: { w: TWord }) => (x.w.emph && p.keywordBox ? size * 0.36 : 0);
-  // greedy wrap into at most 2 balanced lines
-  const total = items.reduce((a, x) => a + x.width + pad(x), 0) + space * Math.max(0, items.length - 1);
-  let lines: (typeof items)[] = [items];
-  if (total > p.maxWidth && items.length > 1) {
-    let best = 1;
-    let bestDiff = Infinity;
-    for (let k = 1; k < items.length; k++) {
-      const a = items.slice(0, k).reduce((s, x) => s + x.width + pad(x), 0) + space * (k - 1);
-      const b = items.slice(k).reduce((s, x) => s + x.width + pad(x), 0) + space * (items.length - k - 1);
-      const d = Math.max(a, b);
-      if (d < bestDiff) {
-        bestDiff = d;
-        best = k;
-      }
-    }
-    lines = [items.slice(0, best), items.slice(best)];
-  }
-  const placed: Placed[] = [];
-  let widest = 0;
-  lines.forEach((ln, li) => {
-    const lw = ln.reduce((s, x) => s + x.width + pad(x), 0) + space * Math.max(0, ln.length - 1);
-    widest = Math.max(widest, lw);
-    let x = -lw / 2;
-    for (const it of ln) {
-      const pd = pad(it);
-      placed.push({ w: it.w, text: it.text, x: x + pd / 2, width: it.width, line: li });
-      x += it.width + pd + space;
-    }
-  });
-  return { placed, widest, lines: lines.length };
-}
 
 export const Captions: React.FC<{ override?: CaptionStyle }> = ({ override }) => {
   const tl = useTimeline();
@@ -170,6 +120,7 @@ export const Captions: React.FC<{ override?: CaptionStyle }> = ({ override }) =>
     ...(cs.keywordText ? { keywordText: cs.keywordText } : {}),
     ...(cs.stroke !== undefined ? { stroke: cs.stroke } : {}),
     ...(cs.uppercase !== undefined ? { uppercase: cs.uppercase } : {}),
+    ...(cs.lowercase !== undefined ? { lowercase: cs.lowercase } : {}),
     ...(cs.mode ? { mode: cs.mode } : {}),
   };
   const fontOk = useFontReady(font(p.font), p.weight);
@@ -184,6 +135,7 @@ export const Captions: React.FC<{ override?: CaptionStyle }> = ({ override }) =>
   const texts = words.map((w) => {
     let t = p.stripPunct ? strip(w.text) : w.text;
     if (p.uppercase) t = t.toUpperCase();
+    else if (p.lowercase && !/[a-z][A-Z]/.test(t)) t = t.toLowerCase(); // brand casing (pileGo!, iPhone) survives
     return t;
   });
   const est = (sz: number) => texts.reduce((a, t) => a + t.length * avg * sz, 0) + Math.max(0, texts.length - 1) * 0.3 * sz + (words.some((w) => w.emph) && p.keywordBox ? 0.4 * sz : 0);

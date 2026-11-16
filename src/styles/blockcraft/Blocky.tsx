@@ -11,16 +11,34 @@ import type { Vec3 } from "../../core/types";
 export type BlockySpec = {
   skin: string;
   hair: string;
-  hairStyle?: "short" | "long" | "bald" | "spiky" | "bob" | "buzz";
+  /** "hime" = long straight hair: blunt bangs, face-framing side locks, locks over the chest, a panel down the back */
+  /** "anime" = the hime cut with pointed bangs, an ahoge, longer chest locks and waist-length back hair */
+  hairStyle?: "short" | "long" | "bald" | "spiky" | "bob" | "buzz" | "hime" | "anime";
   eyes?: string;
   shirt: string;
   shirtAccent?: string;
   shirtStyle?: "tee" | "hoodie" | "jacket" | "armor" | "robe" | "lab" | "suit";
   pants: string;
   shoes?: string;
-  hat?: { kind: "cap" | "helmet" | "crown" | "hardhat" | "hood" | "band"; color: string };
+  hat?: { kind: "cap" | "helmet" | "crown" | "hardhat" | "hood" | "band" | "fur"; color: string };
   beard?: string;
   emblem?: string;
+  // ---- feminine features and fashion (all optional; a voxel Tiff must match CAST.tiff: silver-lavender hair, black tank, jean shorts, black boots)
+  /** a dark upper-lash / liner row above the eyes */
+  lashes?: boolean;
+  lips?: string;
+  blush?: boolean;
+  /** 3-texel arms (slimmer frame) */
+  slim?: boolean;
+  /** "hourglass" builds the torso from a chest, a narrower waist and hips (crop tops show the midriff at the waist) */
+  figure?: "hourglass";
+  /** 2x2 anime eyes with a highlight pixel (iris colour = eyes) */
+  animeEyes?: boolean;
+  /** "crop" = cropped top with a bare midriff band above the waistband */
+  top?: "crop";
+  necklace?: "pearls" | "chain";
+  /** crossbody bag colour: strap across the chest + a small bag at the hip */
+  crossbody?: string;
   seed?: number;
 };
 export type BlockyFace = "neutral" | "happy" | "shocked" | "angry" | "sad" | "smug" | "scared" | "wink" | "determined" | "sleep" | "talk";
@@ -96,14 +114,23 @@ function faceTexture(s: BlockySpec, face: BlockyFace, blink: boolean) {
   const sd = s.seed ?? 1;
   return tex(8, 8, (px) => {
     for (let y = 0; y < 8; y++) for (let x = 0; x < 8; x++) px(x, y, jitter(s.skin, sd, x + y * 8));
-    const hairRows = s.hairStyle === "bald" ? 0 : s.hairStyle === "buzz" ? 1 : 2;
+    const anime = s.hairStyle === "anime";
+    const hime = s.hairStyle === "hime" || anime;
+    const hairRows = s.hairStyle === "bald" ? 0 : s.hairStyle === "buzz" ? 1 : hime && !anime ? 3 : 2;
     for (let y = 0; y < hairRows; y++) for (let x = 0; x < 8; x++) px(x, y, jitter(s.hair, sd + 3, x + y * 8));
     if (s.hairStyle === "long" || s.hairStyle === "bob") for (let y = 2; y < 6; y++) [0, 7].forEach((x) => px(x, y, jitter(s.hair, sd + 3, x + y)));
+    if (hime) {
+      // blunt bangs with two lighter strands, side locks down to the jaw
+      for (let y = 3; y < 8; y++) [0, 7].forEach((x) => px(x, y, jitter(s.hair, sd + 3, x + y)));
+      [2, 5].forEach((x) => px(x, 1, shadeHex(s.hair, 1.9)));
+      // anime: pointed bangs (three locks reaching row 2 with gaps between them)
+      if (anime) [0, 1, 3, 4, 6, 7].forEach((x) => px(x, 2, jitter(s.hair, sd + 3, x + 2)));
+    }
     if (s.hairStyle === "spiky") [1, 3, 5].forEach((x) => px(x, 2, s.hair));
     const eye = s.eyes ?? "#3b2a1a";
     const dark = "#2b1d14";
     const white = "#f4f4f4";
-    const mouth = "#7a3b2e";
+    const mouth = s.lips ?? "#7a3b2e";
     const eyesShut = blink || face === "sleep";
     // brows
     if (face === "angry" || face === "determined") {
@@ -120,9 +147,18 @@ function faceTexture(s: BlockySpec, face: BlockyFace, blink: boolean) {
       else px(4, 4, dark), px(5, 3, dark), px(6, 4, dark);
     } else if (face === "shocked" || face === "scared") {
       px(1, 3, white), px(2, 3, white), px(1, 4, white), px(2, 4, eye), px(5, 3, white), px(6, 3, white), px(5, 4, eye), px(6, 4, white);
+    } else if (s.animeEyes) {
+      // 2x2 anime eyes: dark top with a highlight on the inner side, lighter iris below
+      const lit = shadeHex(eye, 1.9);
+      px(1, 4, eye), px(2, 4, white), px(1, 5, lit), px(2, 5, eye);
+      px(5, 4, white), px(6, 4, eye), px(5, 5, eye), px(6, 5, lit);
     } else {
       px(1, 4, white), px(2, 4, eye), px(5, 4, eye), px(6, 4, white);
     }
+    // liner / lash row above open eyes (outer corner flicks up into the side lock)
+    if (s.lashes && !eyesShut && face !== "happy" && face !== "wink") [1, 6].forEach((x) => px(x, 3, dark));
+    if (s.lashes && (face === "happy" || face === "wink")) [1, 6].forEach((x) => px(x, 3, dark));
+    if (s.blush) [1, 6].forEach((x) => px(x, s.animeEyes ? 6 : 5, "#f0a4b4"));
     // beard
     if (s.beard) for (let y = 6; y < 8; y++) for (let x = 1; x < 7; x++) px(x, y, jitter(s.beard, sd + 5, x + y));
     // mouth (row 6)
@@ -154,7 +190,7 @@ function buildParts(s: BlockySpec) {
   const sd = s.seed ?? 1;
   const T = 1 / 16;
   const hairSide = (w: number) => solidTex(w, 8, s.hairStyle === "bald" ? s.skin : s.skin, sd, (px) => {
-    if (s.hairStyle !== "bald") for (let y = 0; y < (s.hairStyle === "long" ? 7 : 3); y++) for (let x = 0; x < w; x++) px(x, y, jitter(s.hair, sd + 3, x + y * w));
+    if (s.hairStyle !== "bald") for (let y = 0; y < (s.hairStyle === "hime" || s.hairStyle === "anime" ? 8 : s.hairStyle === "long" ? 7 : 3); y++) for (let x = 0; x < w; x++) px(x, y, jitter(s.hair, sd + 3, x + y * w));
   });
   const headTop = solidTex(8, 8, s.hairStyle === "bald" ? s.skin : s.hair, sd + 3);
   const headBack = solidTex(8, 8, s.hairStyle === "bald" ? s.skin : s.hair, sd + 3, (px) => {
@@ -169,10 +205,17 @@ function buildParts(s: BlockySpec) {
     if (shirtStyle === "hoodie") [2, 5].forEach((x) => [1, 2, 3].forEach((y) => px(x, y, "#e8e8e8")));
     if (shirtStyle === "armor") for (let y = 0; y < 12; y += 3) for (let x = 0; x < 8; x++) px(x, y, shadeHex(s.shirt, 0.7));
     if (s.emblem) for (let y = 3; y < 6; y++) for (let x = 2; x < 6; x++) px(x, y, s.emblem);
+    if (s.top === "crop") for (let y = 8; y < 11; y++) for (let x = 0; x < 8; x++) px(x, y, jitter(s.skin, sd, x + y * 8));
+    if (s.necklace === "pearls") [[2, 0], [3, 1], [4, 1], [5, 0]].forEach(([x, y]) => px(x, y, "#f4f0e8"));
+    if (s.necklace === "chain") [[2, 0], [3, 1], [4, 1], [5, 0], [4, 2]].forEach(([x, y]) => px(x, y, "#c9ced6"));
+    if (s.crossbody) for (let y = 0; y < 8; y++) px(Math.max(0, 6 - y), y, shadeHex(s.crossbody, 0.6));
     for (let x = 0; x < 8; x++) px(x, 11, shadeHex(s.pants, 0.85)); // belt line
   });
-  const back = solidTex(8, 12, s.shirt, sd + 8);
-  const side = solidTex(4, 12, s.shirt, sd + 9);
+  const cropRows = (px: (x: number, y: number, c: string) => void, w: number) => {
+    if (s.top === "crop") for (let y = 8; y < 11; y++) for (let x = 0; x < w; x++) px(x, y, jitter(s.skin, sd, x + y * w));
+  };
+  const back = solidTex(8, 12, s.shirt, sd + 8, (px) => cropRows(px, 8));
+  const side = solidTex(4, 12, s.shirt, sd + 9, (px) => cropRows(px, 4));
   const sleeve = (len: number) =>
     solidTex(4, 12, s.shirt, sd + 11, (px) => {
       for (let y = len; y < 12; y++) for (let x = 0; x < 4; x++) px(x, y, jitter(s.skin, sd, x + y * 4));
@@ -191,6 +234,31 @@ function buildParts(s: BlockySpec) {
     body: mats([side, side, solidTex(8, 4, s.shirt, sd + 18), solidTex(8, 4, s.pants, sd + 19), front, back]),
     arm: mats([arm, arm, handTop, handBottom, arm, arm]),
     leg: mats([leg, leg, legTop, legBottom, leg, leg]),
+    hair: mats(Array.from({ length: 6 }, (_, i) => solidTex(8, 8, s.hair, sd + 30 + i, (px) => {
+      // a couple of lighter strands so the panel reads as hair, not a slab
+      for (let y = 0; y < 8; y++) if ((y + i) % 5 === 0) px(2 + (i % 3), y, shadeHex(s.hair, 1.8));
+    }))),
+    bag: mats(Array.from({ length: 6 }, (_, i) => solidTex(4, 4, s.crossbody ?? "#2a2830", sd + 40 + i))),
+    // hourglass torso: chest (shirt + necklace / strap pixels), waist (skin when cropped), hips (low-rise pants)
+    chest: mats([
+      solidTex(4, 5, s.shirt, sd + 50),
+      solidTex(4, 5, s.shirt, sd + 51),
+      solidTex(8, 4, s.shirt, sd + 52),
+      solidTex(8, 4, s.shirt, sd + 53),
+      solidTex(8, 5, s.shirt, sd + 54, (px) => {
+        if (s.necklace === "pearls") [[2, 0], [3, 1], [4, 1], [5, 0]].forEach(([x, y]) => px(x, y, "#f4f0e8"));
+        if (s.necklace === "chain") [[2, 0], [3, 1], [4, 1], [5, 0], [4, 2]].forEach(([x, y]) => px(x, y, "#c9ced6"));
+        if (s.crossbody) for (let y = 0; y < 5; y++) px(Math.max(0, 6 - y), y, shadeHex(s.crossbody, 0.6));
+        if (s.emblem) for (let y = 1; y < 4; y++) for (let x = 3; x < 5; x++) px(x, y, s.emblem);
+      }),
+      solidTex(8, 5, s.shirt, sd + 55),
+    ]),
+    waist: mats(Array.from({ length: 6 }, (_, i) => solidTex(8, 3, s.top === "crop" ? s.skin : s.shirt, sd + 60 + i, (px) => {
+      if (s.crossbody && s.top !== "crop" && i === 4) for (let y = 0; y < 3; y++) px(Math.max(0, 1 - y), y, shadeHex(s.crossbody, 0.6));
+    }))),
+    hips: mats(Array.from({ length: 6 }, (_, i) => solidTex(8, 4, s.pants, sd + 70 + i, (px) => {
+      if (i === 4 || i === 5) for (let x = 0; x < 8; x++) px(x, 0, shadeHex(s.pants, 0.8)); // waistband
+    }))),
   };
 }
 
@@ -198,7 +266,7 @@ function buildParts(s: BlockySpec) {
 const ITEMS: Record<string, { rows: string[]; pal: Record<string, string> }> = {
   pickaxe: {
     rows: ["................", ".....GGGGGG.....", "...GGHHHHHHGG...", "..GHH..BB..HHG..", "..G....BB....G..", ".......BB.......", ".......BB.......", ".......BB.......", ".......BB.......", ".......BB.......", ".......BB.......", ".......BB.......", ".......BB.......", "................", "................", "................"],
-    pal: { G: "#6fd3e0", H: "#b8f3f9", B: "#7a5230" },
+    pal: { G: "#7d8a97", H: "#c9d3dc", B: "#7a5230" }, // steel, never the genre's cyan "diamond" tool
   },
   sword: {
     rows: ["..............SS", ".............SHS", "............SHS.", "...........SHS..", "..........SHS...", ".........SHS....", "........SHS.....", "...G...SHS......", "....G.SHS.......", ".....GHS........", "......GG........", ".....BBGG.......", "....BB...G......", "...BB...........", "..BB............", "................"],
@@ -275,11 +343,13 @@ function mergeGeos(gs: THREE.BufferGeometry[]) {
 }
 export const ITEM_KINDS = Object.keys(ITEMS);
 
-/** A held/standing pixel item (extruded 16x16 art), `size` in metres. */
-export const PixelItem: React.FC<{ kind: string; position?: Vec3; rotation?: Vec3; size?: number; spin?: number }> = ({ kind, position, rotation, size = 0.5, spin = 0 }) => {
+/** A held/standing pixel item (extruded 16x16 art), `size` in metres. `tint` (linear RGB) multiplies its colours. */
+export const PixelItem: React.FC<{ kind: string; position?: Vec3; rotation?: Vec3; size?: number; spin?: number; tint?: [number, number, number] }> = ({ kind, position, rotation, size = 0.5, spin = 0, tint }) => {
   const f = useLocalFrame();
   const geo = getItemGeo(kind);
   const mat = useMemo(() => new THREE.MeshBasicMaterial({ vertexColors: true }), []);
+  // set synchronously in render (the first frame must already have it)
+  mat.color.setRGB(tint?.[0] ?? 1, tint?.[1] ?? 1, tint?.[2] ?? 1);
   return (
     <group position={position} rotation={rotation}>
       <mesh geometry={geo} material={mat} scale={size} rotation={[0, spin * f * 0.05, 0]} />
@@ -301,8 +371,27 @@ export type BlockyProps = {
   run?: boolean;
   scale?: number;
   pop?: number;
-  shadow?: boolean;
+  /** blob shadow: false = none, true = default strength (0.22), or its opacity */
+  shadow?: boolean | number;
+  /** how the +x hand holds `item`: "hand" (default, the original pose) or "tool": handle in the fist, the head out
+   *  along the arm's swing plane 30 deg forward of the arm axis, so a raised pickaxe points up and a chop strikes
+   *  forward-down */
+  grip?: "hand" | "tool";
+  /** held item size in metres (default 0.62) */
+  itemSize?: number;
+  /** linear RGB multiplier on every part, the hat and the held item (default none), e.g. [0.07, 0.07, 0.09] for a
+   *  backlit silhouette; it can change every frame (no texture rebuild) */
+  tint?: [number, number, number];
 };
+
+// tool grip: art +x (the pick head's span) -> in the swing plane, art +y (handle -> head) -> 30 deg forward of the
+// arm axis (away from the shoulder), art +z (thickness) -> the arm's x axis
+const TOOL_Q = (() => {
+  const g = (30 * Math.PI) / 180;
+  const d = new THREE.Vector3(0, -Math.cos(g), Math.sin(g));
+  const e = new THREE.Vector3(0, Math.sin(g), Math.cos(g));
+  return { q: new THREE.Quaternion().setFromRotationMatrix(new THREE.Matrix4().makeBasis(e, d, new THREE.Vector3(1, 0, 0))), d };
+})();
 
 function keyed<T>(keys: [number, T][], f: number, dflt: T) {
   let v = dflt;
@@ -317,7 +406,10 @@ function keyed<T>(keys: [number, T][], f: number, dflt: T) {
   return { v, since, prev };
 }
 
-export const Blocky: React.FC<BlockyProps> = ({ spec, at = [0, 0, 0], path, yaw = 0, poses = [[0, "idle"]], faces = [[0, "neutral"]], item = [], mining, talking = [], run = false, scale = 1, pop, shadow = true }) => {
+/** Head materials per built character and face key (expression|blink): a handful per character, built once. */
+const HEAD_CACHE = new WeakMap<object, Map<string, ReturnType<ReturnType<typeof buildParts>["head"]>>>();
+
+export const Blocky: React.FC<BlockyProps> = ({ spec, at = [0, 0, 0], path, yaw = 0, poses = [[0, "idle"]], faces = [[0, "neutral"]], item = [], mining, talking = [], run = false, scale = 1, pop, shadow = true, grip = "hand", itemSize = 0.62, tint }) => {
   const f = useLocalFrame();
   const { fps } = useVideoConfig();
   const parts = useMemo(() => buildParts(spec), [spec]);
@@ -325,7 +417,17 @@ export const Blocky: React.FC<BlockyProps> = ({ spec, at = [0, 0, 0], path, yaw 
   const speaking = talking.some((w) => f >= w.s && f < w.e && Math.floor((f - w.s) / 3) % 2 === 0);
   const blink = blinkAt(f, spec.seed ?? 3, fps) > 0.5;
   const faceKey = `${speaking && fk.v !== "shocked" ? "talk" : fk.v}|${blink}`;
-  const headMats = useMemo(() => parts.head(faceTexture(spec, faceKey.split("|")[0] as BlockyFace, blink)), [parts, faceKey]);
+  const headMats = useMemo(() => {
+    let byFace = HEAD_CACHE.get(parts);
+    if (!byFace) HEAD_CACHE.set(parts, (byFace = new Map()));
+    let m = byFace.get(faceKey);
+    if (!m) byFace.set(faceKey, (m = parts.head(faceTexture(spec, faceKey.split("|")[0] as BlockyFace, blink))));
+    return m;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [parts, faceKey]);
+  // the baked face shade times the optional tint, set synchronously in render (materials are per figure)
+  const tk = tint ?? [1, 1, 1];
+  for (const ms of [parts.body, parts.arm, parts.leg, headMats]) ms.forEach((m, i) => m.color.setRGB(SH[i] * tk[0], SH[i] * tk[1], SH[i] * tk[2]));
   // position + walk
   let pos: Vec3 = at;
   let moving = false;
@@ -378,21 +480,71 @@ export const Blocky: React.FC<BlockyProps> = ({ spec, at = [0, 0, 0], path, yaw 
           </group>
         ))}
         {/* torso */}
-        <mesh position={[0, legH + 6 * T, 0]} material={parts.body}>
-          <boxGeometry args={[8 * T, 12 * T, 4 * T]} />
-        </mesh>
+        {spec.figure === "hourglass" ? (
+          <>
+            <mesh position={[0, legH + 9.5 * T, 0.15 * T]} material={parts.chest}>
+              <boxGeometry args={[8 * T, 5 * T, 4.4 * T]} />
+            </mesh>
+            <mesh position={[0, legH + 5.5 * T, 0]} material={parts.waist}>
+              <boxGeometry args={[6.4 * T, 3 * T, 3.5 * T]} />
+            </mesh>
+            <mesh position={[0, legH + 2 * T, 0]} material={parts.hips}>
+              <boxGeometry args={[8.6 * T, 4 * T, 4.3 * T]} />
+            </mesh>
+          </>
+        ) : (
+          <mesh position={[0, legH + 6 * T, 0]} material={parts.body}>
+            <boxGeometry args={[8 * T, 12 * T, 4 * T]} />
+          </mesh>
+        )}
+        {spec.hairStyle === "hime" || spec.hairStyle === "anime" ? (
+          <>
+            {/* long hair: a panel down the back (peeks out past the shoulders) + two locks over the chest */}
+            <mesh position={[0, legH + 12 * T - (spec.hairStyle === "anime" ? 6.5 : 5) * T, -2.75 * T]} material={parts.hair}>
+              <boxGeometry args={[9.4 * T, (spec.hairStyle === "anime" ? 13 : 10) * T, 1.3 * T]} />
+            </mesh>
+            {[-1, 1].map((sd) => (
+              <group key={`lock${sd}`}>
+                <mesh position={[sd * 3.2 * T, legH + 12 * T - 2.9 * T, 2.6 * T]} material={parts.hair}>
+                  <boxGeometry args={[1.6 * T, 5.8 * T, 0.9 * T]} />
+                </mesh>
+                {spec.hairStyle === "anime" ? (
+                  <mesh position={[sd * 3.0 * T, legH + 12 * T - 6.4 * T, 2.6 * T]} material={parts.hair}>
+                    <boxGeometry args={[0.9 * T, 1.4 * T, 0.8 * T]} />
+                  </mesh>
+                ) : null}
+              </group>
+            ))}
+          </>
+        ) : null}
+        {spec.crossbody ? (
+          <mesh position={[-2.4 * T, legH + 1.6 * T, 2.6 * T]} material={parts.bag}>
+            <boxGeometry args={[3.2 * T, 2.6 * T, 1.2 * T]} />
+          </mesh>
+        ) : null}
         {/* arms (pivot at shoulders) */}
         {[-1, 1].map((sd) => {
           const a = sd < 0 ? pose.armL : pose.armR;
+          const aw = spec.slim ? 3 : 4;
           return (
-            <group key={sd} position={[sd * 6 * T, legH + 12 * T - 2 * T, 0]} rotation={[a[0] * R, 0, sd * a[1] * R]}>
+            <group key={sd} position={[sd * (spec.slim ? 5.5 : 6) * T, legH + 12 * T - 2 * T, 0]} rotation={[a[0] * R, 0, sd * a[1] * R]}>
               <mesh position={[0, -4 * T, 0]} material={parts.arm}>
-                <boxGeometry args={[4 * T, 12 * T, 4 * T]} />
+                <boxGeometry args={[aw * T, 12 * T, aw * T]} />
               </mesh>
               {sd > 0 && it ? (
-                <group position={[0, -9.5 * T, 2.2 * T]} rotation={[-Math.PI / 2 + 0.5, Math.PI / 2, 0]}>
-                  <PixelItem kind={it} size={0.62} position={[0.16, 0.16, 0]} />
-                </group>
+                grip === "tool" ? (
+                  // the grip point (art row 11, 3.5 texels below the centre) sits in the fist
+                  <group
+                    position={[0, -9.2 * T + TOOL_Q.d.y * (3.5 / 16) * itemSize, TOOL_Q.d.z * (3.5 / 16) * itemSize]}
+                    quaternion={TOOL_Q.q}
+                  >
+                    <PixelItem kind={it} size={itemSize} tint={tint} />
+                  </group>
+                ) : (
+                  <group position={[0, -9.5 * T, 2.2 * T]} rotation={[-Math.PI / 2 + 0.5, Math.PI / 2, 0]}>
+                    <PixelItem kind={it} size={itemSize} position={[0.16 * (itemSize / 0.62), 0.16 * (itemSize / 0.62), 0]} tint={tint} />
+                  </group>
+                )
               ) : null}
             </group>
           );
@@ -402,22 +554,35 @@ export const Blocky: React.FC<BlockyProps> = ({ spec, at = [0, 0, 0], path, yaw 
           <mesh position={[0, 4 * T, 0]} material={headMats}>
             <boxGeometry args={[8 * T, 8 * T, 8 * T]} />
           </mesh>
-          {spec.hat ? <Hat kind={spec.hat.kind} color={spec.hat.color} T={T} /> : null}
+          {spec.hairStyle === "anime" && !spec.hat ? (
+            // ahoge: one springy strand on the crown
+            <group position={[0.6 * T, 8 * T, 0.4 * T]} rotation={[0, 0, -0.5]}>
+              <mesh position={[0, 1.1 * T, 0]} material={parts.hair}>
+                <boxGeometry args={[0.7 * T, 2.2 * T, 0.7 * T]} />
+              </mesh>
+              <mesh position={[0.6 * T, 2.2 * T, 0]} rotation={[0, 0, -1.0]} material={parts.hair}>
+                <boxGeometry args={[0.7 * T, 1.4 * T, 0.7 * T]} />
+              </mesh>
+            </group>
+          ) : null}
+          {spec.hat ? <Hat kind={spec.hat.kind} color={spec.hat.color} T={T} tint={tint} /> : null}
         </group>
       </group>
-      {shadow ? (
+      {shadow !== false && (shadow === true ? 0.22 : shadow) > 0 ? (
         <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.01 + crouch, 0]}>
           <circleGeometry args={[0.34, 20]} />
-          <meshBasicMaterial color="#000000" transparent opacity={0.22} depthWrite={false} />
+          <meshBasicMaterial color="#000000" transparent opacity={shadow === true ? 0.22 : shadow} depthWrite={false} />
         </mesh>
       ) : null}
     </group>
   );
 };
 
-const Hat: React.FC<{ kind: string; color: string; T: number }> = ({ kind, color, T }) => {
-  const m = new THREE.MeshBasicMaterial({ color });
-  const dark = new THREE.MeshBasicMaterial({ color: new THREE.Color(color).multiplyScalar(0.7) });
+const Hat: React.FC<{ kind: string; color: string; T: number; tint?: [number, number, number] }> = ({ kind, color, T, tint }) => {
+  const { m, dark } = useMemo(() => ({ m: new THREE.MeshBasicMaterial({ color }), dark: new THREE.MeshBasicMaterial({ color: new THREE.Color(color).multiplyScalar(0.7) }) }), [color]);
+  const tk = tint ?? [1, 1, 1];
+  m.color.set(color).multiply(new THREE.Color(tk[0], tk[1], tk[2]));
+  dark.color.set(color).multiplyScalar(0.7).multiply(new THREE.Color(tk[0], tk[1], tk[2]));
   if (kind === "cap")
     return (
       <group position={[0, 8 * T, 0]}>
@@ -440,6 +605,22 @@ const Hat: React.FC<{ kind: string; color: string; T: number }> = ({ kind, color
         <mesh material={m}>
           <boxGeometry args={[8.4 * T, 1.4 * T, 8.4 * T]} />
         </mesh>
+      </group>
+    );
+  if (kind === "fur")
+    return (
+      <group position={[0, 0, 0]}>
+        <mesh material={m} position={[0, 8.4 * T, 0]}>
+          <boxGeometry args={[9.8 * T, 3.4 * T, 9.8 * T]} />
+        </mesh>
+        <mesh material={dark} position={[0, 7.0 * T, 0]}>
+          <boxGeometry args={[10.2 * T, 1.2 * T, 10.2 * T]} />
+        </mesh>
+        {[-1, 1].map((sd) => (
+          <mesh key={sd} material={m} position={[sd * 4.7 * T, 4.2 * T, -0.4 * T]}>
+            <boxGeometry args={[1.6 * T, 4.6 * T, 5 * T]} />
+          </mesh>
+        ))}
       </group>
     );
   if (kind === "band")

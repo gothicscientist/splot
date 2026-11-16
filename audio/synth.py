@@ -2091,6 +2091,462 @@ def leveler(x, thr_rel_db=4.0, ratio=2.0, tau=0.25):
     return x * db2lin(gr), float(-gr.min())
 
 
+# =============================================================================
+# 5b. Beat: the trap family (plugg / rage / jerk) - 808, trap kit, hats + rolls, synth stabs, glass bells
+# =============================================================================
+# M["beat"] (scripts/sound.py builds it for the trap identities) renders on its own dry bus, added to the music after the
+# leveller. Times come from the bar grid (t0 + bar * 16 sixteenths at the counted bpm) and the chord timeline M["chords"];
+# every random choice comes from seeded(), so the same cues give the same samples. Without M["beat"] nothing here runs.
+#   bpm, t0, t1       counted tempo (a bar = 4 counted beats = 16 steps), first downbeat, end (s)
+#   swing, humanize   delay of the odd 16ths (fraction of a step); seeded timing jitter of the drums (s, std)
+#   drums             {part: {"kind": KIT key, "grid": ["16 chars per bar", ...], "vel", "db", "pan", "late", "hum", "mute"}}
+#                     parts: kick | clap | snare | rim | hat | ohat (an open hat is choked by the next closed hat).
+#                     grid chars: "." rest, "1".."9" velocity tenths, "x" full; bars cycle; "late" = fixed offset (s)
+#   rolls             [{"part": "hat", "every": 4, "bar": 3, "step": 12, "steps": 4, "rate": 6, "vel": [a, b], "tone": [a, b]}]:
+#                     in bars with bar % every == bar, steps [step, step + steps) of that part become a roll of `rate` hits
+#                     per beat (8 = 1/32, 6 = 1/16 triplets, 12 = 1/32 triplets), velocity / tuning ramping a -> b
+#   bass              {"range": [lo, hi], "vel", "db", "tone": BASS808 overrides, "pattern": [bars of [step, len, interval,
+#                     glide(, vel)]]}: interval = semitones above the chord's bass note (its lowest pitch in range); len in
+#                     steps, 0 = hold until the next note; glide 1 = slide from the previous note without re-attacking
+#   leads             [{"voice": "glass" | "stab" | "pluck" | "bell", "range": [lo, hi], "vel", "db", "hp", "lp", "pan",
+#                     "tone": STAB overrides, "echo": {"beats", "feedback", "mix", "lp_hz"}, "rev_db", "mute",
+#                     "motif": [bars of [step, len, idx | [idx, ...], vel(, bend)]]}]: idx = chord tone in range (0 = lowest,
+#                     past the top wraps up an octave), a list = a chord stab, bend = semitones over the stab's tail
+#   duck              kick sidechain on the 808 + leads: {"db", "attack", "release"}
+#   stings, sting     keyword sting times + {"voice", "lo", "db", ...}: a quick rising arpeggio of the chord tones at t
+#   pad               {"regions": render_pad regions (one per chord), "db", "rev_db"}
+#   gain_db, room_db  bus gain; room-reverb send of claps / snares / rims
+#   "mute" (any part) {"every": 8, "bars": [7]}: silent in those bars of the cycle
+
+_BEAT_CACHE = {}
+
+KIT = {  # trap-kit voices: (type, params). kick: f0 -> f1 Hz pitch sweep (tau sw), body decay, click level, drive, lp, and a
+    # short "knock" (damped sine at knock[1] Hz, knock[2] s) that a phone speaker can still play when the body is gone
+    "kick_soft": ("kick", {"f0": 150, "f1": 48, "sw": 0.028, "dec": 0.15, "click": 0.35, "drive": 1.3, "lp": 3200, "knock": (0.6, 230, 0.018)}),
+    "kick_hard": ("kick", {"f0": 240, "f1": 50, "sw": 0.02, "dec": 0.19, "click": 0.6, "drive": 2.6, "lp": 7000, "knock": (0.7, 205, 0.022)}),
+    "kick_punch": ("kick", {"f0": 200, "f1": 57, "sw": 0.014, "dec": 0.11, "click": 0.55, "drive": 2.0, "lp": 6000, "knock": (0.7, 250, 0.016)}),
+    # clap: noise bursts at `bursts` s + a tail, band-passed lo..hi Hz, driven. snare: pitched body + noise. hat: hp = floor
+    "clap_soft": ("clap", {"bursts": (0.0, 0.008, 0.017), "tail": 0.09, "lo": 900, "hi": 5500, "drive": 1.4}),
+    "clap_hard": ("clap", {"bursts": (0.0, 0.007, 0.015, 0.024), "tail": 0.13, "lo": 1000, "hi": 7500, "drive": 2.6}),
+    "clap_snap": ("clap", {"bursts": (0.0, 0.006, 0.012), "tail": 0.055, "lo": 1200, "hi": 8000, "drive": 2.0}),
+    "snare": ("snare", {"f0": 240, "f1": 185, "dec": 0.06, "lo": 1800, "hi": 8000, "tail": 0.11}),
+    "rim": ("rim", {}),
+    "hat": ("hat", {"dec": 0.03, "hp": 7000}),        # 2nd-order floor: most energy 6-14 kHz, a soft shoulder down to ~4.5 kHz
+    "hat_tight": ("hat", {"dec": 0.022, "hp": 6600}),
+    "ohat": ("hat", {"dec": 0.26, "hp": 6800}),
+}
+
+
+def beat_hit(kind, tone=1.0, var=0):
+    """One trap-kit hit (KIT key), peak-normalised mono. `tone` scales its pitch / band (rolls ramp it); `var` picks one of
+    a few seeded noise takes so 1/16 hats do not machine-gun one sample. Hats sit mostly above ~6 kHz (keep them soft)."""
+    key = ("hit", kind, round(float(tone), 3), int(var))
+    if key in _BEAT_CACHE:
+        return _BEAT_CACHE[key]
+    typ, p = KIT[kind]
+    rng = seeded("kit", kind, int(var))
+    if typ == "kick":
+        n = nsamp(p["dec"] * 6 + 0.02)
+        t = tvec(n)
+        f = (p["f1"] + (p["f0"] - p["f1"]) * np.exp(-t / p["sw"])) * tone
+        y = np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t / p["dec"])
+        click = hp(rng.standard_normal(n), 1800) * np.exp(-t / 0.0022)
+        y = y + p["click"] * click / (np.max(np.abs(click)) + 1e-12)
+        if p.get("knock"):
+            ka, kf, kd = p["knock"]
+            y = y + ka * np.sin(2 * np.pi * kf * tone * t) * np.exp(-t / kd)
+        y = np.tanh(p["drive"] * y) / np.tanh(p["drive"])
+        y = lp(y, p["lp"]) * np.clip(t / 0.0006, 0, 1)
+    elif typ == "clap":
+        n = nsamp(0.08 + 6 * p["tail"])
+        t = tvec(n)
+        env = np.zeros(n)
+        for k, d in enumerate(p["bursts"]):
+            u = t - d
+            env += (u >= 0) * np.clip(u / 0.0004, 0, 1) * np.exp(-np.clip(u, 0, None) / 0.0045) * (1.0 - 0.1 * k)
+        u = t - p["bursts"][-1]
+        env += 0.55 * (u >= 0) * np.clip(u / 0.001, 0, 1) * np.exp(-np.clip(u, 0, None) / p["tail"])
+        y = peak_eq(bp(rng.standard_normal(n), p["lo"] * tone, min(p["hi"] * tone, 15000)) * env, 1400 * tone, 1.2, 4.0)
+        y = np.tanh(p["drive"] * y / (np.max(np.abs(y)) + 1e-12)) / np.tanh(p["drive"])
+    elif typ == "snare":
+        n = nsamp(0.5)
+        t = tvec(n)
+        ph = 2 * np.pi * np.cumsum((p["f1"] + (p["f0"] - p["f1"]) * np.exp(-t / 0.012)) * tone) / SR
+        body = (np.sin(ph) + 0.45 * np.sin(1.78 * ph)) * np.exp(-t / p["dec"])
+        nz = bp(rng.standard_normal(n), p["lo"] * tone, p["hi"]) * np.exp(-t / p["tail"])
+        y = 0.6 * body / (np.max(np.abs(body)) + 1e-12) + 0.8 * nz / (np.max(np.abs(nz)) + 1e-12)
+        y = np.tanh(1.6 * y) / np.tanh(1.6) * np.clip(t / 0.0005, 0, 1)
+    elif typ == "rim":
+        n = nsamp(0.12)
+        t = tvec(n)
+        y = np.sin(2 * np.pi * 1650 * tone * t) * np.exp(-t / 0.012) + 0.7 * bp(rng.standard_normal(n), 1500, 6000) * np.exp(-t / 0.006)
+        y *= np.clip(t / 0.0004, 0, 1)
+    else:  # hat: the six detuned squares of the classic analog hat + noise, high-passed hard, short exponential decay
+        n = nsamp(p["dec"] * 7 + 0.012)
+        t = tvec(n)
+        metal = np.zeros(n)
+        for f in (205.3, 304.4, 369.6, 522.7, 540.0, 800.0):
+            p0 = rng.uniform()
+            metal += saw_blep(f * 1.7 * tone, n, p0) - saw_blep(f * 1.7 * tone, n, (p0 + 0.5) % 1.0)
+        y = 0.55 * unit_rms(metal) + 0.45 * rng.standard_normal(n)
+        y = lp(hp(y, p["hp"] * tone, 2), 14500) * np.clip(t / 0.0004, 0, 1) * np.exp(-t / p["dec"])
+    y = fades(norm(y), 0.0, 0.004)
+    _BEAT_CACHE[key] = y
+    return y
+
+
+BASS808 = {"attack": 0.003, "release": 0.03, "decay": 1.2, "glide": 0.07, "punch": (6.0, 0.016), "tri": 0.0,
+           "harm": 0.0, "harm_tilt": 0.8, "harm_hi": 450.0, "drive": 1.4, "dist": 0.0, "dist_drive": 4.0, "dist_band": (110, 2400),
+           "lp": 1200, "hp": 28}
+
+
+def bass808(notes, n_total, P=None):
+    """The 808 (mono, length n_total). notes: [t, midi, vel, dur, glide]; monophonic, a note ends where the next begins,
+    dur <= 0 holds until then. ONE phase-continuous oscillator draws the whole line, so joins cannot click: a glide note
+    slides from the current pitch (cosine ease over P['glide'] s) and keeps the running envelope; any other note re-attacks
+    with a raised-cosine crossfade (P['attack'] s) from the running level, and a pitch-drop punch (P['punch'] = semitones,
+    tau s). Tone: sine (+ P['tri'] triangle), exponential decay P['decay'], P['release'] after the gate, tanh drive
+    P['drive']; P['dist'] adds an asymmetric, band-passed (P['dist_band']) distorted layer above the clean sub.
+    P['harm'] adds the phone-speaker layer: harmonics 2..8 of the same phase (amplitude k^-harm_tilt, rolled off above
+    P['harm_hi'] Hz from the instantaneous pitch), so a small speaker that drops the fundamental still carries the line."""
+    P = {**BASS808, **(P or {})}
+    out = np.zeros(n_total)
+    notes = sorted((list(x) for x in notes if nsamp(x[0]) < n_total), key=lambda x: x[0])
+    if not notes:
+        return out
+    a0 = nsamp(notes[0][0])
+    n = n_total - a0
+    att, rel, gl = max(1, nsamp(P["attack"])), max(1, nsamp(P["release"])), max(1, nsamp(P["glide"]))
+    dec, (pst, ptau) = P["decay"] * SR, P["punch"]
+    starts = [nsamp(x[0]) - a0 for x in notes] + [n]
+    midi = np.zeros(n)
+    amp = np.zeros(n)
+    prev = None  # (vel, gate end sample)
+    for i, (t, m, v, d, g) in enumerate(notes):
+        s, nxt = starts[i], min(starts[i + 1], n)
+        if nxt <= s:
+            continue
+        ge = min(s + max(1, nsamp(d)), nxt) if d > 0 else nxt
+        u = np.arange(nxt - s, dtype=float)
+        L0 = amp[s - 1] if s > 0 else 0.0
+        if g and prev is not None and prev[1] >= s - 1 and L0 > 0:   # legato slide
+            w = 0.5 - 0.5 * np.cos(np.pi * np.clip(u / gl, 0, 1))
+            m0 = midi[s - 1]
+            midi[s:nxt] = m0 + (m - m0) * w
+            env = L0 * np.exp(-u / dec) * (1 + (v / max(prev[0], 1e-6) - 1) * w)
+        else:   # raised-cosine crossfade from the running level into the new note (smooth at both ends: no corner, no click)
+            midi[s:nxt] = m + pst * np.exp(-u / (ptau * SR))
+            w = 0.5 - 0.5 * np.cos(np.pi * np.clip(u / att, 0, 1))
+            env = L0 * (1 - w) + v * np.exp(-u / dec) * w
+        k = ge - s
+        if k < len(u):
+            env[k:] *= 0.5 + 0.5 * np.cos(np.pi * np.clip((u[k:] - k) / rel, 0, 1))
+        amp[s:nxt] = env
+        prev = (v, ge)
+    f = mtof(midi)
+    del midi
+    ph = np.cumsum(f) * (2 * np.pi / SR)
+    x = np.sin(ph)
+    if P["tri"] > 0:
+        x = (1 - P["tri"]) * x + P["tri"] * (1 - 4 * np.abs((ph / (2 * np.pi) + 0.25) % 1.0 - 0.5))
+    h = None
+    if P["harm"] > 0:   # fixed phase offsets (0.9 k^2) keep the crest factor down; the roll-off follows glides / punch smoothly
+        h = np.zeros(n)
+        for k in range(2, 9):
+            h += k ** -P["harm_tilt"] / (1.0 + (k * f / P["harm_hi"]) ** 6) * np.sin(k * ph + 0.9 * k * k)
+    del ph, f
+    x *= amp
+    y = np.tanh(P["drive"] * x) / np.tanh(P["drive"])
+    if h is not None:   # added after the drive, so its share does not depend on how hard the sub is driven
+        y += P["harm"] * h * amp
+        del h
+    del amp
+    if P["dist"] > 0:
+        y += P["dist"] * bp(np.tanh(P["dist_drive"] * x + 0.3) - np.tanh(0.3), *P["dist_band"])
+    out[a0:] = hp(lp(y, P["lp"]), P["hp"])
+    return out
+
+
+STAB = {"wave": "saw", "voices": 7, "detune": 22.0, "spread": 0.85, "attack": 0.002, "decay": 0.09, "sustain": 0.55,
+        "release": 0.05, "cut": 6500.0, "cut_lo": 1800.0, "cut_tau": 0.09, "drive": 0.0, "bend_at": 0.5, "hp": 260.0}
+
+
+def stab_note(midis, vel, dur, P=None, bend=0.0):
+    """Detuned unison chord stab, stereo (2, n), peak = vel. P['voices'] PolyBLEP saws (or squares) per note spread over
+    +-P['detune'] cents and across the stereo field (P['spread']); attack, decay to P['sustain'], cos^2 release; a brightness
+    envelope (P['cut'] -> P['cut_lo'] Hz, tau P['cut_tau']); optional tanh drive; `bend` semitones over the tail (from
+    P['bend_at'] of the note); high-passed at P['hp'] so it stays above the 808 and the voice's fundamental."""
+    P = {**STAB, **(P or {})}
+    key = ("stab", tuple(int(m) for m in midis), round(float(vel), 2), round(float(dur), 4), round(float(bend), 2),
+           tuple((k, P[k]) for k in sorted(STAB)))
+    if key in _BEAT_CACHE:
+        return _BEAT_CACHE[key]
+    rel = P["release"]
+    n = nsamp(dur + rel + 0.005)
+    t = tvec(n)
+    rng = seeded("stab", key)
+    pm = 1.0
+    if bend:
+        b0 = dur * P["bend_at"]
+        pm = 2.0 ** (bend * np.clip((t - b0) / max(1e-3, dur + rel - b0), 0, 1) ** 2 / 12.0)
+    V = int(P["voices"])
+    y = np.zeros((2, n))
+    for m in midis:
+        for k in range(V):
+            o = (2.0 * k / (V - 1) - 1.0) if V > 1 else 0.0
+            fk = mtof(m) * 2.0 ** (P["detune"] * o / 1200.0) * pm
+            p0 = rng.uniform()
+            osc = saw_blep(fk, n, p0)
+            if P["wave"] == "square":
+                osc = osc - saw_blep(fk, n, (p0 + 0.5) % 1.0)
+            th = (np.clip(o * P["spread"], -1, 1) + 1.0) * np.pi / 4.0
+            y[0] += osc * np.cos(th)
+            y[1] += osc * np.sin(th)
+    env = (0.5 - 0.5 * np.cos(np.pi * np.clip(t / max(1e-4, P["attack"]), 0, 1))) * (P["sustain"] + (1 - P["sustain"]) * np.exp(-np.maximum(t - P["attack"], 0) / P["decay"]))
+    env *= np.where(t < dur, 1.0, np.cos(np.pi / 2 * np.clip((t - dur) / rel, 0, 1)) ** 2)
+    lo = lp(y, P["cut_lo"])
+    y = (lo + np.exp(-t / P["cut_tau"]) * (lp(y, P["cut"]) - lo)) * env
+    if P["drive"] > 0:
+        g = 1 + 4 * P["drive"]
+        y = np.tanh(g * y / (np.max(np.abs(y)) + 1e-12)) / np.tanh(g)
+    y = fades(norm(hp(y, P["hp"])) * vel, 0.0005, 0.01)
+    _BEAT_CACHE[key] = y
+    return y
+
+
+def glass_note(midi, vel, hold):
+    """Glassy FM bell (the plugg lead): sine carrier phase-modulated at 3.5x with a fast-falling index (bright strike, round
+    ring) + an octave partial; damped `hold` + 0.2 s after the strike so motifs stay clean. Mono, peak = vel."""
+    key = ("glass", int(midi), round(float(vel), 2), round(float(hold), 3))
+    if key in _BEAT_CACHE:
+        return _BEAT_CACHE[key]
+    f = mtof(midi)
+    n = nsamp(hold + 1.2)
+    t = tvec(n)
+    y = np.sin(2 * np.pi * f * t + (1.5 * np.exp(-t / 0.12) + 0.2) * np.sin(2 * np.pi * 3.5 * f * t))
+    y += 0.25 * np.sin(2 * np.pi * 2 * f * t) * np.exp(-t / 0.35)
+    env = (1 - np.exp(-t / 0.0012)) * np.exp(-t / 0.9) * np.where(t < hold + 0.2, 1.0, np.exp(-(t - hold - 0.2) / 0.12))
+    y = fades(norm(lp(y * env, 8000)) * vel, 0.0005, 0.03)
+    _BEAT_CACHE[key] = y
+    return y
+
+
+def grid_vel(ch):
+    """Drum-grid character -> velocity: '.' (or anything else) rest, '1'..'9' tenths, 'x' full."""
+    return 1.0 if ch in "xX" else (int(ch) / 10.0 if ch.isdigit() else 0.0)
+
+
+def chord_at(chords, t):
+    """Chord symbol sounding at t (chords sorted [[t, sym], ...])."""
+    sym = chords[0][1]
+    for ct, s in chords:
+        if ct > t + 1e-4:
+            break
+        sym = s
+    return sym
+
+
+def bass_note_in(sym, lo, hi):
+    """The chord's bass note (slash bass if any): its lowest pitch in [lo, hi]."""
+    bpc = parse_chord(sym)[2]
+    return next((m for m in range(lo, hi + 13) if m % 12 == bpc), lo)
+
+
+def _muted(spec, b):
+    mu = spec.get("mute")
+    return bool(mu) and (b % mu["every"]) in mu["bars"]
+
+
+def compose_beat(M):
+    """Expand M["beat"] on the bar grid + chords: {"hits": [(t, part, vel, tone, var)], "bass": [[t, midi, vel, dur, glide]],
+    "leads": [[(t, [midi...], vel, dur, bend)] per part (+ the sting part last)], "kicks": [t], "step": s, "bars": n}."""
+    B = M["beat"]
+    chords = sorted(M["chords"], key=lambda c: c[0])
+    t0, t1 = float(B["t0"]), float(B["t1"])
+    step = 60.0 / B["bpm"] / 4.0
+    barlen = 16 * step
+    nb = max(0, int(np.ceil((t1 - t0) / barlen - 1e-9)))
+    sw, hum = B.get("swing", 0.0), B.get("humanize", 0.0)
+    inside = lambda t: t0 - 1e-6 <= t < t1  # noqa: E731
+
+    def at(b, s):
+        odd = float(s).is_integer() and int(s) % 2 == 1
+        return t0 + b * barlen + s * step + (sw * step if odd else 0.0)
+
+    rolls = B.get("rolls", [])
+    hits = []
+    for part, D in B.get("drums", {}).items():
+        for b in range(nb):
+            if _muted(D, b):
+                continue
+            for s, ch in enumerate(D["grid"][b % len(D["grid"])]):
+                v = grid_vel(ch)
+                if v <= 0 or any(R.get("part", "hat") == part and b % R["every"] == R["bar"] and R["step"] <= s < R["step"] + R["steps"] for R in rolls):
+                    continue
+                j = float(np.clip(seeded("hum", part, b, s).normal(0.0, hum * D.get("hum", 1.0)), -0.3 * step, 0.3 * step)) if hum else 0.0
+                t = at(b, s) + j + D.get("late", 0.0)
+                if inside(t):
+                    hits.append((round(t, 5), part, v * D.get("vel", 1.0), 1.0, (b * 16 + s) % 4))
+    for R in rolls:
+        part = R.get("part", "hat")
+        D = B.get("drums", {}).get(part, {})
+        k_n = int(round(R["steps"] / 4.0 * R["rate"]))
+        (v0, v1), (p0, p1) = R.get("vel", [0.5, 0.9]), R.get("tone", [1.0, 1.0])
+        for b in range(nb):
+            if b % R["every"] != R["bar"] or _muted(D, b):
+                continue
+            for k in range(k_n):
+                u = k / max(1, k_n - 1)
+                t = t0 + b * barlen + R["step"] * step + k * 4 * step / R["rate"]
+                if inside(t):
+                    hits.append((round(t, 5), part, (v0 + (v1 - v0) * u) * D.get("vel", 1.0), round(p0 + (p1 - p0) * u, 3), k % 4))
+    hits.sort(key=lambda h: (h[0], h[1]))
+    bass = []
+    BP = B.get("bass")
+    if BP:
+        lo, hi = BP.get("range", [28, 39])
+        for b in range(nb):
+            if _muted(BP, b):
+                continue
+            for ev in BP["pattern"][b % len(BP["pattern"])]:
+                t = at(b, ev[0])
+                if inside(t):
+                    bass.append([round(t, 5), bass_note_in(chord_at(chords, t), lo, hi) + int(ev[2]),
+                                 (ev[4] if len(ev) > 4 else 1.0) * BP.get("vel", 0.9), ev[1] * step, int(ev[3])])
+    leads = []
+    for P in B.get("leads", []):
+        evs = []
+        lo, hi = P.get("range", [72, 91])
+        for b in range(nb):
+            if _muted(P, b):
+                continue
+            for ev in P["motif"][b % len(P["motif"])]:
+                t = at(b, ev[0])
+                if not inside(t):
+                    continue
+                tones = pitches_in(parse_chord(chord_at(chords, t))[1], lo, hi)
+                ks = ev[2] if isinstance(ev[2], (list, tuple)) else [ev[2]]
+                evs.append((round(t, 5), [tones[k % len(tones)] + 12 * (k // len(tones)) for k in ks],
+                            ev[3] * P.get("vel", 0.8), ev[1] * step, ev[4] if len(ev) > 4 else 0.0))
+        leads.append(evs)
+    if B.get("stings"):
+        S = B.get("sting", {})
+        evs = []
+        for ts in B["stings"]:
+            lo = S.get("lo", 79)
+            tones = pitches_in(parse_chord(chord_at(chords, ts))[1], lo, lo + 24)[:3]
+            for j, (m, v, d) in enumerate(zip(tones, (0.5, 0.5, 0.6), (0.16, 0.16, 0.34))):
+                evs.append((round(ts + 0.08 * j, 5), [m], v * S.get("vel", 1.0), d, 0.0))
+        leads.append(evs)
+    return {"hits": hits, "bass": bass, "leads": leads, "kicks": [h[0] for h in hits if h[1] == "kick"], "step": step, "bars": nb}
+
+
+def render_beat(M, n_total, log=print, parts=None):
+    """Render M["beat"] -> (2, n_total): kit hits (claps / snares / rims with a room send), the 808 (mono, centred), the lead
+    parts (high-passed, ping-pong echo, one shared hall send), the per-chord pad, a kick sidechain on the 808 + leads, all
+    x gain_db. `parts`: optional dict that receives each layer (kick / snare / hat / bass / lead<k> / pad) for measurement."""
+    B = M["beat"]
+    C = compose_beat(M)
+    beat_s = 4 * C["step"]
+    gain = db2lin(B.get("gain_db", 0.0))
+    out = np.zeros((2, n_total))
+    hall = np.zeros((2, n_total))
+    take = (lambda name, x: parts.__setitem__(name, parts.get(name, 0) + gain * x)) if parts is not None else (lambda name, x: None)
+    sc = None
+    SC = B.get("duck")
+    if SC and C["kicks"]:
+        a, r = max(1, nsamp(SC.get("attack", 0.004))), SC.get("release", 0.1) * SR
+        h = np.arange(int(8 * r) + a, dtype=float)
+        h = (0.5 - 0.5 * np.cos(np.pi * np.clip(h / a, 0, 1))) * np.exp(-np.maximum(h - a, 0) / r)
+        d = np.zeros(n_total)
+        for tk in C["kicks"]:
+            s0 = nsamp(tk)
+            e0 = min(n_total, s0 + len(h))
+            if e0 > s0:
+                d[s0:e0] = np.maximum(d[s0:e0], h[:e0 - s0])
+        sc = 1.0 - (1.0 - db2lin(SC.get("db", -4.0))) * d
+        del d
+    D = B.get("drums", {})
+    room_g = db2lin(B.get("room_db", -14.0)) if B.get("room_db", -14.0) is not None else 0.0
+    bus_of = {"kick": "kick", "clap": "snare", "snare": "snare", "rim": "snare", "hat": "hat", "ohat": "hat"}
+    closed = np.array(sorted(h[0] for h in C["hits"] if h[1] == "hat"))
+    for (t, part, v, tone, var) in C["hits"]:
+        cfg = D.get(part, {})
+        kind = cfg.get("kind", part)
+        if bus_of.get(part) == "snare":   # dry + its room tail, cached per take
+            key = ("wet", kind, tone, var, round(room_g, 4), round(cfg.get("pan", 0.0), 3))
+            if key not in _BEAT_CACHE:
+                dry = beat_hit(kind, tone, var)
+                _BEAT_CACHE[key] = pan2(np.concatenate([dry, np.zeros(nsamp(0.65))]), cfg.get("pan", 0.0)) + room_g * convolve(np.concatenate([dry, np.zeros(nsamp(0.65))]), room_ir())
+            x = _BEAT_CACHE[key]
+        else:
+            x = beat_hit(kind, tone, var)
+            if part == "ohat" and len(closed):   # choke: the next closed hat cuts the open one (8 ms fade)
+                i = int(np.searchsorted(closed, t + 1e-4))
+                if i < len(closed):
+                    k, f = max(nsamp(0.004), nsamp(closed[i] - t)), nsamp(0.008)
+                    if k < len(x):
+                        x = x[:k + f].copy()
+                        x[k:] *= 0.5 + 0.5 * np.cos(np.pi * np.arange(len(x) - k) / f)
+            x = pan2(x, cfg.get("pan", 0.0))
+        g = v * db2lin(cfg.get("db", 0.0))
+        place(out, x, nsamp(t), g)
+        if parts is not None:
+            if bus_of.get(part, part) not in parts:
+                parts[bus_of.get(part, part)] = np.zeros((2, n_total))
+            place(parts[bus_of.get(part, part)], x, nsamp(t), g * gain)
+    BP = B.get("bass")
+    if BP and C["bass"]:
+        y = bass808(C["bass"], n_total, BP.get("tone"))
+        if sc is not None:
+            y *= sc
+        y *= db2lin(BP.get("db", 0.0)) * 0.7071
+        out += y
+        take("bass", np.vstack([y, y]))
+        del y
+    specs = list(B.get("leads", [])) + ([{"voice": "glass", "hp": 300, "echo": {"beats": 0.75, "feedback": 0.3, "mix": 0.25},
+                                          "rev_db": -10, **B.get("sting", {})}] if B.get("stings") else [])
+    for li, (P, evs) in enumerate(zip(specs, C["leads"])):
+        if not evs:
+            continue
+        x = np.zeros((2, n_total))
+        voice = P.get("voice", "glass")
+        for k, (t, ms, v, d, bend) in enumerate(evs):
+            if voice == "stab":
+                place(x, stab_note(ms, v, d, P.get("tone"), bend), nsamp(t))
+                continue
+            for j, m in enumerate(ms):
+                y1 = glass_note(m, v, d) if voice == "glass" else pluck_note(m, v, d, voice)
+                place(x, pan2(y1, P.get("pan", 0.15) * (1 if (k + j) % 2 else -1)), nsamp(t + j * P.get("strum", 0.0)))
+        x = hp(x, P.get("hp", 280))
+        if P.get("lp"):
+            x = lp(x, P["lp"])
+        if P.get("echo"):
+            E = P["echo"]
+            x = echo(x, delay=E.get("beats", 0.75) * beat_s, feedback=E.get("feedback", 0.3), mix=E.get("mix", 0.25), lp_hz=E.get("lp_hz", 3500))
+        if sc is not None:
+            x *= sc
+        x *= db2lin(P.get("db", 0.0))
+        out += x
+        if P.get("rev_db") is not None:
+            hall += db2lin(P["rev_db"]) * x
+        take(f"lead{li}", x)
+        del x
+    PD = B.get("pad")
+    if PD and PD.get("regions"):   # the airy per-chord pad (render_pad regions), gain-staged with the rest of the beat
+        x = render_pad(PD["regions"], n_total) * db2lin(PD.get("db", 0.0))
+        out += x
+        if PD.get("rev_db") is not None:
+            hall += db2lin(PD["rev_db"]) * x
+        take("pad", x)
+        del x
+    if np.any(hall):
+        out += convolve(hall, hall_ir())
+    del hall
+    log(f"  beat: {len(C['hits'])} kit hits, {len(C['bass'])} 808 notes, {sum(len(e) for e in C['leads'])} lead notes over {C['bars']} bars")
+    return out * gain
+
+
 def render_music(M, n_total, log=print):
     mallet, strs = [], []
     notes = compose(M, mallet, strs)
@@ -2145,6 +2601,8 @@ def render_music(M, n_total, log=print):
     if M.get("leveler"):
         music, lg = leveler(music, **M["leveler"])
         log(f"  music leveller max GR {lg:.1f} dB")
+    if M.get("beat"):   # trap family (plugg / rage / jerk): kit, 808 and leads on their own dry bus, after the leveller
+        music = music + render_beat(M, n_total, log)
     duck = np.ones(n_total)
     for d in M.get("ducks", []):
         duck *= 1 - (1 - db2lin(d["db"])) * seg_env(n_total, d["t0"], d["t1"], d.get("ramp", 0.12),

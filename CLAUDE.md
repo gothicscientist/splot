@@ -7,6 +7,7 @@ the team's hackathon repo Nomen and a free, higher-quality equivalent of MotionL
 `docs/research/reference-motionlab.md`).
 
 - **How to make a video** (the procedure, gates and craft rules): `skills/reel/SKILL.md`. Do not duplicate it here.
+- **Agents start here:** `AGENTS.md` (setup, which skill for which request, the pipeline, the rules that must hold).
 - **Current state, open issues, next steps:** `docs/STATUS.md`. Read it first; update it before ending a session.
 - **Research behind every rule and number:** `docs/research/` (the skill references are excerpts of it).
 
@@ -20,23 +21,36 @@ the team's hackathon repo Nomen and a free, higher-quality equivalent of MotionL
   Minecraft-genre), **Glowvector** (glow-lit flat vector, Kurzgesagt-like but original), **Atlas** (maps and data).
 - Eight modes: case-file, what-if, how-it-works, history, back-then, lore, map, problem-solution; switches usable in
   any mode: interview, versus/rating, series.
+- Two story channels (modes of the same skill, same gates): **`tiff`** (the Tiff x pileGo! series: a broad premise
+  fleshed into a story on the archive-fashion / underground-rap scene's real jokes; `/tiff`) and **`ug-rap`** (the
+  underground-rap channel: bios, scene stories, scenarios with original stand-ins; `/ug-rap`). Every episode ties into
+  the owner's app pileGo! (`skills/reel/references/brands/pilego.md`) after ~70 % of the runtime; the owner has
+  permission for pileGo!'s automatic relisting, so scripts never hedge it. Tiff's look is the owner-approved
+  `src/styles/stickworld/tiff.ts` (silver-lavender hair, black tank, jean shorts, black boots).
 - Facts always sourced in `videos/<slug>/research.md`. Legal fences: no Mojang/Microsoft assets and no "Minecraft"
   in titles/tags; lore mode uses original stand-in characters; no real person's likeness; never copy Kurzgesagt's
   characters, logo or music.
 
 ## Layout
 ```
-skills/reel/            master skill (SKILL.md) + references/ (modes/, styles/, hooks, script rules, quality bar...)
-docs/                   STATUS.md (live state), research/ (full reports + reference analysis)
+skills/reel/            master skill (SKILL.md) + references/ (modes/, styles/, niche/, brands/, hooks, script rules...)
+skills/tiff, ug-rap/   entry skills of the two story channels; reel-research / -hooks / -script / -critic: step skills
+AGENTS.md              how an agent uses the studio (setup, skill map, pipeline, rules)
+docs/                   STATUS.md (live state), research/ (full reports, reference analysis, tiff-niche/ raw sweeps),
+                        characters/tiff/ (Tiff's model sheet)
 scripts/                pipeline CLIs (see Commands); lib/ shared helpers (common.py, textnorm.py, bundle.mjs)
 audio/                  synth.py (vendored from Nomen, procedural SFX/score/master) + sfx_extra.py (short-form SFX)
 src/index.ts, Root.tsx  Remotion entry; registers every video from src/videos/registry.ts + lab compositions
 src/core/               style-agnostic engine: types, timeline (word clock), Reel, captions, fx2d, anim, fonts
 src/core/three/         3D: Stage (canvas + camera rig + post chain), camera, looks, mats, tex, particles, look/ (vendored MIT)
-src/styles/<style>/     kits: stickworld (draw, Stick, cast, props, props2), blockcraft (blocks, VoxelWorld, Blocky,
-                        Sky), glowvector (kit), atlas (kit)
+src/styles/<style>/     kits: stickworld (draw, Stick, cast + SCENE_CAST, props, props2, tiff = the shaped lead,
+                        closet = clothes / chair pile / venue, frame = frameOn), blockcraft (blocks, VoxelWorld,
+                        Blocky, Sky), glowvector (kit), atlas (kit)
+src/brands/pilego.tsx   pileGo! devices (phone insert, sale pings, DMs, comment reply, listing cards, relist snap, end card)
+src/channels/ug.tsx     ug-rap channel devices (track card, year stamp, alias stack, gothic title card)
 src/videos/<slug>/      per-video code: index.tsx (scenes) + timeline.json (generated); registry.ts (generated)
-src/lab/                look-dev compositions (GlSmoke, StickLab, CastSheet, SkyLab, MeasureLab, BlockLab)
+src/lab/                look-dev compositions (GlSmoke, StickLab, CastSheet, SkyLab, MeasureLab, BlockLab, FontLab,
+                        TiffHero/Sheet/Walk/Stage, SceneCast, PileGoLab, UgLab)
 videos/<slug>/          per-video data: brief.md, research.md, script.json, voice/, audio/, renders/, qa/
 public/v/<slug>/        voice.wav + mix.wav served to Remotion (keep public/ small: every bundle copies it)
 ```
@@ -56,15 +70,20 @@ public/v/<slug>/        voice.wav + mix.wav served to Remotion (keep public/ sma
 
 ## Commands (from the repo root)
 ```bash
-node scripts/new-video.mjs <slug> --style stickworld --mode case-file --title "..."   # scaffold
+node scripts/new-video.mjs <slug> --style stickworld --mode case-file --title "..."   # scaffold (--mode tiff | ug-rap: channel defaults)
 PYTHONIOENCODING=utf-8 .venv/Scripts/python.exe scripts/voice.py <slug> --verify    # TTS + alignment + ASR check
 node scripts/timeline.mjs <slug>          # script + words -> src/videos/<slug>/timeline.json (frames)
 node scripts/register.mjs                 # regenerate src/videos/registry.ts
 npx tsc --noEmit                          # must be clean
 node scripts/stills.mjs v-<slug> --shots <slug> --scale 0.5 --sheet 6   # critic frames + contact sheet (out/stills/)
 PYTHONIOENCODING=utf-8 .venv/Scripts/python.exe scripts/sound.py <slug>  # score + SFX + voice mix -> public/v/<slug>/mix.wav
+PYTHONIOENCODING=utf-8 .venv/Scripts/python.exe scripts/sound.py --preview plugg   # music-only preview of a mood (out/audio-preview/)
 node scripts/render.mjs <slug> --variants # final MP4 + hook variants (videos/<slug>/renders/)
 node scripts/check.mjs <slug>             # automated QA -> videos/<slug>/qa/report.md + 1-fps sheets
+node scripts/lint-script.mjs <slug>       # script.json lint (beat lengths, keywords, sound/transition names, hooks)
+node scripts/render-range.mjs <slug> <from> <to>   # muted MP4 of a frame range (bugs that only show in real renders)
+npm run doctor                            # environment check (node, ffmpeg filters, venvs, Chrome, fonts, RAM, keys)
+npm run install-skills -- --yes           # copy skills/* into ~/.claude/skills (dry run without --yes)
 npm run studio                            # Remotion Studio (manual preview / editor)
 ```
 Composition ids are `v-<slug>` (non `[a-zA-Z0-9-]` chars become `-`). Re-run sound.py after any timing change.
@@ -88,7 +107,6 @@ Captions show the script text, never ASR output, so they cannot contain transcri
    `THIRD_PARTY_NOTICES.md`.
 4. **Captions are laid out by the browser (HTML spans), not measured on a canvas.** Canvas `measureText` silently used
    a fallback font for the Google fonts in headless Chrome, which collapsed word spacing. Keyword runs share one box.
-   (The old canvas measuring helpers are still in `captions.tsx`, unused.)
 5. **Voice: one TTS clip per beat + forced alignment.** Free Edge multilingual voices give no word boundaries, and the
    endpoint fails intermittently (voice.py retries 10x with back-off). Numbers/acronyms are normalised for TTS and
    alignment (`scripts/lib/textnorm.py`); `pronounce` respellings are wildcards in the ASR check.
@@ -103,7 +121,23 @@ Captions show the script text, never ASR output, so they cannot contain transcri
 9. **StickWorld characters are Canvas2D drawings on scene-lit billboard cards** (`Stick.tsx`), redrawn per frame at a
    resolution chosen from their on-screen size, on the `NOINK` layer (they carry their own ink).
 10. **Two Remotion bundle folders**: `out/bundle` (render.mjs) and `out/bundle-stills` (stills.mjs), so a render and
-    look-dev stills can run at the same time without clobbering each other or filling TEMP.
+    look-dev stills can run at the same time without clobbering each other or filling TEMP. Parallel jobs (agents)
+    set `NOMEN_BUNDLE_DIR=out/bundle-<name>` so each gets its own folder.
+11. **No scene mounts before every font is drawable** (`useAllFontsReady` in `<Reel>`, `src/core/fonts.ts`). Canvas
+    text (papers, signs, stickers, cards) is drawn once and cached, so a texture drawn before its Google font loaded
+    kept the fallback face for the whole render tab: stills and the final MP4 showed different typefaces.
+12. **Fresh critics gate every video** (`skills/reel-critic`): stills are scored by agents that did not build the
+    video, two lenses (outlier bar; phone viewer + glitch hunter); PASS = every area >= 8 and no P0, for both.
+13. **Story channels are modes, not a second engine** (`tiff`, `ug-rap`): same pipeline and gates, plus story-mode
+    rules that `lint-script.mjs` enforces (plug after ~68 % of the words, <= 2 spoken "pileGo!", every speaker has a
+    cast voice, a real subject needs >= 6 sourced rows and is never named in a plug beat) and critic P0 checks (Tiff
+    framing, plug timing, real people, logos). Niche facts live in fact-checked bibles with check logs
+    (`skills/reel/references/niche/`), because the sweep reports they came from were wrong on ~half the items.
+14. **Dialogue = per-beat voices** (`speaker` on a beat + `voice.cast` in script.json, Edge voice / rate / pitch):
+    one TTS clip per beat already, so a second character costs nothing; a single ElevenLabs take cannot voice two.
+15. **Trap-family music is procedural too** (`plugg`, `rage`, `jerk` in `audio/synth.py` section 5b: a continuous-
+    oscillator 808 with slides, hats with rolls, claps, stabs): platforms forbid real tracks for brand accounts, and
+    the 808 carries harmonics so the groove survives phone speakers (measured with a phone-speaker filter).
 
 ## Gotchas (each one cost real debugging)
 - Set uniforms/colours that the first frame needs synchronously in render, not in `useEffect` (R3F draws before
@@ -114,8 +148,18 @@ Captions show the script text, never ASR output, so they cannot contain transcri
 - three r187: `PCFSoftShadowMap` is gone (falls back to PCF); `THREE.Clock` deprecation warnings are harmless.
 - Item props drawn into a character card must stay inside its 600x1000 design canvas or they get clipped.
 - Blockcraft characters stand at the terrain surface: use `flat: true` terrain under them (block y=-1 -> floor y=0).
+- Pixel fonts: Pixelify Sans draws capital C like an O ("STUOK"), Silkscreen 700 merges W into a blob. Pixel UI uses
+  Silkscreen 400; voxel captions use the `chunky` preset (Lilita One). Test any new font in `src/lab/FontLab.tsx`.
+- Voxel worlds are unlit (baked face shade + AO): depth, shafts and heat come from `VoxelWorld light` (per-vertex
+  multiplier) and `Block tint`. An open-backed cutaway shaft shows the sky through it: carve only its front half.
 - Never animate from `useFrame` deltas or `Date`; everything is a function of the frame. No SMIL animations in SVG.
 - Shell heredocs with JS template literals break quoting: write patch scripts to a file and run them.
+- Tiff's eyes sit at ~1.60 m (a stick adult's at ~1.43 m): a camera aimed like the stick cast frames her torso. Use
+  `frameOn(at, "cu" | "medium" | "full")`; avoid `mcu` for her (it centres the neckline); stick characters pass
+  `{ who: "stick" }` (their big heads need a different table).
+- 9:16 two-shots: put one character nearer the lens (offset in depth), or they end up tiny or cut by the frame edge.
+- Lowercase captions (`lower` preset) keep camelCase brand tokens (pileGo!) as written.
+- A UI insert (phone) must end above y ~1100 px: the caption band sits on top of it otherwise.
 
 ## Conventions
 - Scenes: one component per shot, first line `// scenes: hand-written`, word-keyed timing only (a missing word

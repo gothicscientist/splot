@@ -29,7 +29,7 @@ const S03: React.FC = () => {
   const gov = s.hit("government");           // 2 frames before the word
   return (
     <AbsoluteFill>
-      <Stage look="interior"                 // day golden overcast dawn dusk night interior alarm studio
+      <Stage look="interior"                 // day golden overcast dawn dusk night interior alarm studio club
         cam={[                               // keys in shot-local frames; every hold creeps forward
           { f: 0, pos: [1.2, 1.9, 3.4], look: [0, 1.05, 0.2], fov: 36 },
           { f: gov + 8, pos: [0.15, 1.6, 1.25], look: [0, 0.88, 0.42], fov: 32, ease: "burst", dur: 10 },
@@ -101,6 +101,43 @@ Stamp (slam + kick), Tag (pill label), Counter (spins up: `from`, `to`, `prefix`
 `<Rain kind="bills" at={s.hit("money")} count={160} center={[0,0,0]} half={[3,2]} height={6} />` piles up on the floor;
 `<Burst3D kind="confetti" at={...} origin={[0,1,0]} />` pops out of a point. Kinds: bills coins confetti papers leaves
 snow gems sparks.
+
+## Tiff, the shaped lead (`tiff` mode; any StickWorld story)
+`<Stick spec={CAST.tiff} ... />`: the same props, Pose / Face / Item vocabulary, walk, talk and blink as the stick cast,
+drawn by `tiff.ts` (an anime-style adult woman: silver-lavender hair, blue eyes, black choker, black scoop tank,
+frayed jean shorts, black block-heel boots). Model sheet: `docs/characters/tiff/model-sheet.png`; look-dev
+compositions `TiffHero`, `TiffSheet`, `TiffStage` (in 3D sets), `SceneCast` (with the side cast).
+- Recolour only through the spec (`body` = top, `legColor` = shorts, `shoes` = boots, `accent` = button, `head` = skin,
+  `hairColor`). Her look is the brand: keep it the same in every episode unless the story is a fit change.
+- **Frame her with `frameOn()`** (`styles/stickworld/frame.ts`), never by hand: her eyes are at ~1.60 m (a stick adult's
+  ~1.43 m), so a camera aimed like the stick cast frames her torso. `frameOn(at, "wide" | "full" | "medium" | "mcu" |
+  "cu", { dir, side, high, lift, fov })` returns `{ pos, look, fov }` with the face in the upper third (eyes ~ y 450-640
+  px), always above the caption band. Spread it into a cam key: `{ f: 0, ...frameOn([0, 0, -1], "mcu") }`.
+- Attractive through style, face and attitude only: no shot whose subject is her body (no torso-centred frames, no
+  low angles looking up, no slow pans over the figure); poses carry attitude (`handsHips`, `crossArms`, `think`,
+  `phone`, `point`, `wave`, `shrug`, `facepalm`).
+- Two-shots with the stick cast: >= 0.9 m apart and the camera >= 4.4 m away (`full` framing on the midpoint).
+
+`SCENE_CAST` (cast.ts): `gatekeeper` (fur trapper + leather), `lowballer` (cap + zip hoodie, phone out), `archiveBro`
+(all black, wolf cut), `bestie` (bob, heart crop top, mini skirt), `newgen` (brand-new skull tee + beanie), `rapper`
+(an ORIGINAL stand-in performer, bleached wolf cut; never a real artist's look), `security` (STAFF tee). Fashion
+spec fields for any stick character: `outfit` crop | fur | leather | tank | zip, `hat: "fur"`, `pants {kind: baggy |
+flare | straight | skirt | shorts, color}`, `boots` platform | tall | pointy | chunky, `necklace` pearls | chain |
+choker, `print` heart | star | skull | flames | angel, `piercings`, `earrings`, `crossbody`, `legWarmers`,
+`armWarmers`, `sleeves`, `bareArms` / `bareLegs`, `build: "femme"`, `lashes`, `lips`, `blush`.
+
+## Closet kit (`styles/stickworld/closet.tsx`)
+`ClothesChair` (THE chair: a desk chair buried under clothes; pileGo!'s own hero image), `ClothesHeap` (floor mound),
+both with `n`, `amount` 0..1 and `sold={[frames]}` (top pieces hop off one by one: the pile visibly shrinks on the
+"sold" words); `Garment kind` tee | hoodie | jeans | knit | jacket | skirt | boots | cap | bag; `Rack` (clothing rail),
+`Mirror` (fit checks: the camera is the mirror), `Bed`, `ShipBox kind="box" | "mailer"`, `Venue` (a dark underground
+show: stage, truss cans pulsing to `bpm`, a crowd that bounces, `strobe={[frames]}`; light it with `look="club"`).
+`FABRIC` holds the washed archive palette. Tiff's bedroom: dark plum walls (`#3b3346`), wood floor, the chair, a
+rail, a mirror, a bed, boxes waiting to ship (see `src/lab/TiffStage.tsx`).
+
+## Brand devices
+pileGo! overlays (phone insert, sale pings, DMs, comment replies, listing cards, end card) live in
+`src/brands/pilego.tsx`; the rules for using them are in `references/brands/pilego.md`.
 
 ## Readability traps (fix on sight)
 - A face in the caption band or cut by the frame edge; a foreground prop closer than ~2 m to the lens (huge blob).

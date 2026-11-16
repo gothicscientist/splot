@@ -9,7 +9,7 @@ import { font } from "./fonts";
 
 type Base = { at: number; out?: number; x: number; y: number; rot?: number; scale?: number };
 
-function useLife(at: number, out?: number, inDur = 7, outDur = 5) {
+export function useLife(at: number, out?: number, inDur = 7, outDur = 5) {
   const f = useLocalFrame();
   if (f < at) return { f, s: 0, visible: false, since: f - at };
   const sIn = backOut(invLerp(at, at + inDur, f), 2.3);
@@ -17,7 +17,7 @@ function useLife(at: number, out?: number, inDur = 7, outDur = 5) {
   return { f, s: Math.max(0, sIn * sOut), visible: out === undefined || f < out + outDur, since: f - at };
 }
 
-const Pos: React.FC<{ x: number; y: number; rot?: number; scale: number; children: React.ReactNode; dx?: number; dy?: number }> = ({ x, y, rot = 0, scale, children, dx = 0, dy = 0 }) => {
+export const Pos: React.FC<{ x: number; y: number; rot?: number; scale: number; children: React.ReactNode; dx?: number; dy?: number }> = ({ x, y, rot = 0, scale, children, dx = 0, dy = 0 }) => {
   const { width } = useVideoConfig();
   const k = width / 1080;
   return (
