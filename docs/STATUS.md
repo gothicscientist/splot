@@ -58,6 +58,8 @@ Read this block first: it is the newest. Agents start at `AGENTS.md`.
   Per-line v2 sounded wrong, and v2 at low stability drifted into a French accent.
 - Built with that voice, QA PASS: `tiff-soft-launch` (43.4 s), `tiff-same-jacket` (43.1 s; soft masking warning on
   "minute"), `tiff-no-labels` (40.7 s).
+- Decision 2 above is out of date: on 2026-11-16 the live pilego.app lists Grailed too (eBay, Vinted, Depop, Poshmark,
+  Mercari, Grailed), so showing Grailed is correct.
 - Settles decision 4 above: Tiff now has the ElevenLabs voice. Two parallel kits exist: this branch's
   `src/videos/_tiff/` (sets, phone UI, EndCard) and `src/brands/pilego.tsx`. Unify them on the next pass.
 - Gotchas found:
