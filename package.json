@@ -48,5 +48,8 @@
     "@types/topojson-client": "^3.1.5",
     "@types/topojson-specification": "^1.0.5",
     "typescript": "5.9.3"
+  },
+  "allowScripts": {
+    "esbuild@0.28.1": true
   }
 }

@@ -3,6 +3,20 @@
 Live state of the studio. `CLAUDE.md` has the stable rules; this file has what is done, what is not, and what's next.
 Update it at the end of every session.
 
+## Tiff, the new recurring lead (2026-11-15, branch `feat/tiff-character`)
+- Shaped lead figure `src/styles/stickworld/tiff.ts` (`drawTiff`), iterated with the owner over many single-still
+  reviews: 23-year-old anime-style cartoon woman; long straight silver-lavender hair with symmetric jagged bangs
+  (kept off the eyes) and chest-length side locks, big blue anime eyes, black choker; hourglass figure (torso sides
+  traced from the owner's red-line markup, saved at `out/stills/tiff-hero-redlines.png`); outfit black scoop tank,
+  frayed high-waisted jean shorts (joined, no thigh gap), bare legs with knee detail, black block-heel boots drawn
+  front-facing. Long hair counter-rotates against head tilt so it hangs with gravity.
+- Same Pose/Face/Item vocabulary as the stick cast. Use `<Stick spec={CAST.tiff} ... />` (`StickSpec.figure: "tiff"`).
+  Recolour via body (top), legColor (shorts), shoes (boots), accent (button), head (skin), hairColor.
+- Look-dev: `TiffHero` (one standing still, `out/stills/tiff-hero.png`) and `TiffSheet` (16 poses,
+  `out/stills/tiff-sheet.png`). Known leftovers: walk frames show crossing legs with front-facing boots (reads OK at
+  size); not yet seen inside a 3D scene or a video; no storyline written yet.
+- `drawItem` in `draw.ts` is now exported (Tiff reuses the hand items).
+
 ## In progress (session of 2026-11-14 late, stopped by a usage limit; branch `studio/full-implementation`)
 Read this block first: it is newer than everything below it.
 - **Voice is now ElevenLabs (connector), all four videos.** New `take` provider in `scripts/voice.py`: one full

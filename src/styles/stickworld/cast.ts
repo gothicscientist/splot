@@ -3,6 +3,8 @@
 import type { StickSpec } from "./draw";
 
 export const CAST: Record<string, StickSpec> = {
+  // Tiff: the recurring lead (23): anime-style curvy figure, silver-lavender hair, black tank, jean shorts, black boots (tiff.ts)
+  tiff: { figure: "tiff", body: "#1d1b22", legColor: "#4a78b5", shoes: "#17151a", accent: "#e2b23c", hairColor: "#d9d8ef", head: "#fbe3d6", seed: 23 },
   // the lead: brown side-part hair, round glasses, teal tee (the reference's everyman)
   lead: { body: "#1fa38a", hair: "side", hairColor: "#8a5a32", glasses: "round", seed: 3 },
   leadF: { body: "#e8578c", hair: "bun", hairColor: "#c8502c", seed: 11 },

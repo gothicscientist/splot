@@ -17,6 +17,7 @@ import { backOut, blink, clamp, invLerp, smootherstep, talk as talkAmt } from ".
 import { cardShade, blobMaterial, CARD_K } from "../../core/three/look/cardshade";
 import { NOINK } from "../../core/three/look/ink";
 import type { Vec3 } from "../../core/types";
+import { drawTiff, tiffWalkPose } from "./tiff";
 import { drawStick, FACES, POSES, Face, Item, Pose, StickSpec, mixPose, walkPose, runPose } from "./draw";
 
 export type StickProps = {
@@ -160,7 +161,7 @@ export const Stick: React.FC<StickProps> = ({
   let pose = poseAtFrame(poses, f, blend);
   if (pa?.moving) {
     const phase = pa.dist / (run ? 1.6 : 0.8);
-    pose = run ? runPose(phase) : walkPose(phase, 1, pose);
+    pose = spec.figure === "tiff" ? tiffWalkPose(phase, pose) : run ? runPose(phase) : walkPose(phase, 1, pose);
   }
   // idle breathing so a held pose is never frozen
   pose = { ...pose, bob: (pose.bob ?? 0) + Math.sin((f + seed * 13) * 0.18) * 2.2, lean: (pose.lean ?? 0) + lean };
@@ -192,7 +193,7 @@ export const Stick: React.FC<StickProps> = ({
       tex.image = canvas;
     }
     const g = canvas.getContext("2d")!;
-    drawStick(g, canvas.width, canvas.height, spec, { ...pose, squash: (pose.squash ?? 1) * faceSquash }, face, { talk: tk, blink: bl, flip, item });
+    (spec.figure === "tiff" ? drawTiff : drawStick)(g, canvas.width, canvas.height, spec, { ...pose, squash: (pose.squash ?? 1) * faceSquash }, face, { talk: tk, blink: bl, flip, item });
     tex.needsUpdate = true;
     CARD_K.uPx.value = size.height / 1920;
     // face the camera around the vertical axis only (cards stay upright)

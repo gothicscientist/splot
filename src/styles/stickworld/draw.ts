@@ -11,6 +11,8 @@ export type OutfitKind = "tee" | "hoodie" | "suit" | "dress" | "lab" | "uniform"
 export type Build = "adult" | "kid" | "tall" | "stout";
 
 export type StickSpec = {
+  /** "tiff" draws the shaped lead figure (tiff.ts) instead of a stick figure */
+  figure?: "stick" | "tiff";
   /** torso colour (the bean) */
   body: string;
   head?: string;
@@ -78,6 +80,9 @@ export type Pose = {
   bob?: number; // vertical offset in units (+ = up)
   squash?: number; // 1 = normal, <1 squashed, >1 stretched
   crouch?: number; // 0..1 lowers the body by bending knees
+  /** front-view leg lift 0..1 (foreshortens the leg so the foot rises); used by the shaped Tiff figure */
+  liftL?: number;
+  liftR?: number;
 };
 
 const P = (armL: [number, number], armR: [number, number], legL: [number, number] = [0, 0], legR: [number, number] = [0, 0], extra: Partial<Pose> = {}): Pose => ({
@@ -1090,7 +1095,7 @@ function drawHairHat(g: Ctx, R: number, spec: StickSpec, ink: string, OL: number
 
 
 /** Hand-held props drawn in the same ink style (anchored at the hand dot). */
-function drawItem(g: Ctx, it: Item, at: V, R: number, ink: string, OL: number) {
+export function drawItem(g: Ctx, it: Item, at: V, R: number, ink: string, OL: number) {
   const [x, y] = at;
   const c = it.color;
   g.save();
